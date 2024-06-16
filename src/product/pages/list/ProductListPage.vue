@@ -2,9 +2,7 @@
 <v-container>
         <h2>판매 상품 리스트</h2>
         <div style="text-align: left; margin: 15px;">
-            <router-link :to="{ name: 'ProductRegisterPage' }">
-                상품등록
-            </router-link>
+            <span>상품등록</span>
         </div>
             <v-row v-if="products.length > 0">
                 <v-col v-for="(product, index) in products" :key="index">
@@ -28,7 +26,7 @@
             </v-row>
             <v-row>
                 <v-col cols="12" class="text-center">
-                    <v-img src='@/assets/images/fixed/fiximg.jpg' aspect-ratio="1" color="grey lighten-2">
+                    <v-img src='@/assets/images/fixed/fixedimg.jpg' aspect-ratio="1" color="grey lighten-2">
                     <template v-slot:placeholder>
                             <v-row class="fill-height ma-0" align="center" justify="center">
                                 <v-progress-circular indeterminate color="grey lighten-5"/>
