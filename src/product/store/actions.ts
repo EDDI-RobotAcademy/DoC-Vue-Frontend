@@ -9,6 +9,7 @@ import { REQUEST_PRODUCT_LIST_TO_DJANGO, REQUEST_PRODUCT_TO_DJANGO } from "./mut
 export type ProductActions = {
     requestProductToDjango(context: ActionContext<ProductState, any>, productId: number): Promise<void>
     requestProductListToDjango(context: ActionContext<ProductState, any>): Promise<void>
+    requestCreateProductToDjango(context: ActionContext<ProductState, unknown>, imageFormData: FormData): Promise<AxiosResponse>
 }
 
 
@@ -35,6 +36,22 @@ const actions: ProductActions = {
             // 에러를 처리할 수 있는 추가 로직
             throw error
         }
+    },    
+    async requestCreateProductToDjango(context: ActionContext<ProductState, unknown>, imageFormData: FormData): Promise<AxiosResponse> {
+        try {
+                console.log('requestCreateProductToDjango()')
+                const res: AxiosResponse = await axiosInst.djangoAxiosInst.post('/product/register', imageFormData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+                console.log('응답 데이터 : ', res.data)
+                alert('상품이 성공적으로 등록되었습니다.');
+                return res
+            } catch (error) {
+                console.log('requestCreateProductToDjango(): ', error)
+                throw error
+            }
     },
 };
 
