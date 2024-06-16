@@ -5,6 +5,8 @@ import axiosInst from "@/utility/axiosInstance"
 
 export type BoardActions = {
     requestBoardListToDjango(context: ActionContext<BoardState, any>): Promise<void>
+    requestCreateBoardToDjango(context: ActionContext<BoardState, unknown>, 
+        imageFormData: FormData): Promise<AxiosResponse>
 }
 
 const actions: BoardActions = {
@@ -17,6 +19,25 @@ const actions: BoardActions = {
             context.commit('REQUEST_BOARD_LIST_TO_DJANGO', data);
         } catch (error) {
             console.error('게시글 리스트 출력 과정 중 에러 발생:', error);
+            throw error
+        }
+    },
+    async requestCreateBoardToDjango(context: ActionContext<BoardState, unknown>, 
+                                        imageFormData: FormData): Promise<AxiosResponse> {
+        try {
+            console.log('requestCreateBoardToDjango()')
+
+            const res: AxiosResponse = await axiosInst.djangoAxiosInst.post(
+                '/product/register', imageFormData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+
+            console.log('응답 데이터:', res.data)
+            return res
+        } catch (error) {
+            console.error('requestCreateBoardToDjango():', error)
             throw error
         }
     },

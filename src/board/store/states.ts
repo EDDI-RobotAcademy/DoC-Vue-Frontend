@@ -1,5 +1,6 @@
 export interface BoardState {
     boardList: Board[]
+    board: Board | null
 }
 
 export interface Board {
@@ -13,6 +14,7 @@ export interface Board {
 
 const state: BoardState = {
     boardList: [],
+    board: null
 }
 
 export default state

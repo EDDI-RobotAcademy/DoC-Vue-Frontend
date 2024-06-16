@@ -1,6 +1,11 @@
 <template lang="">
     <v-container>
         <h2>게시글 리스트</h2>
+        <div style="text-align: left; margin: 15px;">
+            <router-link :to="{ name: 'BoardRegisterPage' }">
+                게시글 작성
+            </router-link>
+        </div>
         <v-data-table
             v-model:items-per-page="perPage"
             :headers="headerTitle"
