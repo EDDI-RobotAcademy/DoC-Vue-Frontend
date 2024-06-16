@@ -214,3 +214,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# .cache
+.cache
