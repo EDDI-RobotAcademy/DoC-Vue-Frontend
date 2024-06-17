@@ -28,7 +28,7 @@ const actions: BoardActions = {
             console.log('requestCreateBoardToDjango()')
 
             const res: AxiosResponse = await axiosInst.djangoAxiosInst.post(
-                '/product/register', imageFormData, {
+                '/board/register', imageFormData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
