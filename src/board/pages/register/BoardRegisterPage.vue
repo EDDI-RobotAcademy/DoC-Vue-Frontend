@@ -7,11 +7,6 @@
         </v-row>
         <v-row>
             <v-col cols="12">
-                <v-text-field v-model="boardWriter" label="작성자" required/>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col cols="12">
                 <v-textarea v-model="boardContent" label="내용" required auto-grow/>
             </v-col>
         </v-row>
@@ -43,7 +38,6 @@ export default {
     data () {
         return {
             boardTitle: '',
-            boardWriter: '',
             boardContent: '',
             boardImage: null,
             uploadedFileName: '',
@@ -52,33 +46,37 @@ export default {
     methods: {
         ...mapActions(boardModule, ['requestCreateBoardToDjango']),
         async onSubmit () {
+            console.log('등록 완료')
 
             try {
-                if (this.boardTitle) {
+                if (this.boardImage) {
                     const imageFormData = new FormData()
                     imageFormData.append('boardTitle', this.boardTitle)
-                    imageFormData.append('boardWriter', this.boardWriter)  
                     imageFormData.append('boardContent', this.boardContent)
-                    if (this.boardImage) {
-                        imageFormData.append('boardImage', this.boardImage)
-                    }
+                    imageFormData.append('boardImage', this.boardImage)
+
                     const response = await this.requestCreateBoardToDjango(imageFormData)
-                    if (this.boardImage) {
-                        this.uploadedFileName = response.data.imageName
-                    }
+                    this.uploadedFileName = response.data.imageName
                     this.$router.push({ name: 'BoardListPage' })
                 } else {
-                    console.log('제목을 입력해 주세요')
+                    console.log('이미지 파일을 선택하세요!')
                 }
-
-                console.log('등록 완료')
             } catch (error) {
                 console.log('파일 처리 과정에서 에러 발생:', error)
             }
+
+            const payload = {
+                boardTitle: this.boardTitle,
+                boardContent: this.boardContent,
+                boardImage: this.boardImage,
+            }
+
+            console.log('payload check:', payload)
+
+            const board = await this.requestCreateBoardToDjango(payload)
         },
         async onCancel () {
             console.log('등록 취소')
-            this.$router.go(-1)
         }
     }
 }
