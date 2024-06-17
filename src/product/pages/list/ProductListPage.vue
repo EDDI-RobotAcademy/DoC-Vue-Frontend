@@ -2,9 +2,9 @@
     <v-container>
         <h2>판매 상품 리스트</h2>
         <div style="text-align: left; margin: 15px;">
-            
-               <span>상품 등록. 레지스터 페이지로 이동</span> 
-            
+            <router-link :to="{ name: 'ProductRegisterPage' }">
+               상품 등록
+            </router-link>
         </div>
             <v-row v-if="products.length > 0">
                 <v-col v-for="(product, index) in products" :key="index">
