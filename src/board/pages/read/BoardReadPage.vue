@@ -21,7 +21,7 @@
                     </v-row>
                     <v-row v-if="board.boardImage">
                         <v-col cols="12" class="text-center">
-                            <v-img :src="getImageUrl(board.boardImage)" aspect-ratio="1" class="grey lighten-2">
+                            <v-img :src="getImageUrl(board.boardImage)" aspect-ratio="3.5" class="grey lighten-2">
                                 <template v-slot:placeholder>
                                     <v-row class="fill-height ma-0" align="center" justify="center">
                                         <v-progress-circular indeterminate color="grey lighten-5"/>
