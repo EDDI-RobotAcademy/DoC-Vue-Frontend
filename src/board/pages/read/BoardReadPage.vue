@@ -77,9 +77,11 @@ export default {
         ...mapState(boardModule, ['board'])
     },
     methods: {
-        ...mapActions(boardModule, ['requestBoardToDjango']),
+        ...mapActions(boardModule, ['requestBoardToDjango', 'requestDeleteBoardToDjango']),
         async onDelete () {
             console.log('삭제를 누르셨습니다!')
+            await this.requestDeleteBoardToDjango(this.boardId)
+            await this.$router.push({ name: 'BoardListPage' })
         },
         getImageUrl (imageName) {
         return require(`@/assets/images/uploadImages/${imageName}`)
