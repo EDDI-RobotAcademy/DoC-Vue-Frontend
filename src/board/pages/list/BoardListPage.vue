@@ -31,25 +31,25 @@ export default {
     component: {},
     computed: {
         ...mapState(boardModule, ['boardList']),
-        pagedItems () {
+        pagedItems() {
             const startIdx = (this.pagination.page - 1) * this.perPage
             const endIdx = startIdx + this.perPage
             return this.boardList.slice(startIdx, endIdx)
         }
     },
-    mounted () {
+    mounted() {
         this.requestBoardListToDjango()
     },
     methods: {
         ...mapActions(boardModule, ['requestBoardListToDjango']),
-        readRow (event, { item }) {
+        readRow(event, { item }) {
             this.$router.push({
                 name: 'BoardReadPage',
                 params: { boardId: item['boardId'].toString() }
             })
         }
     },
-    data () {
+    data() {
         return {
             headerTitle: [
                 {
