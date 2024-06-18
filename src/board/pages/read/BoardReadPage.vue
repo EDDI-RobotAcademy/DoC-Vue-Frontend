@@ -21,7 +21,7 @@
                     </v-row>
                     <v-row v-if="board.boardImage">
                         <v-col cols="12" class="text-center">
-                            <v-img :src="require(`@/assets/images/uploadImages/${board.boardImage}`)" aspect-ratio="1" class="grey lighten-2">
+                            <v-img :src="getImageUrl(board.boardImage)" aspect-ratio="3.5" class="grey lighten-2">
                                 <template v-slot:placeholder>
                                     <v-row class="fill-height ma-0" align="center" justify="center">
                                         <v-progress-circular indeterminate color="grey lighten-5"/>
@@ -32,14 +32,23 @@
                     </v-row>
                     <v-row justify="end">
                         <v-col cols="auto">
-                            <v-btn color="primary">수정</v-btn>
+                            <v-btn color="primary">
+                                <v-icon>mdi-draw</v-icon>
+                                <span>수정</span>
+                            </v-btn>
                         </v-col>
                         <v-col cols="auto">
-                            <v-btn color="error" @click="onDelete">삭제</v-btn>
+                            <v-btn color="error" @click="onDelete">
+                                <v-icon>mdi-eraser</v-icon>
+                                <span>삭제</span>
+                            </v-btn>
                         </v-col>
                         <v-col cols="auto">
                             <router-link :to="{ name: 'BoardListPage' }">
-                                <v-btn color="secondary">돌아가기</v-btn>
+                                <v-btn color="secondary">
+                                    <v-icon>mdi-arrow-left</v-icon>
+                                    <span>돌아가기</span>
+                                </v-btn>
                             </router-link>
                         </v-col>
                     </v-row>
@@ -68,6 +77,9 @@ export default {
         ...mapActions(boardModule, ['requestBoardToDjango']),
         async onDelete () {
             console.log('삭제를 누르셨습니다!')
+        },
+        getImageUrl (imageName) {
+        return require(`@/assets/images/uploadImages/${imageName}`)
         },
     },
     created () {
