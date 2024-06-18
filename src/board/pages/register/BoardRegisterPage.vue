@@ -27,8 +27,14 @@
         </v-row>
         <v-row>
             <v-col cols="12" class="text-right">
-                <v-btn class="ml-2" color="primary" @click="onSubmit">작성 완료</v-btn>
-                <v-btn class="ml-1" color="error" @click="onCancel">취소</v-btn>
+                <v-btn class="ml-2" color="primary" @click="onSubmit">
+                    <v-icon>mdi-check</v-icon>
+                    <span>작성 완료</span>
+                </v-btn>
+                <v-btn class="ml-1" color="error" @click="onCancel">
+                    <v-icon>mdi-marker-cancel</v-icon>
+                    <span>취소</span>
+                </v-btn>
             </v-col>
         </v-row>
     </v-container>

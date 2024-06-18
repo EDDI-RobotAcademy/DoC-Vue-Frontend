@@ -32,14 +32,23 @@
                     </v-row>
                     <v-row justify="end">
                         <v-col cols="auto">
-                            <v-btn color="primary">수정</v-btn>
+                            <v-btn color="primary">
+                                <v-icon>mdi-draw</v-icon>
+                                <span>수정</span>
+                            </v-btn>
                         </v-col>
                         <v-col cols="auto">
-                            <v-btn color="error" @click="onDelete">삭제</v-btn>
+                            <v-btn color="error" @click="onDelete">
+                                <v-icon>mdi-eraser</v-icon>
+                                <span>삭제</span>
+                            </v-btn>
                         </v-col>
                         <v-col cols="auto">
                             <router-link :to="{ name: 'BoardListPage' }">
-                                <v-btn color="secondary">돌아가기</v-btn>
+                                <v-btn color="secondary">
+                                    <v-icon>mdi-arrow-left</v-icon>
+                                    <span>돌아가기</span>
+                                </v-btn>
                             </router-link>
                         </v-col>
                     </v-row>
