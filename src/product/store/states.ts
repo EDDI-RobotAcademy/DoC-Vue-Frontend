@@ -17,7 +17,7 @@ export interface Product {
 
 const state: ProductState = {
     products: [],
-    product: null
+    product: null,
 }
 
 export default state
