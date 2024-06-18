@@ -11,9 +11,6 @@ const mutations: MutationTree<ProductState> = {
     [REQUEST_PRODUCT_LIST_TO_DJANGO] (state: ProductState, receivedData: Product[]): void {
         state.products = receivedData
     },
-    [REQUEST_PRODUCT_TO_DJANGO] (state: ProductState, receivedData: Product): void{
-        state.product = receivedData
-    }
 }
 
 export default mutations as ProductMutations

@@ -15,7 +15,7 @@ export type ProductActions = {
 const actions: ProductActions = {
     async requestProductListToDjango(context: ActionContext<ProductState, any>): Promise<void> {
         try {
-            const res: AxiosResponse<any, any> = await axiosInst.djangoAxiosInst.get('/product/list/');
+            const res: AxiosResponse<any, any> = await axiosInst.djangoAxiosInst.get('/product/list');
             console.log('res:',res)
             const data: Product[] = res.data;
             console.log('data:', data)
