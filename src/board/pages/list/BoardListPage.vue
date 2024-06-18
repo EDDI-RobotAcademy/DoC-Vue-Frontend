@@ -12,6 +12,7 @@
             :items="pagedItems"
             v-model:pagination="pagination"
             class="elevation-1"
+            @click:row="readRow"
             item-value="boardId"/>
         <v-pagination
             v-model="pagination.page"
@@ -41,6 +42,12 @@ export default {
     },
     methods: {
         ...mapActions(boardModule, ['requestBoardListToDjango']),
+        readRow (event, { item }) {
+            this.$router.push({
+                name: 'BoardReadPage',
+                params: { boardId: item['boardId'].toString() }
+            })
+        }
     },
     data () {
         return {

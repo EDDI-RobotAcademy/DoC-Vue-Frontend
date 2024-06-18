@@ -7,6 +7,7 @@ export type BoardActions = {
     requestBoardListToDjango(context: ActionContext<BoardState, any>): Promise<void>
     requestCreateBoardToDjango(context: ActionContext<BoardState, unknown>, 
         imageFormData: FormData): Promise<AxiosResponse>
+    requestBoardToDjango(context: ActionContext<BoardState, any>, boardId: number): Promise<void>
 }
 
 const actions: BoardActions = {
@@ -38,6 +39,16 @@ const actions: BoardActions = {
             return res
         } catch (error) {
             console.error('requestCreateBoardToDjango():', error)
+            throw error
+        }
+    },
+    async requestBoardToDjango(context: ActionContext<BoardState, any>, boardId: number): Promise<void> {
+        try {
+            const res: AxiosResponse<Board> = await axiosInst.djangoAxiosInst.get(`/board/read/${boardId}`);
+            console.log('data:', res.data)
+            context.commit('REQUEST_BOARD_TO_DJANGO', res.data);
+        } catch (error) {
+            console.error('requestBoardToDjango() 문제 발생:', error);
             throw error
         }
     },
