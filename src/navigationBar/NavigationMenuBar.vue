@@ -10,7 +10,7 @@
     </v-app-bar>
   
     <v-app-bar color="primary" app dark height="50">
-      <v-container class="d-flex justify-center">
+      <v-container class="d-flex justify-end">
         <v-btn text @click="goToProductList" class="btn-text">
           <v-icon left>mdi-store</v-icon>
           <span>상품</span>
