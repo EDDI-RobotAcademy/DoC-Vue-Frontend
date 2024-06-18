@@ -8,6 +8,9 @@ export type BoardActions = {
     requestCreateBoardToDjango(context: ActionContext<BoardState, unknown>, 
         imageFormData: FormData): Promise<AxiosResponse>
     requestBoardToDjango(context: ActionContext<BoardState, any>, boardId: number): Promise<void>
+    requestModifyBoardToDjango(context: ActionContext<BoardState, any>, payload: {
+        boardTitle: string, boardContent: string, boardId: number
+    }): Promise<void>
 }
 
 const actions: BoardActions = {
@@ -52,6 +55,20 @@ const actions: BoardActions = {
             throw error
         }
     },
+    async requestModifyBoardToDjango(context: ActionContext<BoardState, any>, payload: {
+        boardTitle: string, boardContent: string, boardId: number
+    }): Promise<void> {
+        
+        const { boardTitle, boardContent, boardId } = payload
+
+        try {
+            await axiosInst.djangoAxiosInst.put(`/board/modify/${boardId}`, { boardTitle, boardContent })
+            console.log('수정 성공!')
+        } catch (error) {
+            console.log('requestModifyBoardToDjango() 과정에서 문제 발생')
+            throw error
+        }
+    }
 }
 
 export default actions

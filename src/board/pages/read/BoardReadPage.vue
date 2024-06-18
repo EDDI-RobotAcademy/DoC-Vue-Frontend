@@ -33,8 +33,11 @@
                     <v-row justify="end">
                         <v-col cols="auto">
                             <v-btn color="primary">
-                                <v-icon>mdi-draw</v-icon>
-                                <span>수정</span>
+                                <router-link :to="{ name: 'BoardModifyPage', params: { boardId } }"
+                                                class="router-link-no-underline">
+                                    <v-icon>mdi-draw</v-icon>
+                                    <span>수정</span>
+                                </router-link>
                             </v-btn>
                         </v-col>
                         <v-col cols="auto">
@@ -87,3 +90,10 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.router-link-no-underline{
+    text-decoration-line: none;
+    color: inherit;
+}
+</style>

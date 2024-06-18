@@ -58,7 +58,6 @@ export default {
     methods: {
         ...mapActions(boardModule, ['requestCreateBoardToDjango']),
         async onSubmit () {
-
             try {
                 if (this.boardTitle) {
                     const imageFormData = new FormData()
@@ -72,11 +71,14 @@ export default {
                     if (this.boardImage) {
                         this.uploadedFileName = response.data.imageName
                     }
-                    this.$router.push({ name: 'BoardListPage' })
+                    await this.$router.push({
+                    name: 'BoardReadPage',
+                    params: { boardId: response.boardId.toString() }
+                    })
                 } else {
                     console.log('제목을 입력해 주세요')
                 }
-
+                
                 console.log('등록 완료')
             } catch (error) {
                 console.log('파일 처리 과정에서 에러 발생:', error)
