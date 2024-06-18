@@ -33,8 +33,11 @@
                     <v-row justify="end">
                         <v-col cols="auto">
                             <v-btn color="primary">
-                                <v-icon>mdi-draw</v-icon>
-                                <span>수정</span>
+                                <router-link :to="{ name: 'BoardModifyPage', params: { boardId } }"
+                                                class="router-link-no-underline">
+                                    <v-icon>mdi-draw</v-icon>
+                                    <span>수정</span>
+                                </router-link>
                             </v-btn>
                         </v-col>
                         <v-col cols="auto">
@@ -74,9 +77,11 @@ export default {
         ...mapState(boardModule, ['board'])
     },
     methods: {
-        ...mapActions(boardModule, ['requestBoardToDjango']),
+        ...mapActions(boardModule, ['requestBoardToDjango', 'requestDeleteBoardToDjango']),
         async onDelete () {
             console.log('삭제를 누르셨습니다!')
+            await this.requestDeleteBoardToDjango(this.boardId)
+            await this.$router.push({ name: 'BoardListPage' })
         },
         getImageUrl (imageName) {
         return require(`@/assets/images/uploadImages/${imageName}`)
@@ -87,3 +92,10 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.router-link-no-underline{
+    text-decoration-line: none;
+    color: inherit;
+}
+</style>

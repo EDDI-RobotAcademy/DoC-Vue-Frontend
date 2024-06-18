@@ -8,6 +8,10 @@ export type BoardActions = {
     requestCreateBoardToDjango(context: ActionContext<BoardState, unknown>, 
         imageFormData: FormData): Promise<AxiosResponse>
     requestBoardToDjango(context: ActionContext<BoardState, any>, boardId: number): Promise<void>
+    requestModifyBoardToDjango(context: ActionContext<BoardState, any>, payload: {
+        boardTitle: string, boardContent: string, boardId: number
+    }): Promise<void>
+    requestDeleteBoardToDjango(context: ActionContext<BoardState, unknown>, boardId: number): Promise<void>
 }
 
 const actions: BoardActions = {
@@ -49,6 +53,29 @@ const actions: BoardActions = {
             context.commit('REQUEST_BOARD_TO_DJANGO', res.data);
         } catch (error) {
             console.error('requestBoardToDjango() 문제 발생:', error);
+            throw error
+        }
+    },
+    async requestModifyBoardToDjango(context: ActionContext<BoardState, any>, payload: {
+        boardTitle: string, boardContent: string, boardId: number
+    }): Promise<void> {
+        
+        const { boardTitle, boardContent, boardId } = payload
+
+        try {
+            await axiosInst.djangoAxiosInst.put(`/board/modify/${boardId}`, { boardTitle, boardContent })
+            console.log('수정 성공!')
+        } catch (error) {
+            console.log('requestModifyBoardToDjango() 과정에서 문제 발생')
+            throw error
+        }
+    },
+    async requestDeleteBoardToDjango(context: ActionContext<BoardState, unknown>, boardId: number): Promise<void> {
+        try {
+            console.log('requestDeleteBoardToDjango()')
+            await axiosInst.djangoAxiosInst.delete(`/board/delete/${boardId}`)
+        } catch (error) {
+            console.log('requestDeleteBoardToDjango() 과정에서 문제 발생')
             throw error
         }
     },
