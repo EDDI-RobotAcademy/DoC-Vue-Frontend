@@ -3,12 +3,12 @@
         <v-row>
             <v-col cols="12">
         
-                <v-text-field v-model="prodname" label="이모티콘 이름"/>
+                <v-text-field v-model="productName" label="이모티콘 이름"/>
             </v-col>
         </v-row>
         <v-row>
             <v-col cols="12">
-                <v-text-field v-model="price" label="이모티콘 가격"/>
+                <v-text-field v-model="productPrice" label="이모티콘 가격"/>
             </v-col>
         </v-row>
         <v-row>
