@@ -14,9 +14,14 @@ const BoardRoutes = [
         component: BoardRegisterPage,
     },
     {
-        path: '/board/read',
+        path: '/board/read/:boardId',
         name: 'BoardReadPage',
-        component: BoardReadPage,
+        components: {
+            default: BoardReadPage,
+        },
+        props: {
+            default: true
+        }
     },
 ]
 
