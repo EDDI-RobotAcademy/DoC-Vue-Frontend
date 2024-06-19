@@ -71,10 +71,7 @@ export default {
                     if (this.boardImage) {
                         this.uploadedFileName = response.data.imageName
                     }
-                    await this.$router.push({
-                    name: 'BoardReadPage',
-                    params: { boardId: response.boardId.toString() }
-                    })
+                    await this.$router.push({ name: 'BoardListPage' })
                 } else {
                     console.log('제목을 입력해 주세요')
                 }
