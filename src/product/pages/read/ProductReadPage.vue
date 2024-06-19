@@ -17,7 +17,7 @@
                     </v-row>
                     <v-row>
                         <v-col cols="12">
-                            <v-text-field v-model="product.productDescription" readonly label="상품 설명" />
+                            <v-text-field v-model="product.content" readonly label="상품 설명" />
                         </v-col>
                     </v-row>
                     <v-row>
