@@ -84,7 +84,7 @@ export default {
             await this.$router.push({ name: 'BoardListPage' })
         },
         getImageUrl (imageName) {
-        return require(`@/assets/images/uploadImages/${imageName}`)
+            return require(`@/assets/images/uploadimages/${imageName}`)
         },
     },
     created () {
