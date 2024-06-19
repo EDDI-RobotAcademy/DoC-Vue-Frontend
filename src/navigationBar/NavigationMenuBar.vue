@@ -60,7 +60,23 @@ export default {
         },
         signIn () {
             router.push('/account/login')
+        },
+        signOut () {
+            localStorage.removeItem("accessToken")
+            this.isLogin = false
+            router.push('/')
+          },
+        updateLoginStatus () {
+            this.userToken = localStorage.getItem("userToken")
+            this.isLogin = !!this.userToken
         }
-    }
+    },
+    mounted () {
+      this.updateLoginStatus()
+        window.addEventListener('storage', this.updateLoginStatus)
+    },
+    beforeUnmount () {
+        window.removeEventListener('storage', this.updateLoginStatus)
+    },
 }
 </script>
