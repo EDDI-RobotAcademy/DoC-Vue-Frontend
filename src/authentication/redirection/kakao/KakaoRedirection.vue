@@ -16,7 +16,8 @@ export default {
             const code = this.$route.query.code
             console.log('code:', code)
             await this.requestAccessTokenToDjangoRedirection({ code })
-            // const userInfo = this.requestUserInfoToDjango()
+            const userInfo = this.requestUserInfoToDjango()
+            console.log(userInfo)
         }
     },
     async created () {
