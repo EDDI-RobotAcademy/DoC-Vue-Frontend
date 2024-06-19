@@ -1,27 +1,26 @@
 <template>
     <div></div>
 </template>
-
 <script>
 import { mapActions } from 'vuex'
-
 const authenticationModule = 'authenticationModule'
-
+const accountModule = 'accountModule'
 export default {
     methods: {
+        // ...mapActions(authenticationModule, 
+        //     ['requestAccessTokenToDjangoRedirection', 'requestUserInfoToDjango']),
         ...mapActions(authenticationModule, 
-            ['requestAccessTokenToDjangoRedirection']),
+            ['requestAccessTokenToDjangoRedirection', 'requestUserInfoToDjango']),
+        // ...mapActions(accountModule, ['requestEmailDuplicationCheckToDjango']),
         async setRedirectData () {
             const code = this.$route.query.code
-
+            console.log('code:', code)
             await this.requestAccessTokenToDjangoRedirection({ code })
-            const userInfo = await this.requestUserInfoToDjango()
-            const email = userInfo.kakao_account.email
-            console.log('email:', email)
+            // const userInfo = this.requestUserInfoToDjango()
+        }
     },
     async created () {
         await this.setRedirectData()
-    }
     }
 }
 </script>
