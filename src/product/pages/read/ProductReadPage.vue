@@ -80,7 +80,7 @@ export default {
         },
         getProductImageUrl(imageName) {
             console.log('imageName:', imageName)
-            return require(`@/assets/images/uploadimages/${imageName}`)
+            return require(`@/assets/images/uploadImages/${imageName}`)
         },
     },
     created() {
