@@ -48,7 +48,7 @@ const actions: AuthenticationActions = {
                     '/oauth/kakao/user-info', 
                     { access_token: accessToken });
                     
-            // console.log('User Info:', userInfoResponse.data.user_info);
+            console.log('User Info:', userInfoResponse.data.user_info);
             const userInfo = userInfoResponse.data.user_info
             return userInfo;
         } catch (error) {
