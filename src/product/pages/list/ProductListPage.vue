@@ -65,7 +65,7 @@ export default {
         ...mapActions(productModule, ['requestProductListToDjango']),
 
         getImageUrl(imageName) {
-            return require(`@/assets/images/uploadimages/${imageName}`);
+            return require('@/assets/images/uploadImages/' + imageName)
         },
         goToProductReadPage(productId) {
             this.$router.push({
