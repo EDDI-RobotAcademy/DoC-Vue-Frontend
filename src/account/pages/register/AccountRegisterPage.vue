@@ -80,11 +80,11 @@ export default {
     methods: {
         ...mapActions(authenticationModule, [
             'requestUserInfoToDjango',
-            'requestAddRedisAccessTokenToDjango'
+            // 'requestAddRedisAccessTokenToDjango'
         ]),
         ...mapActions(accountModule, [
             'requestNicknameDuplicationCheckToDjango',
-            'requestCreateNewAccountToDjango',
+            // 'requestCreateNewAccountToDjango',
         ]),
         async requestUserInfo () {
             try {
@@ -96,7 +96,7 @@ export default {
             }
         },
         async checkNicknameDuplication () {
-            console.log('중복 검사 눌럿음')
+            console.log('닉네임 중복 검사')
 
             try {
                 const isDuplicate = await this.requestNicknameDuplicationCheckToDjango({
