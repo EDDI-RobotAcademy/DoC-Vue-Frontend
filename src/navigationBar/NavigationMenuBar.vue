@@ -19,11 +19,11 @@
           <v-icon left>mdi-forum</v-icon>
           <span>게시판</span>
         </v-btn>
-        <v-btn v-if="!isLogin" text @click="signIn" class="btn-text">
+        <v-btn v-if="!isAuthenticated" text @click="signIn" class="btn-text">
           <v-icon left>mdi-login</v-icon>
           <span>로그인</span>
         </v-btn>
-        <v-btn v-if="isLogin" text @click="signOut" class="btn-text">
+        <v-btn v-if="isAuthenticated" text @click="signOut" class="btn-text">
           <v-icon left>mdi-logout</v-icon>
           <span>로그아웃</span>
         </v-btn>
@@ -34,21 +34,21 @@
 <script>
 import '@mdi/font/css/materialdesignicons.css'
 import router from '@/router'
+import { mapActions,mapState } from 'vuex'
+
+const authenticationModule = 'authenticationModule'
 
 export default {
     data () {
         return {
-            navigation_drawer: false,
-            // links: [{ icon: 'mdi-home', action: this.goToHome, route: '/' }],
-            accessToken: null,
-            isLogin: false,
-            // items: [
-            //     { title: 'Product', action: this.goToProductList() },
-            //     { title: 'Board', action: this.goToBoardList() },
-            // ]
+            isLogin: !!localStorage.getItem("userToken")
         }
     },
+    computed: {
+        ...mapState(authenticationModule, ['isAuthenticated'])
+    },
     methods: {
+        ...mapActions(authenticationModule, ['requestLogoutToDjango']),
         goToHome () {
             router.push('/')
         },
@@ -62,17 +62,11 @@ export default {
             router.push('/account/login')
         },
         signOut () {
-            localStorage.removeItem("accessToken")
-            this.isLogin = false
+            this.requestLogoutToDjango()
             router.push('/')
           },
-        updateLoginStatus () {
-            this.userToken = localStorage.getItem("userToken")
-            this.isLogin = !!this.userToken
-        }
     },
     mounted () {
-      this.updateLoginStatus()
         window.addEventListener('storage', this.updateLoginStatus)
     },
     beforeUnmount () {
