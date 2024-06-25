@@ -1,10 +1,10 @@
 <template>
     <v-container class="register-container" fill-height>
         <v-row align="center" justify="center">
-            <v-col cols="12" md="6" lg="4">
+            <v-col cols="12" md="8" lg="6">
                 <v-card>
                     <v-card-title>
-                        <span class="headline">회원 등록</span>
+                        <span class="headline">신규 회원 신청</span>
                     </v-card-title>
                     <v-card-text>
                         <v-form ref="form" v-model="formValid" lazy-validation>
@@ -28,7 +28,7 @@
                                             @click="checkNicknameDuplication"
                                             class="check-button"
                                             small>
-                                        중복 확인
+                                        중복 검사
                                     </v-btn>
                                 </v-col>
                             </v-row>
@@ -39,7 +39,7 @@
                         <v-btn color="primary" 
                                 @click="submitForm" 
                                 :disabled="!isValidForSubmission">
-                            계정 등록
+                            신청하기
                         </v-btn>
                     </v-card-actions>
                 </v-card>
@@ -78,13 +78,10 @@ export default {
         }
     },
     methods: {
-        ...mapActions(authenticationModule, [
-            'requestUserInfoToDjango',
-            // 'requestAddRedisAccessTokenToDjango'
-        ]),
+        ...mapActions(authenticationModule, ['requestUserInfoToDjango']),
         ...mapActions(accountModule, [
             'requestNicknameDuplicationCheckToDjango',
-            // 'requestCreateNewAccountToDjango',
+            'requestCreateNewAccountToDjango',
         ]),
         async requestUserInfo () {
             try {
@@ -96,7 +93,7 @@ export default {
             }
         },
         async checkNicknameDuplication () {
-            console.log('닉네임 중복 검사')
+            console.log('닉네임 중복 검사 눌럿음')
 
             try {
                 const isDuplicate = await this.requestNicknameDuplicationCheckToDjango({
@@ -104,7 +101,7 @@ export default {
                 })
 
                 if (isDuplicate) {
-                    this.nicknameErrorMessages = ['이 닉네임은 이미 사용중입니다!']
+                    this.nicknameErrorMessages = ['이 nickname은 이미 사용중입니다!']
                     this.isNicknameValid = false
                 } else {
                     this.nicknameErrorMessages = []
@@ -116,7 +113,7 @@ export default {
             }
         },
         async submitForm () {
-            console.log('계정 등록 누름')
+            console.log('신청하기 누름')
 
             if (this.$refs.form.validate()) {
                 const accountInfo = {
