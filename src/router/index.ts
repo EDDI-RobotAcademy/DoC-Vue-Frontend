@@ -4,6 +4,7 @@ import ProductRoutes from '@/product/router/ProductRoutes'
 import HomeRoutes from '@/home/router/HomeRoutes'
 import AccountRoutes from '@/account/router/AccountRoutes'
 import AuthenticationRoutes from '@/authentication/router/AuthenticationRoutes'
+import ReportRoutes from '@/report/router/ReportRoutes'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -15,7 +16,8 @@ const routes: Array<RouteRecordRaw> = [
   ...BoardRoutes,
   ...ProductRoutes,
   ...AccountRoutes,
-  ...AuthenticationRoutes
+  ...AuthenticationRoutes,
+  ...ReportRoutes
 ]
 
 const router = createRouter({
