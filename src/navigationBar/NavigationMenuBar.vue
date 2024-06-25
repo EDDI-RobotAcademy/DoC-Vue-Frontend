@@ -1,15 +1,11 @@
 <template>
-    <v-app-bar color="orange" app dark height="50">
-      <v-container class="d-flex justify-center align-center">
-        <v-btn @click="goToHome" class="mx-auto">
-          <v-toolbar-title class="text-uppercase text--darken-4">
-            <span>이모티콘 project</span>
-          </v-toolbar-title>
+    <v-app-bar color="orange" app dark height="70">
+      <v-btn @click="goToHome">
+            <v-toolbar-title class="text-uppercase text--darken-4">
+                <span>나는 춘식이</span>
+            </v-toolbar-title>
         </v-btn>
-      </v-container>
-    </v-app-bar>
-  
-    <v-app-bar color="primary" app dark height="50">
+        <v-spacer></v-spacer>
       <v-container class="d-flex justify-end">
         <v-btn text @click="goToProductList" class="btn-text">
           <v-icon left>mdi-store</v-icon>
