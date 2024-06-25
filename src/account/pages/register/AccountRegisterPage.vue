@@ -78,7 +78,10 @@ export default {
         }
     },
     methods: {
-        ...mapActions(authenticationModule, ['requestUserInfoToDjango']),
+        ...mapActions(authenticationModule, [
+            'requestUserInfoToDjango',
+            'requestAddRedisAccessTokenToDjango'
+        ]),
         ...mapActions(accountModule, [
             'requestNicknameDuplicationCheckToDjango',
             'requestCreateNewAccountToDjango',
