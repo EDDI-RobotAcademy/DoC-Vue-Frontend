@@ -67,11 +67,17 @@ export default {
                     if (this.boardImage) {
                         imageFormData.append('boardImage', this.boardImage)
                     }
+    
                     const response = await this.requestCreateBoardToDjango(imageFormData)
+
                     if (this.boardImage) {
                         this.uploadedFileName = response.data.imageName
                     }
-                    await this.$router.push({ name: 'BoardListPage' })
+
+                    await this.$router.push({
+                        name: 'BoardReadPage',
+                        params: { boardId: response.data.boardId.toString() }
+                    })
                 } else {
                     console.log('제목을 입력해 주세요')
                 }
