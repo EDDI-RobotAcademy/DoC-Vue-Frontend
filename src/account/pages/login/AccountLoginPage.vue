@@ -1,14 +1,20 @@
 <template>
     <v-container>
-        <v-card flat>
-            <v-img class="mx auto" height="300" 
-                    :src="require('@/assets/images/fixed/cs1.png')"/>
+        <v-card>
+            <v-row>
+                <v-col v-for="image in images" :key="image" class="d-flex child-flex" cols="4">
+                    <v-img class="mx auto" height="300"
+                            :src="require(`@/assets/images/fixed/${image}`)"
+                            aspect-ration="1"
+                            />
+                    </v-col>
+            </v-row>
         </v-card>
         <div class="login-icons">
-            <v-img class="icon" 
-                    :src="require('@/assets/images/fixed/fiximg.png')"
-                    height="60"
-                    @click="goToKakaoLogin"/>
+            <v-img class="icons"
+                   :src="require('@/assets/images/fixed/kakao_login.png')"
+                   height="100"
+                   @click="goToKakaoLogin"/>
         </div>
     </v-container>
 </template>
@@ -19,13 +25,18 @@ import { useStore } from 'vuex'
 const authenticationModule = 'authenticationModule'
 
 export default {
+    data () {
+        return {
+            images: ['cs2.png', 'cs1.png', 'cs2.png']
+        }
+    },
     setup () {
         const store = useStore()
 
         const goToKakaoLogin = async () => {
             await store.dispatch("authenticationModule/requestKakaoOauthRedirectionToDjango")
         }
-
+        
         return {
             goToKakaoLogin
         }
@@ -34,8 +45,8 @@ export default {
 </script>
 
 <style scoped>
-.login_icons {
-    margin-top: 20px;
+.login-icons {
+    margin-top: 30px;
 }
 
 .icons {
