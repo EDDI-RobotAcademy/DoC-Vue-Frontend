@@ -2,12 +2,7 @@
     <v-container>
         <v-row>
             <v-col cols="12">
-                <v-text-field v-model="writer" label="작성자(자동으로 값이 들어가야 함)" required/>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col cols="12">
-                <v-text-field v-model="age" label="나이" required/>
+                <v-text-field v-model="age" label="나이를 입력하세요. * 숫자로 입력" required/>
             </v-col>
         </v-row>
         <v-row>
@@ -15,7 +10,7 @@
                 <v-select
                 v-model="gender"
                 :items="gender_select"
-                label="성별"
+                label="성별을 선택하세요."
                 clearable
                 solo/>
             </v-col>
@@ -39,7 +34,6 @@ const reportModule = 'reportModule'
 export default {
     data () {
         return {
-            writer: '',
             age: '',
             gender: '',
             gender_select: ['여성','남성'],
@@ -51,7 +45,6 @@ export default {
             console.log('작성 완료 버튼 누름')
 
             const payload = {
-                writer: this.writer,
                 age: this.age,
                 gender: this.gender,
             }
