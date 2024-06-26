@@ -4,7 +4,6 @@ export interface ReportState {
 }
 
 export interface Report {
-    writer: string
     age: number
     gender: string
 }
