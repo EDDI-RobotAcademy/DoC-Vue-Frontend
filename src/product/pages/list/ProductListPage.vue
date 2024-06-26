@@ -9,7 +9,7 @@
         <v-row v-if="products.length > 0">
             <v-col v-for="(product, index) in products" :key="index">
                 <v-card @click="goToProductReadPage(product.productId)">
-                    <v-img :src="getImageUrl(product.productImage)" aspect-ratio="1" color="grey lighten-2">
+                    <v-img :src="getImageUrl(product.productImage)" aspect-ratio="1.5">
                         <template v-slot:placeholder>
                             <v-row class="fill-height ma-0" align="center" justify="center">
                                 <v-progress-circular indeterminate color="grey lighten-5" />
@@ -24,17 +24,6 @@
         <v-row v-else>
             <v-col cols="12" class="text-center">
                 <v-alert type="info">등록된 상품이 없습니다!</v-alert>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col cols="12" class="text-center">
-                <v-img src='@/assets/images/fixed/fiximg.png' aspect-ratio="1" color="grey lighten-2">
-                    <template v-slot:placeholder>
-                        <v-row class="fill-height ma-0" align="center" justify="center">
-                            <v-progress-circular indeterminate color="grey lighten-5" />
-                        </v-row>
-                    </template>
-                </v-img>
             </v-col>
         </v-row>
     </v-container>

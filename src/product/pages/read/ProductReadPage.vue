@@ -7,7 +7,19 @@
                 <v-container>
                     <v-row>
                         <v-col cols="12">
-                            <v-text-field v-model="product.productName" readonly label="상품명" />
+                            <v-img :src="getProductImageUrl(product.productImage)" aspect-ratio="2"
+                                class="grey lighten-2">
+                                <template v-slot:placeholder>
+                                    <v-row class="fill-height ma-0" align="center" justify="center">
+                                        <v-progress-circular indeterminate color="grey lighten-5"/>
+                                    </v-row>
+                                </template>
+                            </v-img>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12">
+                            <v-text-field v-model="product.productName" readonly label="상품명"/>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -23,19 +35,6 @@
                     <v-row>
                         <v-col cols="12">
                             <v-text-field v-model="product.productPrice" readonly label="가격" type="number" />
-                        </v-col>
-                    </v-row>
-
-                    <v-row>
-                        <v-col cols="12">
-                            <v-img :src="getProductImageUrl(product.productImage)" aspect-ratio="1"
-                                class="grey lighten-2">
-                                <template v-slot:placeholder>
-                                    <v-row class="fill-height ma-0" align="center" justify="center">
-                                        <v-progress-circular indeterminate color="grey lighten-5" />
-                                    </v-row>
-                                </template>
-                            </v-img>
                         </v-col>
                     </v-row>
                 </v-container>
