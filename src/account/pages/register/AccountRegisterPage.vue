@@ -132,7 +132,7 @@ export default {
                 console.log('register submitForm email:', email)
                 await this.requestAddRedisAccessTokenToDjango({ email, accessToken })
 
-                this.$router.push('/')
+                await this.$router.push({'name': 'ReportRegisterPage'})
             }
         }
     }
