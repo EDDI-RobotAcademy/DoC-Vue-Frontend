@@ -18,6 +18,16 @@
         </v-row>
         <v-row>
             <v-col cols="12">
+                <v-select
+                v-model="productCategory"
+                :items="categories"
+                label="상품 카테고리"
+                clearable
+                solo/>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12">
                 <v-textarea v-model="content" label="이모티콘 상세 설명" auto-grow/>
             </v-col>
         </v-row>
@@ -53,9 +63,11 @@ export default {
             productName: '',
             productPrice: '',
             writer: '',
+            productCategory: '',
             content: '',
             productImage: null,
             uploadedFilename: '',
+            categories: ['귀여운','재밌는','다정한']
         }
     },
     methods: {
@@ -68,6 +80,7 @@ export default {
                     const imageFormData = new FormData()
                     imageFormData.append('productName', this.productName)
                     imageFormData.append('productPrice', this.productPrice)
+                    imageFormData.append('productCategory', this.productCategory)
                     imageFormData.append('writer', this.writer)
                     imageFormData.append('content', this.content)
                     imageFormData.append('productImage', this.productImage)
