@@ -1,27 +1,23 @@
 <template>
-  <v-app-bar color="orange" app dark height="50">
+  <v-app-bar color="#EDC393" app dark height="70">
     <v-container class="d-flex justify-end">
-      <v-btn @click="goToHome">
-            <v-toolbar-title class="text-uppercase text--darken-4">
-                <span>나는 춘식이</span>
-            </v-toolbar-title>
-        </v-btn>
+      <v-img :src="require('@/assets/images/fixed/doc_logo.png')" v-on:click="goToHome" height="50"></v-img>
         <v-spacer></v-spacer>
       <v-btn text @click="goToProductList" class="btn-text">
         <v-icon left>mdi-store</v-icon>
-        <span>상품</span>
+        <span>Emoticon</span>
       </v-btn>
       <v-btn text @click="goToBoardList" class="btn-text">
         <v-icon left>mdi-forum</v-icon>
-        <span>게시판</span>
+        <span>Communication</span>
       </v-btn>
       <v-btn v-if="!isAuthenticated" text @click="signIn" class="btn-text">
         <v-icon left>mdi-login</v-icon>
-        <span>로그인</span>
+        <span>LogIn</span>
       </v-btn>
       <v-btn v-if="isAuthenticated" text @click="signOut" class="btn-text">
         <v-icon left>mdi-logout</v-icon>
-        <span>로그아웃</span>
+        <span>LogOut</span>
       </v-btn>
     </v-container>
   </v-app-bar>

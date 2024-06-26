@@ -1,5 +1,4 @@
 <template>
-  <h1 class="orange-text" style="text-align: center; color: orange;">DoC Home</h1>
   <v-row>
     <v-img class="mx auto"
          :src="require('@/assets/images/fixed/cs6.png')"
