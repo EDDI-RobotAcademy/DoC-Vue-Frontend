@@ -10,6 +10,7 @@ export interface Product {
     productPrice: number
     writer: string
     content: string
+    productCategory: string
     productImage: string
     regDate: string
     updDate: string
