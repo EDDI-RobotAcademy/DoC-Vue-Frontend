@@ -1,13 +1,24 @@
 <template>
     <v-container>
         <h2>판매 상품 리스트</h2>
-        <div style="text-align: left; margin: 15px;">
-            <router-link :to="{ name: 'ProductRegisterPage' }">
-                상품 등록
-            </router-link>
-        </div>
-        <v-row v-if="products.length > 0">
-            <v-col v-for="(product, index) in products" :key="index">
+        <v-row class="justify-center mb-4 align-center">
+            <v-col cols="auto">
+                <v-select
+                    v-model="selectedCategory"
+                    :items="categories"
+                    label="카테고리 선택"
+                    class="category-select custom-select"
+                    style="margin-bottom: 0;">
+                </v-select>
+            </v-col>
+            <v-col cols="auto">
+                <v-btn :to="{ name: 'ProductRegisterPage' }" class="mb-5" height="40">
+                    상품 등록
+                </v-btn>
+            </v-col>
+        </v-row>
+        <v-row v-if="filteredProducts.length > 0">
+            <v-col v-for="(product, index) in filteredProducts" :key="index" cols="12" sm="6" md="4" lg="3">
                 <v-card @click="goToProductReadPage(product.productId)">
                     <v-img :src="getImageUrl(product.productImage)" aspect-ratio="1.5">
                         <template v-slot:placeholder>
@@ -29,22 +40,19 @@
     </v-container>
 </template>
 
-
 <script>
 import { mapActions, mapState } from 'vuex'
 
 const productModule = 'productModule'
 
 export default {
-    components: {
-        // RouterLink
-    },
     computed: {
         ...mapState(productModule, ['products']),
-        pagedItems() {
-            const startIdx = (this.pagination.page - 1) * this.perPage
-            const endIdx = startIdx + this.perPage
-            return this.products.slice(startIdx, endIdx)
+        filteredProducts() {
+            if (this.selectedCategory === '전체') {
+                return this.products
+            }
+            return this.products.filter(product => product.productCategory === this.selectedCategory)
         }
     },
     mounted() {
@@ -52,7 +60,6 @@ export default {
     },
     methods: {
         ...mapActions(productModule, ['requestProductListToDjango']),
-
         getImageUrl(imageName) {
             return require('@/assets/images/uploadImages/' + imageName)
         },
@@ -65,6 +72,8 @@ export default {
     },
     data() {
         return {
+            categories: ['전체', '귀여운','재밌는','다정한'],
+            selectedCategory: '전체',
             headerTitle: [
                 {
                     title: 'No',
@@ -83,3 +92,25 @@ export default {
     }
 }
 </script>
+
+<style>
+.category-select {
+    width: 300px; /* 원하는 너비로 조정 */
+}
+
+.custom-select .v-input__control {
+    background-color: #deed933a; /* 원하는 배경색으로 변경 */
+    color: #a71616; /* 원하는 글자색으로 변경 */
+}
+
+.custom-select .v-select__selections {
+    color: #333; /* 선택된 항목의 글자색 변경 */
+}
+
+.custom-select .v-label {
+    color: #a71616; /* 레이블 색상 변경 */
+}
+.mb-5 {
+    background-color: #deed933a
+}
+</style>

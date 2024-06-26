@@ -1,11 +1,9 @@
 <template lang="">
     <v-container>
         <h2>게시글 리스트</h2>
-        <div style="text-align: left; margin: 15px;">
-            <router-link :to="{ name: 'BoardRegisterPage' }">
-                게시글 작성
-            </router-link>
-        </div>
+        <v-btn :to="{ name: 'ProductRegisterPage' }" class="mb-board" height="40">
+            게시글 작성
+        </v-btn>
         <v-data-table
             v-model:items-per-page="perPage"
             :headers="headerTitle"
@@ -70,3 +68,10 @@ export default {
     }
 }
 </script>
+
+<style>
+.mb-board {
+    margin-bottom: 3rem; /* 원하는 공백 크기로 조정 */
+    background-color: #deed933a
+}
+</style>
