@@ -10,11 +10,11 @@ export type AccountActions = {
     ): Promise<boolean>
     requestNicknameDuplicationCheckToDjango(
         context: ActionContext<AccountState, any>,
-        payload: string
+        payload: any
     ): Promise<boolean>
     requestCreateNewAccountToDjango(
         context: ActionContext<any, any>,
-        accountInfo: { email: string, nickname: string }
+        accountInfo: { email: string, nickname: string ,business: boolean}
     ): Promise<void>
 }
 
@@ -51,7 +51,7 @@ const actions: AccountActions = {
     },
     async requestCreateNewAccountToDjango(
         context: ActionContext<any, any>,
-        accountInfo: { email: string, nickname: string }
+        accountInfo: { email: string, nickname: string, business:boolean}
     ): Promise<void> {
         try {
             await axiosInst.djangoAxiosInst.post('/account/register', accountInfo)
