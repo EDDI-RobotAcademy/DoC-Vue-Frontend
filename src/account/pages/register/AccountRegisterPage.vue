@@ -23,13 +23,25 @@
                                             :rules="nicknameRules"
                                             :error-message="nicknameErrorMessages"/>
                                 </v-col>
-                                <v-col cols="2">
+                                <v-col cols="1">
                                     <v-btn color="primary"
                                             @click="checkNicknameDuplication"
                                             class="check-button"
                                             small>
                                         중복 검사
                                     </v-btn>
+                                </v-col>
+                            </v-row>
+                            <v-row align="center">
+                                <v-col align-self="center">
+                                    <v-text>사업자이시면 버튼을 눌러주세요</v-text>
+                                </v-col>
+                                <v-col>
+                                    <v-checkbox 
+                                    v-model="isBusiness"
+                                    label="사업자"
+                                    class="check"
+                                    @click="checkBusiness"/>
                                 </v-col>
                             </v-row>
                         </v-form>
@@ -60,6 +72,7 @@ export default {
             formValid: false,
             email: '',
             nickname: '',
+            isBusiness: false,
             emailRules: [
                 v => !!v || 'Email 은 필수입니다!',
                 v => /.+@.+\..+/.test(v) || '유효한 Email 주소를 입력하세요!'
@@ -118,10 +131,19 @@ export default {
         async submitForm () {
             console.log('신청하기 누름')
 
+            if (this.business) {
+                    this.businessmessage = ['고객입니다.']
+                    this.business = false
+                } else {
+                    this.businessmessage = []
+                    this.business = true
+                }
+
             if (this.$refs.form.validate()) {
                 const accountInfo = {
                     email: this.email,
                     nickname: this.nickname,
+                    business: this.business
                 }
 
                 await this.requestCreateNewAccountToDjango(accountInfo)
@@ -134,7 +156,15 @@ export default {
 
                 await this.$router.push({'name': 'ReportRegisterPage'})
             }
-        }
-    }
+        },
+    },
 }
 </script>
+
+<style scoped>
+.check {
+  transform: scale(1.1); /* 체크박스 크기 증가 */
+  position: absolute;
+  left: 30px;
+}
+</style>
