@@ -24,6 +24,11 @@
                     </v-row>
                     <v-row>
                         <v-col cols="12">
+                            <v-text-field v-model="product.productCategory" readonly label="카테고리"/>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12">
                             <v-text-field v-model="product.writer" readonly label="작성자" />
                         </v-col>
                     </v-row>
