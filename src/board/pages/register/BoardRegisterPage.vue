@@ -5,11 +5,11 @@
                 <v-text-field v-model="boardTitle" label="제목" required/>
             </v-col>
         </v-row>
-        <v-row>
+        <!-- <v-row>
             <v-col cols="12">
                 <v-text-field v-model="boardWriter" label="작성자" required/>
             </v-col>
-        </v-row>
+        </v-row> -->
         <v-row>
             <v-col cols="12">
                 <v-textarea v-model="boardContent" label="내용" required auto-grow/>
@@ -44,6 +44,8 @@
 import { mapActions } from 'vuex'
 
 const boardModule = 'boardModule'
+const accountModule = 'accountModule'
+const authenticationModule = 'authenticationModule'
 
 export default {
     data () {
@@ -57,12 +59,20 @@ export default {
     },
     methods: {
         ...mapActions(boardModule, ['requestCreateBoardToDjango']),
+        ...mapActions(accountModule, ['requestNicknameToDjango']),
+        ...mapActions(authenticationModule, ['requestUserInfoToDjango']),
         async onSubmit () {
             try {
+                const userInfo = await this.requestUserInfoToDjango()
+                const email = userInfo.kakao_account.email
+                console.log('email:', email)
+                const nickname = await this.requestNicknameToDjango(email)
+                console.log('nickname:', nickname)
+                
                 if (this.boardTitle) {
                     const imageFormData = new FormData()
                     imageFormData.append('boardTitle', this.boardTitle)
-                    imageFormData.append('boardWriter', this.boardWriter)  
+                    imageFormData.append('boardWriter', nickname)  
                     imageFormData.append('boardContent', this.boardContent)
                     if (this.boardImage) {
                         imageFormData.append('boardImage', this.boardImage)
