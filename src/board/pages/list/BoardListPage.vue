@@ -1,7 +1,7 @@
 <template lang="">
     <v-container>
         <h2>게시글 리스트</h2>
-        <v-btn :to="{ name: 'ProductRegisterPage' }" class="mb-board" height="40">
+        <v-btn :to="{ name: 'BoardRegisterPage' }" class="mb-board" height="40">
             게시글 작성
         </v-btn>
         <v-data-table
