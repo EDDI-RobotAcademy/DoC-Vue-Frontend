@@ -15,7 +15,7 @@
         <v-icon left>mdi-forum</v-icon>
         <span>Review</span>
       </v-btn>
-      <v-btn v-if="!isAuthenticated" text @click="signIn" class="btn-text">
+      <v-btn v-if="isAuthenticated" text @click="signOut" class="btn-text">
         <v-icon left>mdi-login</v-icon>
         <span>LogIn</span>
       </v-btn>

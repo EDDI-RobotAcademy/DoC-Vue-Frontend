@@ -12,8 +12,7 @@ export type AuthenticationActions = {
         context: ActionContext<AuthenticationState, any>): Promise<any>
     requestAddRedisAccessTokenToDjango(
         context: ActionContext<AuthenticationState, any>,
-        { email, accessToken }: { email: string, accessToken: string }
-    ): Promise<any>
+        { email, accessToken }: { email: string, accessToken: string }): Promise<any>
     requestLogoutToDjango(
         context: ActionContext<AuthenticationState, any>,
         userToken: string
@@ -73,7 +72,7 @@ const actions: AuthenticationActions = {
 
             console.log('userToken:', response.data.userToken)
 
-            // localStorage.removeItem("accessToken")
+            localStorage.removeItem("accessToken")
             localStorage.setItem("userToken", response.data.userToken)
             commit(REQUEST_IS_AUTHENTICATED_TO_DJANGO, true);
             return response.data;
@@ -86,7 +85,6 @@ const actions: AuthenticationActions = {
         context: ActionContext<AuthenticationState, any>,
         userToken: string
     ): Promise<void> {
-
         try {
             const userToken = localStorage.getItem("userToken")
 
@@ -97,7 +95,7 @@ const actions: AuthenticationActions = {
 
             console.log('res:', res.data.isSuccess)
             if (res.data.isSuccess === true) {
-                context.commit(REQUEST_IS_AUTHENTICATED_TO_DJANGO, false)
+                context.commit('REQUEST_IS_AUTHENTICATED_TO_DJANGO', false)
             }
         } catch (error) {
             console.error('requestPostToFastapi() 중 에러 발생:', error)
