@@ -1,8 +1,8 @@
 <template>
-  <v-app-bar color="#EDC393" app dark height="70">
-    <v-container class="d-flex justify-end">
-      <v-img :src="require('@/assets/images/fixed/doc_logo.png')" v-on:click="goToHome" height="50"></v-img>
-        <v-spacer></v-spacer>
+  <v-app-bar color="#FF9462" app dark height="70">
+    <v-container class="d-flex justify-center align-center">
+        <v-img src="@/assets/images/fixed/logo.png" v-on::click='goToHome' height="50" class="mr-2"></v-img>
+      <v-spacer></v-spacer>
       <v-btn text @click="goToProductList" class="btn-text">
         <v-icon left>mdi-store</v-icon>
         <span>Emoticon</span>
@@ -10,6 +10,10 @@
       <v-btn text @click="goToBoardList" class="btn-text">
         <v-icon left>mdi-forum</v-icon>
         <span>Communication</span>
+      </v-btn>
+      <v-btn text @click="goToReviewList" class="btn-text">
+        <v-icon left>mdi-forum</v-icon>
+        <span>Review</span>
       </v-btn>
       <v-btn v-if="!isAuthenticated" text @click="signIn" class="btn-text">
         <v-icon left>mdi-login</v-icon>
@@ -49,6 +53,9 @@ export default {
       },
       goToBoardList () {
           router.push('/board/list')
+      },
+      goToReviewList () {
+          router.push('/review/list')
       },
       signIn () {
           router.push('/account/login')
