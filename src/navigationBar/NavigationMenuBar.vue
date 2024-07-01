@@ -1,7 +1,9 @@
 <template>
-  <v-app-bar color="#FF9462" app dark height="70">
-    <v-container class="d-flex justify-center align-center">
-        <v-img src="@/assets/images/fixed/logo.png" v-on::click='goToHome' height="50" class="mr-2"></v-img>
+  <v-app-bar color="black" app dark height="60">
+    <v-container class="d-flex justify-center align-center" v-on::click='goToHome'>
+      <v-icon left>mdi-forum</v-icon>
+        <span>I'm Choonsik</span>
+        <!-- <v-img src="@/assets/images/fixed/logo.png" v-on::click='goToHome' height="50" class="mr-2"></v-img> -->
       <v-spacer></v-spacer>
       <v-btn text @click="goToProductList" class="btn-text">
         <v-icon left>mdi-store</v-icon>
@@ -38,7 +40,6 @@ export default {
   data () {
       return {
           isLogin: !!localStorage.getItem("userToken"),
-          socket: null
       }
   },
   computed: {
@@ -69,14 +70,6 @@ export default {
   mounted () {
         console.log('navigation bar mounted()')
 
-        this.socket = new WebSocket('ws://localhost:33333/ws');
-
-        this.socket.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            console.log('received data:', data)
-            this.updateProcessingStatus(data);
-        };
-        
         const userToken = localStorage.getItem("userToken")
 
         if (userToken) {
