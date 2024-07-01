@@ -33,6 +33,7 @@
 
 <script>
 import { useStore } from 'vuex'
+import router from '@/router'
 
 const authenticationModule = 'authenticationModule'
 
@@ -46,6 +47,11 @@ export default {
 
         return {
             goToKakaoLogin
+        }
+    },
+    methods: {
+        goToHome () {
+          router.push('/')
         }
     }
 }
