@@ -7,6 +7,8 @@ export type ReviewActions = {
     requestReviewListToDjango(context: ActionContext<ReviewState, any>): Promise<void>
     requestCreateReviewToDjango(context: ActionContext<ReviewState, unknown>, 
         imageFormData: FormData): Promise<AxiosResponse>
+    requestReviewToDjango(context: ActionContext<ReviewState, any>, reviewId: number): Promise<void>
+}
 const actions: ReviewActions = {
     async requestReviewListToDjango(context: ActionContext<ReviewState, any>): Promise<void> {
         try {
@@ -39,4 +41,16 @@ const actions: ReviewActions = {
             throw error
         }
     },
+    async requestReviewToDjango(context: ActionContext<ReviewState, any>, reviewId: number): Promise<void> {
+        try {
+            const res: AxiosResponse<Review> = await axiosInst.djangoAxiosInst.get(`/review/read/${reviewId}`);
+            console.log('data:', res.data)
+            context.commit('REQUEST_REVIEW_TO_DJANGO', res.data);
+        } catch (error) {
+            console.error('requestReviewToDjango() 문제 발생:', error);
+            throw error
+        }
+    },
+}
+
 export default actions
