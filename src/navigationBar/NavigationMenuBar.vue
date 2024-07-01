@@ -37,7 +37,8 @@ const authenticationModule = 'authenticationModule'
 export default {
   data () {
       return {
-          isLogin: !!localStorage.getItem("userToken")
+          isLogin: !!localStorage.getItem("userToken"),
+          socket: null
       }
   },
   computed: {
@@ -66,10 +67,26 @@ export default {
         },
   },
   mounted () {
-      window.addEventListener('storage', this.updateLoginStatus)
-  },
-  beforeUnmount () {
-      window.removeEventListener('storage', this.updateLoginStatus)
-  },
+        console.log('navigation bar mounted()')
+
+        this.socket = new WebSocket('ws://localhost:33333/ws');
+
+        this.socket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            console.log('received data:', data)
+            this.updateProcessingStatus(data);
+        };
+        
+        const userToken = localStorage.getItem("userToken")
+
+        if (userToken) {
+            console.log('You already have a userToken!!!')
+            this.$store.state.authenticationModule.isAuthenticated = true
+        }
+    },
+    beforeUnmount() {
+        // WebSocket 연결 해제
+        this.socket.close();
+    }
 }
 </script>
