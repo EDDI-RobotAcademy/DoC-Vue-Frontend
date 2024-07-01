@@ -1,5 +1,5 @@
-import { ActionContext } from "vuex"
-import { AccountState } from "./states"
+import { ActionContext, Commit } from "vuex"
+import { Account, AccountState } from "./states"
 import { AxiosResponse } from "axios"
 import axiosInst from "@/utility/axiosInstance"
 
@@ -16,6 +16,11 @@ export type AccountActions = {
         context: ActionContext<any, any>,
         accountInfo: { email: string, nickname: string ,business: boolean}
     ): Promise<void>
+    requestNicknameToDjango(
+        context: ActionContext<AccountState, any>,
+        email: string
+    ): Promise<Account>
+ 
 }
 
 const actions: AccountActions = {
@@ -59,7 +64,18 @@ const actions: AccountActions = {
             console.error('신규 계정 생성 실패:', error)
             throw error
         }
-    }
+    },
+    async requestNicknameToDjango(context: ActionContext<AccountState, any>, email: string): Promise<Account> {
+        try {
+            const res: AxiosResponse<Account> = await axiosInst.djangoAxiosInst.post(`/account/nickname`, { email });
+            console.log('data:', res.data)
+            context.commit('REQUEST_NICKNAME_TO_DJANGO', res.data);
+            return res.data
+        } catch (error) {
+            console.error('requestNicknameToDjango() 문제 발생:', error);
+            throw error
+        }
+    },
 };
 
 export default actions;
