@@ -11,7 +11,8 @@ export interface Product {
     writer: string
     content: string
     productCategory: string
-    productImage: string
+    productTitleImage: string
+    productContentImage: string
     regDate: string
     updDate: string
 }
