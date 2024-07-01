@@ -1,9 +1,10 @@
 <template>
-  <v-app-bar color="black" app dark height="60">
-    <v-container class="d-flex justify-center align-center" v-on::click='goToHome'>
-      <v-icon left>mdi-forum</v-icon>
+  <v-app-bar color="#140072" app dark height="60">
+    <v-container class="d-flex justify-center align-center">
+      <v-btn text @click="goToHome" class="btn-text">
+        <v-icon left>mdi-forum</v-icon>
         <span>I'm Choonsik</span>
-        <!-- <v-img src="@/assets/images/fixed/logo.png" v-on::click='goToHome' height="50" class="mr-2"></v-img> -->
+      </v-btn>
       <v-spacer></v-spacer>
       <v-btn text @click="goToProductList" class="btn-text">
         <v-icon left>mdi-store</v-icon>
@@ -79,7 +80,7 @@ export default {
     },
     beforeUnmount() {
         // WebSocket 연결 해제
-        this.socket.close();
+        // this.socket.close();
     }
 }
 </script>
