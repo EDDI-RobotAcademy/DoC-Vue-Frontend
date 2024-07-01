@@ -20,6 +20,10 @@ export type AccountActions = {
         context: ActionContext<AccountState, any>,
         email: string
     ): Promise<Account>
+    requestRoleTypeToDjango(
+        context: ActionContext<AccountState, any>,
+        email: string
+    ): Promise<Account>
  
 }
 
@@ -67,12 +71,23 @@ const actions: AccountActions = {
     },
     async requestNicknameToDjango(context: ActionContext<AccountState, any>, email: string): Promise<Account> {
         try {
-            const res: AxiosResponse<Account> = await axiosInst.djangoAxiosInst.post(`/account/nickname`, { email });
+            const res: AxiosResponse<Account> = await axiosInst.djangoAxiosInst.post('/account/nickname', { email });
             console.log('data:', res.data)
             context.commit('REQUEST_NICKNAME_TO_DJANGO', res.data);
             return res.data
         } catch (error) {
             console.error('requestNicknameToDjango() 문제 발생:', error);
+            throw error
+        }
+    },
+    async requestRoleTypeToDjango(context: ActionContext<AccountState, any>, email: string): Promise<Account> {
+        try{
+            const res: AxiosResponse<Account> = await axiosInst.djangoAxiosInst.post('/account/roleType', { email });
+            console.log('data:', res.data)
+            context.commit('REQUEST_ROLETYPE_TO_DJANGO', res.data)
+            return res.data
+        } catch (error) {
+            console.log('requestRoleTypeToDjango() 문제 발생:', error)
             throw error
         }
     },

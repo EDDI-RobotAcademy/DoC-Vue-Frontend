@@ -5,6 +5,7 @@ export interface AccountState {
 
 export interface Account {
     nickname: string,
+    roleType: string,
 }
 
 const state: AccountState = {

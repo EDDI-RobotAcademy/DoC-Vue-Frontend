@@ -11,7 +11,7 @@
                     style="margin-bottom: 0;">
                 </v-select>
             </v-col>
-            <v-col cols="auto">
+            <v-col v-if="isSeller" cols="auto">
                 <v-btn :to="{ name: 'ProductRegisterPage' }" class="mb-5" height="40">
                     상품 등록
                 </v-btn>
@@ -44,6 +44,8 @@
 import { mapActions, mapState } from 'vuex'
 
 const productModule = 'productModule'
+const accountModule = 'accountModule'
+const authenticationModule = 'authenticationModule'
 
 export default {
     computed: {
@@ -56,18 +58,33 @@ export default {
         }
     },
     mounted() {
-        this.requestProductListToDjango()
+        this.requestProductListToDjango();
+        this.checkRoleType();
     },
     methods: {
         ...mapActions(productModule, ['requestProductListToDjango']),
+        ...mapActions(accountModule, ['requestRoleTypeToDjango']),
+        ...mapActions(authenticationModule, ['requestUserInfoToDjango']),
+        async checkRoleType() {
+            try {
+                const userInfo = await this.requestUserInfoToDjango();
+                const email = userInfo.kakao_account.email;
+                console.log('email:', email);
+                const roleType = await this.requestRoleTypeToDjango(email);
+                console.log('roleType:', roleType);
+                this.isSeller = (roleType === 'SELLER');
+            } catch (error) {
+                console.error('roleType 확인 중 에러 발생', error);
+            }
+        },
         getImageUrl(imageName) {
-            return require('@/assets/images/uploadImages/' + imageName)
+            return require('@/assets/images/uploadImages/' + imageName);
         },
         goToProductReadPage(productId) {
             this.$router.push({
                 name: 'ProductReadPage',
                 params: { productId: productId }
-            })
+            });
         }
     },
     data() {
@@ -87,7 +104,8 @@ export default {
             perPage: 5,
             pagination: {
                 page: 1,
-            }
+            },
+            isSeller: false // 판매자 여부를 저장하는 상태 변수
         }
     }
 }
