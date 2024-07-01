@@ -31,7 +31,7 @@
                 <!-- 버튼 추가 -->
                 <br><br><br>
                 <div class="button-container">
-                  <v-img src="@/assets/images/fixed/button.png" alt="Button" class="button-image" @click="goToProductList"/>
+                  <v-img src="@/assets/images/fixed/goto_shop.png" alt="Button" class="button-image" @click="goToProductList"/>
                 </div>
               </div>
             </div>
