@@ -33,12 +33,22 @@
         </v-row>
         <v-row>
             <v-col cols="12">
-                <v-file-input v-model="productImage" label="이모티콘 대표 사진" perpend-icon="mdi-camera"/>
+                <v-file-input v-model="productTitleImage" label="이모티콘 대표 사진" perpend-icon="mdi-camera"/>
             </v-col>
         </v-row>
         <v-row>
             <v-col cols="12">
-                <p v-if="uploadedFilename">업로드된 파일: {{uploadedFilename}}></p>
+                <p v-if="uploadedTitleImageFilename">업로드된 파일: {{uploadedTitleImageFilename}}></p>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12">
+                <v-file-input v-model="productContentImage" label="이모티콘 전체 사진" perpend-icon="mdi-camera"/>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12">
+                <p v-if="uploadedContentImageFilename">업로드된 파일: {{uploadedContentImageFilename}}></p>
             </v-col>
         </v-row>
         <v-row>
@@ -65,8 +75,10 @@ export default {
             writer: '',
             productCategory: '',
             content: '',
-            productImage: null,
-            uploadedFilename: '',
+            productTitleImage: null,
+            productContentImage: null,
+            uploadedTitleImageFilename: '',
+            uploadedContentImageFilename: '',
             categories: ['귀여운','재밌는','다정한']
         }
     },
@@ -76,14 +88,15 @@ export default {
             console.log('작성 완료 버튼 누름')
 
             try {
-                if (this.productImage) {
+                if (this.productTitleImage) {
                     const imageFormData = new FormData()
                     imageFormData.append('productName', this.productName)
                     imageFormData.append('productPrice', this.productPrice)
                     imageFormData.append('productCategory', this.productCategory)
                     imageFormData.append('writer', this.writer)
                     imageFormData.append('content', this.content)
-                    imageFormData.append('productImage', this.productImage)
+                    imageFormData.append('productTitleImage', this.productTitleImage)
+                    imageFormData.append('productContentImage', this.productContentImage)
 
                     const response = await this.requestCreateProductToDjango(imageFormData)
                     this.uploadedFilename = response.data.imageName
