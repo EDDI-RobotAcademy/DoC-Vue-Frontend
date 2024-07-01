@@ -13,10 +13,11 @@
             ></v-img>
             <div class="text-overlay">
               <div class="text-content">
+                <br><br><br><br><br><br><br>
                 <span class="main-text">나는 춘식이</span>
-                <br><br><br><br><br>
+                <br><br><br>
                 <span class="sub-text line">"나는 춘식이"는 당신만의 감정, 스타일 <br>그리고 세계관을 담아낼 수 있는 <br>퍼스널 이모티콘 발견의 기회를 제공합니다.</span>
-                <br><br><br><br><br>
+                <br><br><br><br>
                 <span class="sub-text line">비대면 소통이 증가함에 따라 <br>우리에게는 언어를 넘어서서 <br>감정과 생각을 전달할 수 있는 방법이 필요합니다.</span>
                 <br><br><br><br><br><br>
                 <span class="sub-text-2 line">이모티콘은<br>언어를 넘어선 소통 방법입니다</span>   
