@@ -11,7 +11,9 @@ export type ReviewActions = {
     requestModifyReviewToDjango(context: ActionContext<ReviewState, any>, payload: {
         reviewTitle: string, reviewContent: string, reviewId: number,reviewRating:number
     }): Promise<void>
+    requestDeleteReviewToDjango(context: ActionContext<ReviewState, unknown>, reviewId: number): Promise<void>
 }
+
 const actions: ReviewActions = {
     async requestReviewListToDjango(context: ActionContext<ReviewState, any>): Promise<void> {
         try {
@@ -65,6 +67,15 @@ const actions: ReviewActions = {
             console.log('수정 성공!')
         } catch (error) {
             console.log('requestModifyReviewToDjango() 과정에서 문제 발생')
+            throw error
+        }
+    },
+    async requestDeleteReviewToDjango(context: ActionContext<ReviewState, unknown>, reviewId: number): Promise<void> {
+        try {
+            console.log('requestDeleteReviewToDjango()')
+            await axiosInst.djangoAxiosInst.delete(`/review/delete/${reviewId}`)
+        } catch (error) {
+            console.log('requestDeleteReviewToDjango() 과정에서 문제 발생')
             throw error
         }
     },
