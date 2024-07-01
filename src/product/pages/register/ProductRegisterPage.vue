@@ -13,15 +13,10 @@
         </v-row>
         <v-row>
             <v-col cols="12">
-                <v-text-field v-model="writer" label="등록자"/>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col cols="12">
                 <v-select
                 v-model="productCategory"
                 :items="categories"
-                label="상품 카테고리"
+                label="카테고리"
                 clearable
                 solo/>
             </v-col>
@@ -66,6 +61,8 @@
 import { mapActions } from 'vuex'
 
 const productModule = 'productModule'
+const accountModule = 'accountModule'
+const authenticationModule = 'authenticationModule'
 
 export default {
     data () {
@@ -84,16 +81,24 @@ export default {
     },
     methods: {
         ...mapActions(productModule, ['requestCreateProductToDjango']),
+        ...mapActions(accountModule, ['requestNicknameToDjango']),
+        ...mapActions(authenticationModule, ['requestUserInfoToDjango']),
         async onSubmit () {
             console.log('작성 완료 버튼 누름')
 
             try {
+                const userInfo = await this.requestUserInfoToDjango()
+                const email = userInfo.kakao_account.email
+                console.log('email:', email)
+                const nickname = await this.requestNicknameToDjango(email)
+                console.log('nickname:', nickname)
+
                 if (this.productTitleImage) {
                     const imageFormData = new FormData()
                     imageFormData.append('productName', this.productName)
                     imageFormData.append('productPrice', this.productPrice)
                     imageFormData.append('productCategory', this.productCategory)
-                    imageFormData.append('writer', this.writer)
+                    imageFormData.append('writer', nickname)
                     imageFormData.append('content', this.content)
                     imageFormData.append('productTitleImage', this.productTitleImage)
                     imageFormData.append('productContentImage', this.productContentImage)
