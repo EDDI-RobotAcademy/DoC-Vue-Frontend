@@ -8,6 +8,9 @@ export type ReviewActions = {
     requestCreateReviewToDjango(context: ActionContext<ReviewState, unknown>, 
         imageFormData: FormData): Promise<AxiosResponse>
     requestReviewToDjango(context: ActionContext<ReviewState, any>, reviewId: number): Promise<void>
+    requestModifyReviewToDjango(context: ActionContext<ReviewState, any>, payload: {
+        reviewTitle: string, reviewContent: string, reviewId: number,reviewRating:number
+    }): Promise<void>
 }
 const actions: ReviewActions = {
     async requestReviewListToDjango(context: ActionContext<ReviewState, any>): Promise<void> {
@@ -48,6 +51,20 @@ const actions: ReviewActions = {
             context.commit('REQUEST_REVIEW_TO_DJANGO', res.data);
         } catch (error) {
             console.error('requestReviewToDjango() 문제 발생:', error);
+            throw error
+        }
+    },
+    async requestModifyReviewToDjango(context: ActionContext<ReviewState, any>, payload: {
+        reviewTitle: string, reviewContent: string, reviewId: number,reviewRating:number
+    }): Promise<void> {
+        
+        const { reviewTitle, reviewContent, reviewId,reviewRating } = payload
+
+        try {
+            await axiosInst.djangoAxiosInst.put(`/review/modify/${reviewId}`, { reviewTitle, reviewContent })
+            console.log('수정 성공!')
+        } catch (error) {
+            console.log('requestModifyReviewToDjango() 과정에서 문제 발생')
             throw error
         }
     },
