@@ -109,7 +109,7 @@ export default {
             }
         },
         async checkNicknameDuplication () {
-            console.log('닉네임 중복 검사 눌럿음')
+            console.log('닉네임 중복 검사')
 
             try {
                 const isDuplicate = await this.requestNicknameDuplicationCheckToDjango({
@@ -128,22 +128,29 @@ export default {
                 this.isNicknameValid = false
             }
         },
+        async checkBusiness () {
+            try {
+                console.log('사업자로 등록')
+                this.isBusiness = true
+            } catch (error) {
+                console.error('사업자 등록 중 에러 발생', error)
+            }
+        },
         async submitForm () {
             console.log('신청하기 누름')
 
-            if (this.business) {
-                    this.businessmessage = ['고객입니다.']
-                    this.business = false
-                } else {
-                    this.businessmessage = []
-                    this.business = true
+            if (this.isBusiness) {
+                    console.log('사업자입니다.')
+                } 
+            else {
+                    console.log('고객입니다.')
                 }
 
             if (this.$refs.form.validate()) {
                 const accountInfo = {
                     email: this.email,
                     nickname: this.nickname,
-                    business: this.business
+                    isBusiness: this.isBusiness
                 }
 
                 await this.requestCreateNewAccountToDjango(accountInfo)
