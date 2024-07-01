@@ -72,7 +72,7 @@ const actions: AuthenticationActions = {
 
             console.log('userToken:', response.data.userToken)
 
-            localStorage.removeItem("accessToken")
+            // localStorage.removeItem("accessToken")
             localStorage.setItem("userToken", response.data.userToken)
             commit(REQUEST_IS_AUTHENTICATED_TO_DJANGO, true);
             return response.data;
