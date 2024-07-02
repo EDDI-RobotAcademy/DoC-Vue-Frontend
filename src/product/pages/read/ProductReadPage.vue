@@ -102,7 +102,7 @@ export default {
     },
     methods: {
         ...mapActions(productModule, ['requestProductToDjango']),
-        ...mapActions(cartModule, ['requestAddToCartToDjango']),
+        ...mapActions(cartModule, ['requestAddCartToDjango']),
         async onPurchase() {
             console.log('구매하기 버튼 눌렀음')
         },
@@ -115,7 +115,7 @@ export default {
                     productPrice: this.product.productPrice,
                     quantity: 1,
                 }
-                await this.requestAddToCartToDjango(cartData)
+                await this.requestAddCartToDjango(cartData)
             } catch (error) {
                 console.log('장바구니 추가 과정에서 에러 발생:', error)
             }
