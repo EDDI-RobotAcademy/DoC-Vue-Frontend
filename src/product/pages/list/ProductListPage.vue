@@ -3,12 +3,8 @@
         <h2>판매 상품 리스트</h2>
         <v-row class="justify-center mb-4 align-center">
             <v-col cols="auto">
-                <v-select
-                    v-model="selectedCategory"
-                    :items="categories"
-                    label="카테고리 선택"
-                    class="category-select custom-select"
-                    style="margin-bottom: 0;">
+                <v-select v-model="selectedCategory" :items="categories" label="카테고리 선택"
+                    class="category-select custom-select" style="margin-bottom: 0;">
                 </v-select>
             </v-col>
             <v-col v-if="isSeller" cols="auto">
@@ -17,6 +13,7 @@
                 </v-btn>
             </v-col>
         </v-row>
+        <h1>추천 이모티콘<span class="small-icon">></span></h1>
         <v-row v-if="filteredProducts.length > 0">
             <v-col v-for="(product, index) in filteredProducts" :key="index" cols="12" sm="6" md="4" lg="3">
                 <v-card @click="goToProductReadPage(product.productId)">
@@ -37,7 +34,39 @@
                 <v-alert type="info">등록된 상품이 없습니다!</v-alert>
             </v-col>
         </v-row>
+        <v-spacer class="my-10  "></v-spacer>
+
+        <!-- 전체 이모티콘 섹션 -->
+        <v-spacer class="my-10"></v-spacer>
+        <h1>전체 이모티콘<span class="small-icon">></span></h1>
+        <v-row v-if="filteredProducts.length > 0">
+            <v-col v-for="(product, index) in filteredProducts" :key="index" cols="12" sm="6" md="6" lg="4">
+                <v-card @click="goToProductReadPage(product.productId)" class="product-card">
+                    <v-row no-gutters>
+                        <!-- Left Column (Product Name and Author) -->
+                        <v-col cols="8">
+                            <v-card-title>{{ product.productName }}</v-card-title>
+                            <v-card-subtitle>{{ product.productPrice }}</v-card-subtitle>
+                        </v-col>
+                        <!-- Right Column (Product Image) -->
+                        <v-col cols="4">
+                            <v-img :src="getImageUrl(product.productTitleImage)" aspect-ratio="1.5">
+                                <template v-slot:placeholder>
+                                    <v-row class="fill-height ma-0" align="center" justify="center">
+                                        <v-progress-circular indeterminate color="grey lighten-5" />
+                                    </v-row>
+                                </template>
+                            </v-img>
+                        </v-col>
+                    </v-row>
+                </v-card>
+            </v-col>
+        </v-row>
     </v-container>
+    <v-spacer style="height: 50px;"></v-spacer>
+    <footer style="text-align: center;">
+        <h5> 이용약관 | 유료이용안내 | 개인정보처리방침 |  기업고객  | 문의하기 | 공정위사업자정보 | (주)춘식 </h5>
+    </footer>
 </template>
 
 <script>
@@ -85,7 +114,7 @@ export default {
     },
     data() {
         return {
-            categories: ['전체', '귀여운','재밌는','다정한'],
+            categories: ['전체', '귀여운', '재밌는', '다정한'],
             selectedCategory: '전체',
             headerTitle: [
                 {
@@ -109,22 +138,46 @@ export default {
 
 <style>
 .category-select {
-    width: 300px; /* 원하는 너비로 조정 */
+    width: 300px;
+    /* 원하는 너비로 조정 */
 }
 
 .custom-select .v-input__control {
-    background-color: #deed933a; /* 원하는 배경색으로 변경 */
-    color: #a71616; /* 원하는 글자색으로 변경 */
+    background-color: #deed933a;
+    /* 원하는 배경색으로 변경 */
+    color: #a71616;
+    /* 원하는 글자색으로 변경 */
 }
 
 .custom-select .v-select__selections {
-    color: #333; /* 선택된 항목의 글자색 변경 */
+    color: #333;
+    /* 선택된 항목의 글자색 변경 */
 }
 
 .custom-select .v-label {
-    color: #a71616; /* 레이블 색상 변경 */
+    color: #a71616;
+    /* 레이블 색상 변경 */
 }
+
 .mb-5 {
     background-color: #deed933a
+}
+
+.small-icon {
+    font-size: 40px;
+    /* 원하는 크기로 설정 */
+    margin-left: 8px;
+    /* 텍스트와 기호 사이에 여백 추가 */
+    color: #3f4144;
+    /* 원하는 색상으로 변경 */
+    vertical-align: middle;
+    /* 텍스트와 수평으로 맞춤 */
+    position: relative;
+    /* 상대적 위치 조정 */
+    top: -10px;
+    /* 위로 올림 */
+    font-weight: 300;
+    /* 글자를 얇게 */
+    opacity: 0.6;
 }
 </style>

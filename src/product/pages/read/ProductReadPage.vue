@@ -13,8 +13,9 @@
                     <v-row>
                         <!-- 상품 이미지 왼쪽 열 -->
                         <v-col cols="12" md="4" class="d-flex align-center justify-center">
-                            <v-img :src="getProductImageUrl(product.productTitleImage)" class="custom-img grey lighten-2"
-                                aspect-ratio="1" style="width: 100%; height: auto; max-height: 200px;">
+                            <v-img :src="getProductImageUrl(product.productTitleImage)"
+                                class="custom-img grey lighten-2" aspect-ratio="1"
+                                style="width: 100%; height: auto; max-height: 200px;">
                                 <template v-slot:placeholder>
                                     <v-row class="fill-height ma-0" align="center" justify="center">
                                         <v-progress-circular indeterminate color="grey lighten-5" />
@@ -58,13 +59,16 @@
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col cols="12" md="8">
-                            <v-text-field class="custom-text-field" v-model="product.content" label="내용" readonly />
-                        </v-col>
-
-                        <v-col cols="12" md="8"><span>이 이모티콘의 태그</span>
+                        <v-col cols="12" md="4"><span>이 이모티콘의 태그</span>
                             <v-text-field class="custom-text-field" v-model="product.productCategory" readonly />
                         </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" md="12">
+                            <v-text-field class="custom-text-field" v-model="product.content" label="내용" readonly />
+                        </v-col>
+                    </v-row>
+                    <v-row>
                         <v-col cols="12">
                             <v-img :src="getProductImageUrl(product.productContentImage)" aspect-ratio="2"
                                 style="width: 100%; max-height: 400px;"></v-img>
@@ -76,7 +80,7 @@
         <v-alert v-else type="info">현재 등록된 상품이 없습니다!</v-alert>
         <div class="button-container">
             <router-link :to="{ name: 'ProductListPage' }" class="router-link no-underline">
-                <v-btn color="secondary" class="action-button">
+                <v-btn color="secondary" class="action-button" >
                     <v-icon left>mdi-arrow-left</v-icon>목록으로 돌아가기
                 </v-btn>
             </router-link>
