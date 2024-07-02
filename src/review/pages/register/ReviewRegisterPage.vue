@@ -64,14 +64,10 @@ export default {
     },
     methods: {
         ...mapActions(accountModule, ['requestNicknameToDjango']),
-        ...mapActions(authenticationModule, ['requestUserInfoToDjango']),
         ...mapActions(reviewModule, ['requestCreateReviewToDjango']),
         async onSubmit () {
             try {
-                const userInfo = await this.requestUserInfoToDjango()
-                const email = userInfo.kakao_account.email
-                console.log('email:', email)
-                const nickname = await this.requestNicknameToDjango(email)
+                const nickname = await this.requestNicknameToDjango()
                 console.log('nickname:', nickname)
         
                 if (this.reviewTitle) {
