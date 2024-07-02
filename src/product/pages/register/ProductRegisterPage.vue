@@ -82,15 +82,11 @@ export default {
     methods: {
         ...mapActions(productModule, ['requestCreateProductToDjango']),
         ...mapActions(accountModule, ['requestNicknameToDjango']),
-        ...mapActions(authenticationModule, ['requestUserInfoToDjango']),
         async onSubmit () {
             console.log('작성 완료 버튼 누름')
 
             try {
-                const userInfo = await this.requestUserInfoToDjango()
-                const email = userInfo.kakao_account.email
-                console.log('email:', email)
-                const nickname = await this.requestNicknameToDjango(email)
+                const nickname = await this.requestNicknameToDjango()
                 console.log('nickname:', nickname)
 
                 if (this.productTitleImage) {

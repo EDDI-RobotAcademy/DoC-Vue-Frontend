@@ -71,7 +71,9 @@ const actions: AccountActions = {
     },
     async requestNicknameToDjango(context: ActionContext<AccountState, any>, email: string): Promise<Account> {
         try {
-            const res: AxiosResponse<Account> = await axiosInst.djangoAxiosInst.post('/account/nickname', { email });
+            const userToken = localStorage.getItem("userToken");
+            const res: AxiosResponse<Account> = 
+            await axiosInst.djangoAxiosInst.post('/account/nickname',  { userToken: userToken } );
             console.log('data:', res.data)
             context.commit('REQUEST_NICKNAME_TO_DJANGO', res.data);
             return res.data
@@ -82,7 +84,8 @@ const actions: AccountActions = {
     },
     async requestRoleTypeToDjango(context: ActionContext<AccountState, any>, email: string): Promise<Account> {
         try{
-            const res: AxiosResponse<Account> = await axiosInst.djangoAxiosInst.post('/account/roleType', { email });
+            const userToken = localStorage.getItem("userToken");
+            const res: AxiosResponse<Account> = await axiosInst.djangoAxiosInst.post('/account/roleType', { userToken: userToken });
             console.log('data:', res.data)
             context.commit('REQUEST_ROLETYPE_TO_DJANGO', res.data)
             return res.data

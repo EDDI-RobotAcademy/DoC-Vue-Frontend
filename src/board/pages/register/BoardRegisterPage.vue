@@ -60,15 +60,11 @@ export default {
     methods: {
         ...mapActions(boardModule, ['requestCreateBoardToDjango']),
         ...mapActions(accountModule, ['requestNicknameToDjango']),
-        ...mapActions(authenticationModule, ['requestUserInfoToDjango']),
         async onSubmit () {
             try {
-                const userInfo = await this.requestUserInfoToDjango()
-                const email = userInfo.kakao_account.email
-                console.log('email:', email)
-                const nickname = await this.requestNicknameToDjango(email)
+                const nickname = await this.requestNicknameToDjango()
                 console.log('nickname:', nickname)
-                
+
                 if (this.boardTitle) {
                     const imageFormData = new FormData()
                     imageFormData.append('boardTitle', this.boardTitle)

@@ -64,17 +64,13 @@ export default {
     methods: {
         ...mapActions(productModule, ['requestProductListToDjango']),
         ...mapActions(accountModule, ['requestRoleTypeToDjango']),
-        ...mapActions(authenticationModule, ['requestUserInfoToDjango']),
         async checkRoleType() {
             try {
-                const userInfo = await this.requestUserInfoToDjango();
-                const email = userInfo.kakao_account.email;
-                console.log('email:', email);
-                const roleType = await this.requestRoleTypeToDjango(email);
+                const roleType = await this.requestRoleTypeToDjango();
                 console.log('roleType:', roleType);
                 this.isSeller = (roleType === 'SELLER');
             } catch (error) {
-                console.error('roleType 확인 중 에러 발생', error);
+                console.log('사업자가 아닙니다!');
             }
         },
         getImageUrl(imageName) {
