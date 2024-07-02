@@ -1,18 +1,25 @@
 <template>
     <v-container>
+        <h2 class="title">게시물 작성 페이지</h2>
         <v-row>
             <v-col cols="12">
-                <v-text-field v-model="boardTitle" label="제목" required/>
+                <p class="subtitle">제목</p>
+                <br> 
+                <v-text-field v-model="boardTitle" required/>
             </v-col>
         </v-row>
+        <br>
         <!-- <v-row>
             <v-col cols="12">
-                <v-text-field v-model="boardWriter" label="작성자" required/>
+                <p class="writer">작성자</p>
+                <v-text-field v-model="boardWriter" required/>
             </v-col>
         </v-row> -->
         <v-row>
             <v-col cols="12">
-                <v-textarea v-model="boardContent" label="내용" required auto-grow/>
+                <p class="context">내용</p>
+                <br> 
+                <v-textarea v-model="boardContent" required auto-grow/>
             </v-col>
         </v-row>
         <v-row>
@@ -41,7 +48,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 const boardModule = 'boardModule'
 const accountModule = 'accountModule'
@@ -100,3 +107,18 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.subtitle {
+    
+}
+.title{
+    text-align: center;
+}
+.subtitle{
+    text-align: start;
+}
+.writer{
+    text-align: start;
+}
+</style>
