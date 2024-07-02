@@ -31,7 +31,7 @@
                         </v-col>
                     </v-row>
                     <v-row justify="end">
-                        <v-col cols="auto">
+                        <v-col cols="auto" v-if="isWriter">
                             <v-btn color="primary">
                                 <router-link :to="{ name: 'BoardModifyPage', params: { boardId } }"
                                                 class="router-link-no-underline">
@@ -40,7 +40,7 @@
                                 </router-link>
                             </v-btn>
                         </v-col>
-                        <v-col cols="auto">
+                        <v-col cols="auto" v-if="isWriter">
                             <v-btn color="error" @click="onDelete">
                                 <v-icon>mdi-eraser</v-icon>
                                 <span>삭제</span>
@@ -65,6 +65,7 @@
 import { mapActions, mapState } from 'vuex'
 
 const boardModule = 'boardModule'
+const accountModule = 'accountModule'
 
 export default {
     props: {
@@ -73,11 +74,28 @@ export default {
             required: true,
         }
     },
+    data () {
+        return {
+            isWriter: false,
+        }
+    },
     computed: {
         ...mapState(boardModule, ['board'])
     },
     methods: {
         ...mapActions(boardModule, ['requestBoardToDjango', 'requestDeleteBoardToDjango']),
+        ...mapActions(accountModule, ['requestNicknameToDjango']),
+        async checkNickname() { 
+            try {
+                const nickname = await this.requestNicknameToDjango()
+                console.log('nickname:', nickname)
+                console.log('boardWriter:', this.board.boardWriter)
+                console.log('nickname === this.board.boardWriter:', nickname === this.board.boardWriter)
+                this.isWriter = (nickname === this.board.boardWriter)
+            } catch (error) {
+                console.log('작성자 확인 중 에러 발생')
+            }
+        },
         async onDelete () {
             console.log('삭제를 누르셨습니다!')
             await this.requestDeleteBoardToDjango(this.boardId)
@@ -87,9 +105,11 @@ export default {
             return require('@/assets/images/uploadImages/' + imageName)
         },
     },
-    created () {
-        this.requestBoardToDjango(this.boardId)
+    async mounted () {
+        await this.requestBoardToDjango(this.boardId)
+        this.checkNickname()
     },
+    
 }
 </script>
 

@@ -37,7 +37,7 @@
                         </v-col>
                     </v-row>
                     <v-row justify="end">
-                        <v-col cols="auto">
+                        <v-col cols="auto" v-if="isWriter">
                             <v-btn color="primary">
                                 <router-link :to="{ name: 'ReviewModifyPage', params: { reviewId } }"
                                              class="router-link-no-underline">
@@ -46,7 +46,7 @@
                                 </router-link>
                             </v-btn>
                         </v-col>
-                        <v-col cols="auto">
+                        <v-col cols="auto" v-if="isWriter">
                             <v-btn color="error" @click="onDelete">
                                 <v-icon>mdi-eraser</v-icon>
                                 <span>삭제</span>
@@ -71,6 +71,7 @@
 import { mapActions, mapState } from 'vuex'
 
 const reviewModule = 'reviewModule'
+const accountModule = 'accountModule'
 
 export default {
     props: {
@@ -79,11 +80,28 @@ export default {
             required: true,
         }
     },
+    data () {
+        return {
+            isWriter: false,
+        }
+    },
     computed: {
         ...mapState(reviewModule, ['review'])
     },
     methods: {
         ...mapActions(reviewModule, ['requestReviewToDjango', 'requestDeleteReviewToDjango']),
+        ...mapActions(accountModule, ['requestNicknameToDjango']),
+        async checkNickname() { 
+            try {
+                const nickname = await this.requestNicknameToDjango()
+                console.log('nickname:', nickname)
+                console.log('reviewWriter:', this.review.reviewWriter)
+                console.log('nickname === this.review.reviewWriter:', nickname === this.review.reviewWriter)
+                this.isWriter = (nickname === this.review.reviewWriter)
+            } catch (error) {
+                console.log('작성자 확인 중 에러 발생')
+            }
+        },
         async onDelete () {
             console.log('삭제를 누르셨습니다!')
             await this.requestDeleteReviewToDjango(this.reviewId)
@@ -96,8 +114,9 @@ export default {
             
         },
     },
-    created () {
-        this.requestReviewToDjango(this.reviewId)
+    async mounted () {
+        await this.requestReviewToDjango(this.reviewId)
+        this.checkNickname()
     },
 }
 </script>
