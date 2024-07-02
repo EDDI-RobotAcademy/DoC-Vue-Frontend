@@ -21,6 +21,10 @@
         <!-- <v-icon left>mdi-forum</v-icon> -->
         <span>Review</span>
       </v-btn>
+      <v-btn text @click="goToCartList" class="btn-text">
+        <!-- <v-icon left>mdi-forum</v-icon> -->
+        <span>Cart</span>
+      </v-btn>
       <v-btn v-if="!isAuthenticated" text @click="signIn" class="btn-text">
         <v-icon right>mdi-login</v-icon>
         <span>LogIn</span>
@@ -62,6 +66,9 @@ export default {
       },
       goToReviewList () {
           router.push('/review/list')
+      },
+      goToCartList () {
+        router.push('/cart/list')
       },
       signIn () {
           router.push('/account/login')

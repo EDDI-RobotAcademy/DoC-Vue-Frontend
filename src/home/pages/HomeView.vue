@@ -6,14 +6,14 @@
         <v-col cols="12">
           <div class="image-container">
             <v-img
-              src="@/assets/images/fixed/brd.png"
+              src="@/assets/images/fixed/brd_fix.png"
               height="auto"
               width="120%"
               contain  
             ></v-img>
             <div class="text-overlay">
               <div class="text-content">
-                <br><br><br><br><br><br><br>
+                
                 <span class="main-text">나는 춘식이</span>
                 <br><br><br>
                 <span class="sub-text line">"나는 춘식이"는 당신만의 감정, 스타일 <br>그리고 세계관을 담아낼 수 있는 <br>퍼스널 이모티콘 발견의 기회를 제공합니다.</span>
@@ -124,6 +124,7 @@ export default defineComponent({
 
 .text-content {
   max-width: 800px;
+  margin-top: 240px;
 }
 
 .line {
