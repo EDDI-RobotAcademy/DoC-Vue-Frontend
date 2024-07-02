@@ -41,7 +41,7 @@
                         <v-divider></v-divider> 
                         <v-row>
                             <v-col>
-                                <v-btn color="blue" @click="confirmCheckout">Checkout</v-btn>
+                                <v-btn color="blue" @click="confirmCheckOut">구매하기</v-btn>
                             </v-col>
                             <v-col class="text-right">
                                 <strong>Total: {{ selectedItemsTotal }}</strong>
@@ -72,7 +72,7 @@
 import { mapActions } from "vuex";
 
 const cartModule = 'cartModule'
-const orderModule = 'orderModule'
+// const orderModule = 'orderModule'
 
 export default {
     data() {
@@ -103,15 +103,22 @@ export default {
         },
     },
     methods: {
-        ...mapActions(cartModule, ["requestCartListToDjango"]),
-        ...mapActions("orderModule", ["requestCreateOrderToDjango"]),
+        ...mapActions(cartModule, ["requestCartListToDjango", "requestDeleteCartItemToDjango"]),
+        // ...mapActions("orderModule", ["requestCreateOrderToDjango"]),
         // updateQuantity(item) {
         // },
-        removeItem(item) {
-            this.cartItems = this.cartItems.filter(
-                cartItem => cartItem.cartItemId !== item.cartItemId);
-            this.selectedItems = this.selectedItems.filter(
-                selectedItem => selectedItem.cartItemId !== item.cartItemId);
+        async removeItem(item) {
+            try {
+                await this.requestDeleteCartItemToDjango(item.cartItemId);
+                this.cartItems = this.cartItems.filter(
+                    cartItem => cartItem.cartItemId !== item.cartItemId
+                );
+                this.selectedItems = this.selectedItems.filter(
+                    selectedItem => selectedItem.cartItemId !== item.cartItemId
+                );
+            } catch (error) {
+                console.error("장바구니 상품 삭제 중 에러 발생:", error);
+            }
         },
         confirmCheckout() {
             this.isCheckoutDialogVisible = true;
