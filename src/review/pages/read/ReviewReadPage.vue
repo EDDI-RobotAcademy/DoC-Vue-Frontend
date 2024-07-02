@@ -4,7 +4,7 @@
             <v-card-title>
                 <v-row align="center" no-gutters>
                     <!-- 대표 이미지 영역 -->
-                    <v-col cols="6">
+                    <v-col cols="6" v-if="review.reviewImage">
                         <v-img :src="getImageUrl(review.reviewImage)" aspect-ratio="3.5" class="grey lighten-2">
                             <template v-slot:placeholder>
                                 <v-row class="fill-height ma-0" align="center" justify="center">
@@ -34,18 +34,6 @@
                     <v-row>
                         <v-col cols="12">
                             <v-textarea v-model="review.reviewContent" readonly label="내용" auto-grow/>
-                        </v-col>
-                    </v-row>
-                    <!-- 게시물 상세 이미지 영역 -->
-                    <v-row v-if="review.reviewImage">
-                        <v-col cols="12" class="text-center">
-                            <v-img :src="getImageUrl(review.reviewImage)" aspect-ratio="3.5" class="grey lighten-2">
-                                <template v-slot:placeholder>
-                                    <v-row class="fill-height ma-0" align="center" justify="center">
-                                        <v-progress-circular indeterminate color="grey lighten-5"/>
-                                    </v-row>
-                                </template>
-                            </v-img>
                         </v-col>
                     </v-row>
                     <v-row justify="end">
@@ -102,7 +90,10 @@ export default {
             await this.$router.push({ name: 'ReviewListPage' })
         },
         getImageUrl (imageName) {
-            return require('@/assets/images/uploadImages/' + imageName)
+            if (imageName) {
+                return require('@/assets/images/uploadImages/' + imageName)
+            }  // 기본 이미지 경로
+            
         },
     },
     created () {
