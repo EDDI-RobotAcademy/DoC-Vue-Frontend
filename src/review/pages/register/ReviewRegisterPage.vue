@@ -10,7 +10,7 @@
         <v-row>
             <v-col cols="12">
                 <p class="rating">별점</p>
-                <v-rating v-model="reviewRating" length="5" half-increments hover clearable/>
+                <v-rating v-model="reviewRating" length="5" half-increments hover clearable color="#FC4C4E"/>
             </v-col>
         </v-row>
         <v-row>

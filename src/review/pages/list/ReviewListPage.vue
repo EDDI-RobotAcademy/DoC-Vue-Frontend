@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-row justify='center'>
-            <v-col cols="12" md="12" lg="10">
+            <v-col cols="12" md="10" lg="8">
                 <h2 class="title">Emoticon review</h2>
                 <v-data-table
                     v-model:items-per-page="perPage"
@@ -17,7 +17,7 @@
                             <td>{{ item.reviewTitle }}</td>
                             <td>{{ item.reviewWriter }}</td>
                             <td>
-                                <v-rating v-model="item.reviewRating" dense readonly></v-rating>
+                                <v-rating v-model="item.reviewRating" half-increments hover clearable dense readonly color="#FC4C4E"></v-rating>
                             </td>
                             <td class="text-right">{{ formatDate(item.reviewRegDate) }}</td>
                         </tr>

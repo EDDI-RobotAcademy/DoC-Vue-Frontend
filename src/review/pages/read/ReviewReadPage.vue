@@ -23,7 +23,7 @@
                         </v-row>
                         <v-row>
                             <v-col>
-                                <v-rating v-model="review.reviewRating" length="5" half-increments hover clearable readonly/>
+                                <v-rating v-model="review.reviewRating" length="5" half-increments hover clearable readonly color="#FC4C4E"/>
                             </v-col>
                         </v-row>
                     </v-col>
