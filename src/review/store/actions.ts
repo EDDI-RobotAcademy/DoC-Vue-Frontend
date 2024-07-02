@@ -63,7 +63,7 @@ const actions: ReviewActions = {
         const { reviewTitle, reviewContent, reviewId,reviewRating } = payload
 
         try {
-            await axiosInst.djangoAxiosInst.put(`/review/modify/${reviewId}`, { reviewTitle, reviewContent })
+            await axiosInst.djangoAxiosInst.put(`/review/modify/${reviewId}`, { reviewTitle, reviewContent,reviewRating })
             console.log('수정 성공!')
         } catch (error) {
             console.log('requestModifyReviewToDjango() 과정에서 문제 발생')
