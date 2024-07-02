@@ -1,22 +1,30 @@
 <template lang="">
     <v-container>
-        <h2>게시글 리스트</h2>
-        <v-btn :to="{ name: 'BoardRegisterPage' }" class="mb-board" height="40">
-            게시글 작성
-        </v-btn>
-        <v-data-table
-            v-model:items-per-page="perPage"
-            :headers="headerTitle"
-            :items="pagedItems"
-            v-model:pagination="pagination"
-            class="elevation-1"
-            @click:row="readRow"
-            item-value="boardId"/>
-        <v-pagination
-            v-model="pagination.page"
-            :length="Math.ceil(boardList.length / perPage)"
-            color="primary"
-            @input="updateItems"/>
+        <v-row justify='center'>
+            <v-col cols="12" md="10" lg="8">
+                <h2 class="title">게시글</h2>
+                <v-data-table
+                    v-model:items-per-page="perPage"
+                    :headers="headerTitle"
+                    :items="pagedItems"
+                    v-model:pagination="pagination"
+                    class="elevation-1"
+                    @click:row="readRow"
+                    item-value="boardId"/>
+                <v-row justify="end">
+                    <v-col cols="auto">
+                        <v-btn :to="{ name: 'BoardRegisterPage' }" class="mb-board" height="40">
+                            게시글 작성
+                        </v-btn>
+                    </v-col>
+                </v-row>
+                <v-pagination
+                    v-model="pagination.page"
+                    :length="Math.ceil(boardList.length / perPage)"
+                    color="primary"
+                    @input="updateItems"/>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 
@@ -26,13 +34,15 @@ import { mapActions, mapState } from 'vuex'
 const boardModule = 'boardModule'
 
 export default {
-    component: {},
     computed: {
         ...mapState(boardModule, ['boardList']),
         pagedItems() {
             const startIdx = (this.pagination.page - 1) * this.perPage
             const endIdx = startIdx + this.perPage
-            return this.boardList.slice(startIdx, endIdx)
+            return this.boardList.slice(startIdx, endIdx).map(item => ({
+                ...item,
+                boardRegDate: this.formatDate(item.boardRegDate)
+            }))
         }
     },
     mounted() {
@@ -45,6 +55,11 @@ export default {
                 name: 'BoardReadPage',
                 params: { boardId: item['boardId'].toString() }
             })
+        },
+        formatDate(dateString) {
+            const options = { year: 'numeric', month: '2-digit', day: '2-digit' }
+            const date = new Date(dateString)
+            return date.toLocaleDateString('ko-KR', options)
         }
     },
     data() {
@@ -56,11 +71,11 @@ export default {
                     sortable: true,
                     key: 'boardId',
                 },
-                { title: '제목', align: 'end', key: 'boardTitle' },
-                { title: '작성자', align: 'end', key: 'boardWriter' },
-                { title: '작성일자', align: 'end', key: 'boardRegDate' },
+                { title: '제목', align: 'start', key: 'boardTitle', width: '60%' },
+                { title: '작성자', align: 'center', key: 'boardWriter', width: '20%' },
+                { title: '등록일자', align: 'center', key: 'boardRegDate', width: '20%' },
             ],
-            perPage: 5,
+            perPage: 10, // 고정된 항목 수
             pagination: {
                 page: 1,
             }
@@ -71,7 +86,11 @@ export default {
 
 <style>
 .mb-board {
-    margin-bottom: 3rem; /* 원하는 공백 크기로 조정 */
-    background-color: #deed933a
+    margin-top: 2rem; /* 원하는 공백 크기로 조정 */
+    background-color: #FEFEFE;
+}
+.title {
+    text-align: center;
+    margin-bottom: 3rem;
 }
 </style>
