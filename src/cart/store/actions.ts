@@ -14,8 +14,9 @@ export type CartActions = {
         context: ActionContext<CartState, any>
     ): Promise<AxiosResponse>;
     requestDeleteCartItemToDjango(
-        context: ActionContext<CartState, unknown>,
-        cartItemId: number): Promise<void>
+        context: ActionContext<CartState, any>,
+        cartItemId: number[]
+    ): Promise<void>
 }
 
 const actions: CartActions = {
@@ -60,10 +61,10 @@ const actions: CartActions = {
             throw error;
         }
     },
-    async requestDeleteCartItemToDjango(context: ActionContext<CartState, unknown>, cartItemId: number): Promise<void> {
+    async requestDeleteCartItemToDjango(context: ActionContext<CartState, any>, cartItemId: number[]): Promise<void> {
         try {
             console.log('requestDeleteCartItemToDjango()')
-            await axiosInst.djangoAxiosInst.delete(`/cart/delete/${cartItemId}`)
+            await axiosInst.djangoAxiosInst.delete('/cart/delete', { data: cartItemId })
         } catch (error) {
             console.log('requestDeleteCartItemToDjango() 과정에서 문제 발생')
             throw error

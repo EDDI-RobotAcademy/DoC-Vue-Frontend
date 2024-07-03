@@ -109,7 +109,7 @@ export default {
     },
     methods: {
         ...mapActions(productModule, ['requestProductToDjango']),
-        ...mapActions(cartModule, ['requestAddCartToDjango']),
+        ...mapActions(cartModule, ['requestAddCartToDjango', 'requestDeleteCartItemToDjango']),
         ...mapActions(orderModule, ['requestProductReadToAddOrderToDjango']),
         async onPurchase() {
             console.log('이모티콘 구매')
@@ -122,8 +122,9 @@ export default {
                 }
                 console.log('orderItem:', payload)
                 const response = await this.requestProductReadToAddOrderToDjango(payload);
-                // const orderId = response.orderId;
-                // console.log(orderId)
+                await this.requestDeleteCartItemToDjango( {productId: [this.product.productId] })
+                console.log('장바구니에 있었으면 삭제 성공')
+
             } catch (error) {
                 console.log('상품 구매 중 에러 발생:', error)
             }
