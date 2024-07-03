@@ -2,13 +2,12 @@
     <v-container>
         <v-row>
             <v-col cols="12">
-        
-                <v-text-field v-model="productName" label="이모티콘 이름"/>
+                <v-text-field v-model="productName" label="이모티콘 이름" data-testid="input-product-name"/>
             </v-col>
         </v-row>
         <v-row>
             <v-col cols="12">
-                <v-text-field v-model="productPrice" label="이모티콘 가격"/>
+                <v-text-field v-model="productPrice" label="이모티콘 가격" data-testid="input-product-price"/>
             </v-col>
         </v-row>
         <v-row>
@@ -18,44 +17,46 @@
                 :items="categories"
                 label="카테고리"
                 clearable
-                solo/>
+                solo
+                data-testid="input-product-category"/>
             </v-col>
         </v-row>
         <v-row>
             <v-col cols="12">
-                <v-textarea v-model="content" label="이모티콘 상세 설명" auto-grow/>
+                <v-textarea v-model="content" label="이모티콘 상세 설명" auto-grow data-testid="input-product-description"/>
             </v-col>
         </v-row>
         <v-row>
             <v-col cols="12">
-                <v-file-input v-model="productTitleImage" label="이모티콘 대표 사진" perpend-icon="mdi-camera"/>
+                <v-file-input v-model="productTitleImage" label="이모티콘 대표 사진" prepend-icon="mdi-camera" data-testid="input-product-title-image"/>
             </v-col>
         </v-row>
         <v-row>
             <v-col cols="12">
-                <p v-if="uploadedTitleImageFilename">업로드된 파일: {{uploadedTitleImageFilename}}></p>
+                <p v-if="uploadedTitleImageFilename">업로드된 파일: {{uploadedTitleImageFilename}}</p>
             </v-col>
         </v-row>
         <v-row>
             <v-col cols="12">
-                <v-file-input v-model="productContentImage" label="이모티콘 전체 사진" perpend-icon="mdi-camera"/>
+                <v-file-input v-model="productContentImage" label="이모티콘 전체 사진" prepend-icon="mdi-camera" data-testid="input-product-content-image"/>
             </v-col>
         </v-row>
         <v-row>
             <v-col cols="12">
-                <p v-if="uploadedContentImageFilename">업로드된 파일: {{uploadedContentImageFilename}}></p>
+                <p v-if="uploadedContentImageFilename">업로드된 파일: {{uploadedContentImageFilename}}</p>
             </v-col>
         </v-row>
         <v-row>
             <v-col cols="12" class="text-right">
-                <v-btn class="ml-2" color="primary" @click="onSubmit">등록</v-btn>
+                <v-btn class="ml-2" color="primary" @click="onSubmit" data-testid="btn-submit">등록</v-btn>
                 <router-link :to="{ name: 'ProductListPage' }">
-                    <v-btn class="ml-1" color="error" @click="onCancel">취소</v-btn>
+                    <v-btn class="ml-1" color="error" @click="onCancel" data-testid="btn-cancel">취소</v-btn>
                 </router-link>
             </v-col>
         </v-row>
     </v-container>
 </template>
+
 
 <script>
 import { mapActions } from 'vuex'
