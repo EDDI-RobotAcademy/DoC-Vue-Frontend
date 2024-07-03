@@ -6,6 +6,7 @@ import accountModule from '@/account/store/accountModule'
 import cartModule from '@/cart/store/cartModule'
 import reportModule from '@/report/store/reportModule'
 import reviewModule from '@/review/store/reviewModule'
+import orderModule from '@/order/store/orderModule'
 
 export default createStore({
   state: {
@@ -23,6 +24,7 @@ export default createStore({
     accountModule,
     cartModule,
     reportModule,
-    reviewModule
+    reviewModule,
+    orderModule,
   }
 })
