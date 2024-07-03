@@ -5,7 +5,6 @@
             <v-img src="@/assets/images/fixed/kakao.png" height="100%" contain></v-img>
         </v-col>
 
-
         <v-card v-if="product">
             <v-card-title>상품 정보</v-card-title>
             <v-card-text>
@@ -55,11 +54,11 @@
                                     </v-btn>
                                 </v-col>
                             </v-row>
-
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col cols="12" md="4"><span>이 이모티콘의 태그</span>
+                        <v-col cols="12" md="4">
+                            <span>이 이모티콘의 태그</span>
                             <v-text-field class="custom-text-field" v-model="product.productCategory" readonly />
                         </v-col>
                     </v-row>
@@ -78,13 +77,16 @@
             </v-card-text>
         </v-card>
         <v-alert v-else type="info">현재 등록된 상품이 없습니다!</v-alert>
-        <div class="button-container">
-            <router-link :to="{ name: 'ProductListPage' }" class="router-link no-underline">
-                <v-btn color="secondary" class="action-button" >
-                    <v-icon left>mdi-arrow-left</v-icon>목록으로 돌아가기
-                </v-btn>
-            </router-link>
-        </div>
+        
+        <v-row justify="center" class="mt-4">
+            <v-col cols="auto">
+                <router-link :to="{ name: 'ProductListPage' }" class="router-link no-underline">
+                    <v-btn color="secondary" class="action-button">
+                        <v-icon left>mdi-arrow-left</v-icon>목록으로 돌아가기
+                    </v-btn>
+                </router-link>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 
@@ -170,23 +172,13 @@ export default {
     font-weight: bold;
 }
 
-.button-container {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-}
-
 .no-underline {
     text-decoration: none;
 }
 
 .currency {
     font-size: 14px;
-    /* Adjust the font size as needed */
     vertical-align: baseline;
-    /* Adjust vertical alignment */
     margin-left: 3px;
-    /* Optional: Add margin for spacing */
 }
 </style>

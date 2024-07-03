@@ -114,7 +114,7 @@ export default {
     },
     data() {
         return {
-            categories: ['전체', '귀여운', '재밌는', '다정한'],
+            categories: ['전체', '귀여운', '재밌는', '메시지'],
             selectedCategory: '전체',
             headerTitle: [
                 {
