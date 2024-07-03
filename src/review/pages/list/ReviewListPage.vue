@@ -1,28 +1,31 @@
 <template>
     <v-container>
-        <v-row justify='center'>
-            <v-col cols="12" md="10" lg="8">
+        <v-row justify="center">
+            <v-col cols="12" md="12" lg="11">
                 <h2 class="title">Emoticon review</h2>
-                <v-data-table
-                    v-model:items-per-page="perPage"
-                    :headers="headerTitle"
-                    :items="pagedItems"
-                    v-model:pagination="pagination"
-                    class="elevation-1"
-                    @click:row="readRow"
-                    item-value="reviewId">
-                    <template v-slot:item="{ item }">
-                        <tr @click="readRow(item)">
-                            <td>{{ item.reviewId }}</td>
-                            <td>{{ item.reviewTitle }}</td>
-                            <td>{{ item.reviewWriter }}</td>
-                            <td>
-                                <v-rating v-model="item.reviewRating" half-increments hover clearable dense readonly color="#FC4C4E"></v-rating>
-                            </td>
-                            <td class="text-right">{{ formatDate(item.reviewRegDate) }}</td>
-                        </tr>
-                    </template>
-                </v-data-table>
+                <v-row class="item-container">
+                    <v-col v-for="item in pagedItems" :key="item.reviewId" cols="12" sm="6" md="4" lg="3" @click="readRow(item)" class="text-center mb-3">
+                        <v-card class="pa-3 review-card">
+                            <div v-if="item.reviewImage" class="image-container">
+                                <v-img :src="getImageUrl(item.reviewImage)" alt="reviewImage" aspect-ratio="3.5" class="review-image"></v-img>
+                                <div>{{ item.reviewTitle }}</div>
+                                <div>{{ item.reviewWriter }}</div>
+                                <div>
+                                    <v-rating v-model="item.reviewRating" half-increments hover clearable dense readonly color="#FC4C4E" class="custom-rating"></v-rating>
+                                </div>
+                                <div>{{ formatDate(item.reviewRegDate) }}</div>
+                            </div>
+                            <div v-else class="no-image-container">
+                                <div>{{ item.reviewTitle }}</div>
+                                <div>{{ item.reviewWriter }}</div>
+                                <div>
+                                    <v-rating v-model="item.reviewRating" half-increments hover clearable dense readonly color="#FC4C4E" class="custom-rating"></v-rating>
+                                </div>
+                                <div>{{ formatDate(item.reviewRegDate) }}</div>
+                            </div>
+                        </v-card>
+                    </v-col>
+                </v-row>
                 <v-row justify="end">
                     <v-col cols="auto">
                         <v-btn :to="{ name: 'ReviewRegisterPage' }" class="mb-review" height="40">
@@ -77,17 +80,15 @@ export default {
         },
         updateItems() {
             // 필요한 경우 페이지네이션 업데이트 로직 추가
+        },
+        getImageUrl(imageName) {
+            if (imageName) {
+                return require('@/assets/images/uploadImages/' + imageName)
+            } // 기본 이미지 경로
         }
     },
     data() {
         return {
-            headerTitle: [
-                { title: 'No', align: 'start', sortable: true, key: 'reviewId' },
-                { title: '제목', align: 'start', key: 'reviewTitle', width: '60%' },
-                { title: '작성자', align: 'start', key: 'reviewWriter', width: '10%' },
-                { title: '별점', align: 'center', key: 'reviewRating', width: '10%' },
-                { title: '등록일자', align: 'end', key: 'reviewRegDate', width: '10%' },
-            ],
             perPage: 10, // 고정된 항목 수
             pagination: { page: 1 }
         }
@@ -105,6 +106,40 @@ export default {
     margin-bottom: 3rem;
 }
 .text-right {
-    text-align: right;
+    text-align: center; /* 이 부분을 중앙 정렬로 변경 */
+}
+/* 별 간격을 조정하는 스타일 */
+.custom-rating .v-rating__item {
+    margin-left: -12.5px;
+    margin-right: -12.5px; /* 별 간격을 줄이는 값 */
+}
+.text-center {
+    text-align: center; /* 모든 데이터를 가운데 정렬 */
+}
+.item-container {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 8px;
+}
+.review-card {
+    height: 100%; /* 카드 높이를 고정 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* 콘텐츠를 카드 높이에 맞게 분배 */
+}
+.image-container {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+.review-image {
+    max-width: 100%;
+    height: auto;
+}
+.no-image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 }
 </style>
