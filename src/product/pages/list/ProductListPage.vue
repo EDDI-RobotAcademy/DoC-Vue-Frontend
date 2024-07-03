@@ -7,6 +7,11 @@
                     class="category-select custom-select" style="margin-bottom: 0;">
                 </v-select>
             </v-col>
+            <v-col cols="auto">
+                <v-text-field v-model="searchQuery" label="검색" clearable class="search-input custom-select" 
+                    style="margin-bottom: 0; max-width: 300px;">
+                </v-text-field>
+            </v-col>
             <v-col v-if="isSeller" cols="auto">
                 <v-btn :to="{ name: 'ProductRegisterPage' }" class="mb-5" height="40">
                     상품 등록
@@ -80,10 +85,18 @@ export default {
     computed: {
         ...mapState(productModule, ['products']),
         filteredProducts() {
-            if (this.selectedCategory === '전체') {
-                return this.products
+            let products = this.products;
+
+            if (this.selectedCategory !== '전체') {
+                products = products.filter(product => product.productCategory === this.selectedCategory);
             }
-            return this.products.filter(product => product.productCategory === this.selectedCategory)
+
+            if (this.searchQuery) {
+                const query = this.searchQuery.toLowerCase();
+                products = products.filter(product => product.productName.toLowerCase().includes(query));
+            }
+
+            return products;
         }
     },
     mounted() {
@@ -116,6 +129,7 @@ export default {
         return {
             categories: ['전체', '귀여운', '재밌는', '메시지'],
             selectedCategory: '전체',
+            searchQuery: '', // 검색어를 저장하는 변수
             headerTitle: [
                 {
                     title: 'No',
@@ -138,6 +152,11 @@ export default {
 
 <style>
 .category-select {
+    width: 300px;
+    /* 원하는 너비로 조정 */
+}
+
+.search-input {
     width: 300px;
     /* 원하는 너비로 조정 */
 }
