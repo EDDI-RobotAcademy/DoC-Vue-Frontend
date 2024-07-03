@@ -3,17 +3,17 @@
         <v-row>
             <v-col cols="12">
                 <v-card>
-                    <v-card-title>Shopping Cart</v-card-title>
+                    <v-card-title>
+                        내 장바구니<v-icon left>mdi-basket</v-icon>
+                    </v-card-title>
                     <v-card-text>
                         <v-table>
                             <thead>
-                            <tr>
-                                <th>Select</th>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                                <th>Actions</th>
+                            <tr class="table-header">
+                                <th>선택</th>
+                                <th>이모티콘 이름</th>
+                                <th>가격</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -24,16 +24,7 @@
                                 <td>{{ item.productName }}</td>
                                 <td>{{ item.productPrice }}</td>
                                 <td>
-                                    <v-text-field
-                                        v-model="item.quantity"
-                                        type="number"
-                                        min="1"
-                                        @change="updateQuantity(item)">
-                                    </v-text-field>
-                                </td>
-                                <td>{{ item.productPrice * item.quantity }}</td>
-                                <td>
-                                    <v-btn color="red" @click="removeItem(item)">Remove</v-btn>
+                                    <v-btn color="red" @click="removeItem(item)">장바구니에서 제거</v-btn>
                                 </td>
                             </tr>
                             </tbody>
@@ -154,3 +145,10 @@ export default {
     },
 };
 </script>
+
+<style>
+.table-header th {
+    font-size: 1.3em; /* Increase the font size */
+    font-weight: 900; /* Make the font bold */
+}
+</style>

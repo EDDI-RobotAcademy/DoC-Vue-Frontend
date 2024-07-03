@@ -90,6 +90,8 @@ export default {
                         name: 'ReviewReadPage',
                         params: { reviewId: response.data.reviewId.toString() }
                     })
+
+                    window.location.reload(true)
                 } else {
                     console.log('제목을 입력해 주세요')
                 }

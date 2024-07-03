@@ -76,7 +76,7 @@ export default {
             productContentImage: null,
             uploadedTitleImageFilename: '',
             uploadedContentImageFilename: '',
-            categories: ['귀여운','재밌는','다정한']
+            categories: ['귀여운','재밌는','메시지']
         }
     },
     methods: {
@@ -101,7 +101,9 @@ export default {
 
                     const response = await this.requestCreateProductToDjango(imageFormData)
                     this.uploadedFilename = response.data.imageName
-                    this.$router.push({ name: 'ProductListPage'})
+                    await this.$router.push({ name: 'ProductListPage'})
+
+                    window.location.reload(true)
                 } else {
                     console.log('이미지 파일을 선택하세요!')
                 }
