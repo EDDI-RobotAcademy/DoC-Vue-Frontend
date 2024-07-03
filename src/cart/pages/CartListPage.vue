@@ -11,7 +11,8 @@
                             <thead>
                             <tr class="table-header">
                                 <th>선택</th>
-                                <th>이모티콘 이름</th>
+                                <th>이모티콘</th>
+                                <th>이름</th>
                                 <th>가격</th>
                                 <th></th>
                             </tr>
@@ -21,6 +22,13 @@
                                 <td>
                                     <v-checkbox v-model="selectedItems" :value="item"></v-checkbox>
                                 </td>
+                                <td>
+                                        <v-img :src="getImageUrl(item.productTitleImage)" aspect-ratio="1" class="product-image">
+                                            <template v-slot:placeholder>
+                                                <v-row class="fill-height ma-0" align="center" justify="center"></v-row>
+                                            </template>
+                                        </v-img>    
+                                    </td>
                                 <td>{{ item.productName }}</td>
                                 <td>{{ item.productPrice }}</td>
                                 <td>
@@ -98,6 +106,9 @@ export default {
         // ...mapActions("orderModule", ["requestCreateOrderToDjango"]),
         // updateQuantity(item) {
         // },
+        getImageUrl (imageName) {
+            return require(`@/assets/images/uploadImages/${imageName}`)
+        },
         async removeItem(item) {
             try {
                 await this.requestDeleteCartItemToDjango(item.cartItemId);
@@ -150,5 +161,11 @@ export default {
 .table-header th {
     font-size: 1.3em; /* Increase the font size */
     font-weight: 900; /* Make the font bold */
+}
+
+.product-image {
+    max-width: 50px; /* 이미지의 최대 너비 */
+    max-height: 50px; /* 이미지의 최대 높이 */
+    object-fit: contain; /* 이미지의 비율을 유지하면서 컨테이너에 맞춤 */
 }
 </style>
