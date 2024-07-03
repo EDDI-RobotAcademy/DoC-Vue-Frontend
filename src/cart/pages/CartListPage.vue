@@ -40,7 +40,7 @@
                         <v-divider></v-divider> 
                         <v-row>
                             <v-col>
-                                <v-btn color="blue" @click="confirmCheckOut">구매하기</v-btn>
+                                <v-btn color="blue" @click="confirmCheckout">구매하기</v-btn>
                             </v-col>
                             <v-col class="text-right">
                                 <strong>Total: {{ selectedItemsTotal }}</strong>
@@ -71,7 +71,7 @@
 import { mapActions } from "vuex";
 
 const cartModule = 'cartModule'
-// const orderModule = 'orderModule'
+const orderModule = 'orderModule'
 
 export default {
     data() {
@@ -103,7 +103,7 @@ export default {
     },
     methods: {
         ...mapActions(cartModule, ["requestCartListToDjango", "requestDeleteCartItemToDjango"]),
-        // ...mapActions("orderModule", ["requestCreateOrderToDjango"]),
+        ...mapActions(orderModule, ["requestCartToAddOrderToDjango"]),
         // updateQuantity(item) {
         // },
         getImageUrl (imageName) {
@@ -135,7 +135,7 @@ export default {
                     quantity: item.quantity
                 }));
                 console.log('orderItems:', orderItems)
-                const response = await this.requestCreateOrderToDjango({ items: orderItems });
+                const response = await this.requestCartToAddOrderToDjango({ items: orderItems });
                 const orderId = response.orderId;
                 console.log(orderId)
             } catch (error) {
