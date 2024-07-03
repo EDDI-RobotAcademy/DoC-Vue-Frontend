@@ -43,7 +43,7 @@ const actions: OrderActions = {
                 }))
             }
 
-            const response = await axiosInst.djangoAxiosInst.post('/orders/register/cart', requestData)
+            const response = await axiosInst.djangoAxiosInst.post('/orders/cart', requestData)
             console.log('response data:', response.data)
             
             return response.data
@@ -60,7 +60,7 @@ const actions: OrderActions = {
             
             console.log('payload:', payload)
 
-            const response = await axiosInst.djangoAxiosInst.post('/orders/register/product', payload )
+            const response = await axiosInst.djangoAxiosInst.post('/orders/product', payload )
             console.log('response data:', response.data)
             
             return response.data
