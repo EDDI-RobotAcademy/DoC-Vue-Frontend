@@ -95,6 +95,7 @@ import { mapActions, mapState } from 'vuex'
 
 const productModule = 'productModule'
 const cartModule = 'cartModule'
+const orderModule = 'orderModule'
 
 export default {
     props: {
@@ -109,8 +110,24 @@ export default {
     methods: {
         ...mapActions(productModule, ['requestProductToDjango']),
         ...mapActions(cartModule, ['requestAddCartToDjango']),
+        ...mapActions(orderModule, ['requestProductReadToAddOrderToDjango']),
         async onPurchase() {
-            console.log('구매하기 버튼 눌렀음')
+            console.log('이모티콘 구매')
+            try {
+                const userToken = localStorage.getItem('userToken')
+                const payload = {
+                    userToken,
+                    productId: this.product.productId,
+                    productPrice: this.product.productPrice,
+                }
+                console.log('orderItem:', payload)
+                const response = await this.requestProductReadToAddOrderToDjango(payload);
+                // const orderId = response.orderId;
+                // console.log(orderId)
+            } catch (error) {
+                console.log('상품 구매 중 에러 발생:', error)
+            }
+
         },
         async onAddToCart() {
             console.log('장바구니에 추가 버튼 눌렀음')
@@ -122,6 +139,8 @@ export default {
                     quantity: 1,
                 }
                 await this.requestAddCartToDjango(cartData)
+
+                window.location.reload(true)
             } catch (error) {
                 console.log('장바구니 추가 과정에서 에러 발생:', error)
             }

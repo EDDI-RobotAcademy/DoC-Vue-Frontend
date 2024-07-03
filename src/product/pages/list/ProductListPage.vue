@@ -79,7 +79,6 @@ import { mapActions, mapState } from 'vuex'
 
 const productModule = 'productModule'
 const accountModule = 'accountModule'
-const authenticationModule = 'authenticationModule'
 
 export default {
     computed: {
@@ -162,7 +161,7 @@ export default {
 }
 
 .custom-select .v-input__control {
-    background-color: #deed933a;
+    background-color: #f4f6eb3a;
     /* 원하는 배경색으로 변경 */
     color: #a71616;
     /* 원하는 글자색으로 변경 */
