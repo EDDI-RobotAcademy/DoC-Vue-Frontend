@@ -9,38 +9,38 @@
                     <v-card-text>
                         <v-table>
                             <thead>
-                            <tr class="table-header">
-                                <th>선택</th>
-                                <th>이모티콘</th>
-                                <th>이름</th>
-                                <th>가격</th>
-                                <th></th>
-                            </tr>
+                                <tr class="table-header">
+                                    <th>선택</th>
+                                    <th>이모티콘</th>
+                                    <th>이름</th>
+                                    <th>가격</th>
+                                    <th></th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="item in cartItems" :key="item.cartItemId">
-                                <td>
-                                    <v-checkbox v-model="selectedItems" :value="item"></v-checkbox>
-                                </td>
-                                <td>
+                                <tr v-for="item in cartItems" :key="item.cartItemId">
+                                    <td>
+                                        <v-checkbox v-model="selectedItems" :value="item"></v-checkbox>
+                                    </td>
+                                    <td>
                                         <v-img :src="getImageUrl(item.productTitleImage)" aspect-ratio="1" class="product-image">
                                             <template v-slot:placeholder>
                                                 <v-row class="fill-height ma-0" align="center" justify="center"></v-row>
                                             </template>
-                                        </v-img>    
+                                        </v-img>
                                     </td>
-                                <td>{{ item.productName }}</td>
-                                <td>{{ item.productPrice }}</td>
-                                <td>
-                                    <v-btn color="red" @click="removeItem(item)">장바구니에서 제거</v-btn>
-                                </td>
-                            </tr>
+                                    <td>{{ item.productName }}</td>
+                                    <td>{{ item.productPrice }}</td>
+                                    <td>
+                                        <v-btn color="red" @click="removeItem(item)">장바구니에서 제거</v-btn>
+                                    </td>
+                                </tr>
                             </tbody>
                         </v-table>
-                        <v-divider></v-divider> 
+                        <v-divider></v-divider>
                         <v-row>
                             <v-col>
-                                <v-btn color="blue" @click="confirmCheckout">구매하기</v-btn>
+                                <v-btn color="blue" @click="confirmCheckout" :disabled="isCheckoutDisabled">구매하기</v-btn>
                             </v-col>
                             <v-col class="text-right">
                                 <strong>Total: {{ selectedItemsTotal }}</strong>
@@ -54,13 +54,12 @@
             <v-card>
                 <v-card-title>Confirm Checkout</v-card-title>
                 <v-card-text>
-                    Are you sure you want to order the selected items?
+                    정말 구매하시겠습니까?
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text 
-                        @click="isCheckoutDialogVisible = false">Cancel</v-btn>
-                    <v-btn color="blue darken-1" text @click="proceedToOrder">Confirm</v-btn>
+                    <v-btn color="blue darken-1" text @click="isCheckoutDialogVisible = false">취소</v-btn>
+                    <v-btn color="blue darken-1" text @click="proceedToOrder">확인</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -70,8 +69,8 @@
 <script>
 import { mapActions } from "vuex";
 
-const cartModule = 'cartModule'
-const orderModule = 'orderModule'
+const cartModule = 'cartModule';
+const orderModule = 'orderModule';
 
 export default {
     data() {
@@ -100,18 +99,19 @@ export default {
                 0
             );
         },
+        isCheckoutDisabled() {
+            return this.selectedItems.length === 0;
+        },
     },
     methods: {
         ...mapActions(cartModule, ["requestCartListToDjango", "requestDeleteCartItemToDjango"]),
         ...mapActions(orderModule, ["requestCartToAddOrderToDjango"]),
-        // updateQuantity(item) {
-        // },
-        getImageUrl (imageName) {
-            return require(`@/assets/images/uploadImages/${imageName}`)
+        getImageUrl(imageName) {
+            return require(`@/assets/images/uploadImages/${imageName}`);
         },
         async removeItem(item) {
             try {
-                await this.requestDeleteCartItemToDjango(item.cartItemId);
+                await this.requestDeleteCartItemToDjango({DeletedCartItemId: [item.cartItemId] });
                 this.cartItems = this.cartItems.filter(
                     cartItem => cartItem.cartItemId !== item.cartItemId
                 );
@@ -132,12 +132,16 @@ export default {
                 const orderItems = selectedCartItems.map(item => ({
                     cartItemId: item.cartItemId,
                     orderPrice: item.productPrice,
-                    quantity: item.quantity
                 }));
-                console.log('orderItems:', orderItems)
+                const orderedCartItemIdList = selectedCartItems.map(item => item.cartItemId);
+                console.log('orderItems:', orderItems);
                 const response = await this.requestCartToAddOrderToDjango({ items: orderItems });
                 const orderId = response.orderId;
-                console.log(orderId)
+                console.log(orderId);
+                await this.requestDeleteCartItemToDjango({ orderedCartItemIdList: orderedCartItemIdList });
+                console.log('주문한 상품 장바구니에서 제거 성공');
+
+                window.location.reload(true);
             } catch (error) {
                 console.error('Order creation failed:', error);
             }
