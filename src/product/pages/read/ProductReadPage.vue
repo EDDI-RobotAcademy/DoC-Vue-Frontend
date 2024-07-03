@@ -46,10 +46,10 @@
 
                             <v-row>
                                 <v-col cols="12">
-                                    <v-btn color="yellow darken-2" dark @click="onPurchase" class="action-button">
+                                    <v-btn color="yellow darken-2" dark @click="confirmCheckout" class="action-button">
                                         <v-icon left>mdi-cart</v-icon>구매하기
                                     </v-btn>
-                                    <v-btn color="success" @click="onAddToCart" class="action-button">
+                                    <v-btn color="success" @click="onAddToCartAndAsk" class="action-button">
                                         <v-icon left>mdi-cart-plus</v-icon>장바구니에 추가
                                     </v-btn>
                                 </v-col>
@@ -87,11 +87,38 @@
                 </router-link>
             </v-col>
         </v-row>
+        <v-dialog v-model="isCheckoutDialogVisible" max-width="500">
+            <v-card>
+                <v-card-title>Message</v-card-title>
+                <v-card-text>
+                    정말 구매하시겠습니까?
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="isCheckoutDialogVisible = false">취소</v-btn>
+                    <v-btn color="blue darken-1" text @click="onPurchase">확인</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-dialog v-model="isGoToCartListDialogVisible" max-width="500">
+            <v-card>
+                <v-card-title>Message</v-card-title>
+                <v-card-text>
+                    장바구니로 이동하시겠습니까?
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="isGoToCartListDialogVisible = false">취소</v-btn>
+                    <v-btn color="blue darken-1" text @click="goToCartList">확인</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex'
+import router from '@/router'
 
 const productModule = 'productModule'
 const cartModule = 'cartModule'
@@ -104,6 +131,12 @@ export default {
             required: true,
         }
     },
+    data () {
+        return {
+            isCheckoutDialogVisible: false,
+            isGoToCartListDialogVisible: false,
+        }
+    },
     computed: {
         ...mapState(productModule, ['product'])
     },
@@ -112,6 +145,7 @@ export default {
         ...mapActions(cartModule, ['requestAddCartToDjango', 'requestDeleteCartItemToDjango']),
         ...mapActions(orderModule, ['requestProductReadToAddOrderToDjango']),
         async onPurchase() {
+            this.isCheckoutDialogVisible = true;
             console.log('이모티콘 구매')
             try {
                 const userToken = localStorage.getItem('userToken')
@@ -130,7 +164,8 @@ export default {
             }
 
         },
-        async onAddToCart() {
+        async onAddToCartAndAsk() {
+            this.isGoToCartListDialogVisible = true
             console.log('장바구니에 추가 버튼 눌렀음')
             try {
                 const cartData = {
@@ -140,8 +175,6 @@ export default {
                     quantity: 1,
                 }
                 await this.requestAddCartToDjango(cartData)
-
-                window.location.reload(true)
             } catch (error) {
                 console.log('장바구니 추가 과정에서 에러 발생:', error)
             }
@@ -150,6 +183,12 @@ export default {
             console.log('imageName:', imageName)
             return require(`@/assets/images/uploadImages/${imageName}`)
         },
+        confirmCheckout() {
+            this.isCheckoutDialogVisible = true;
+        },
+        goToCartList() {
+            router.push('/cart/list')
+        }
     },
     created() {
         this.requestProductToDjango(this.productId)
