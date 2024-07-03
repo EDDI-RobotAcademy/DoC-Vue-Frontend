@@ -91,6 +91,8 @@ export default {
                         name: 'BoardReadPage',
                         params: { boardId: response.data.boardId.toString() }
                     })
+
+                    window.location.reload(true)
                 } else {
                     console.log('제목을 입력해 주세요')
                 }
