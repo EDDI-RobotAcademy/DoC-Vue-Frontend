@@ -145,7 +145,7 @@ export default {
         ...mapActions(cartModule, ['requestAddCartToDjango', 'requestDeleteCartItemToDjango']),
         ...mapActions(orderModule, ['requestProductReadToAddOrderToDjango']),
         async onPurchase() {
-            this.isCheckoutDialogVisible = true;
+            this.isCheckoutDialogVisible = false
             console.log('이모티콘 구매')
             try {
                 const userToken = localStorage.getItem('userToken')
