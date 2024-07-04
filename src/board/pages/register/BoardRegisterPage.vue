@@ -111,9 +111,6 @@ export default {
 </script>
 
 <style scoped>
-.subtitle {
-    
-}
 .title{
     text-align: center;
 }

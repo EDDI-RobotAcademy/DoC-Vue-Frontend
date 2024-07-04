@@ -18,11 +18,11 @@ export type AccountActions = {
     ): Promise<void>
     requestNicknameToDjango(
         context: ActionContext<AccountState, any>,
-        email: string
+        userToken: string
     ): Promise<Account>
     requestRoleTypeToDjango(
         context: ActionContext<AccountState, any>,
-        email: string
+        userToken: string
     ): Promise<Account>
  
 }
@@ -69,7 +69,7 @@ const actions: AccountActions = {
             throw error
         }
     },
-    async requestNicknameToDjango(context: ActionContext<AccountState, any>, email: string): Promise<Account> {
+    async requestNicknameToDjango(context: ActionContext<AccountState, any>, userToken: string): Promise<Account> {
         try {
             const userToken = localStorage.getItem("userToken");
             const res: AxiosResponse<Account> = 
@@ -82,7 +82,7 @@ const actions: AccountActions = {
             throw error
         }
     },
-    async requestRoleTypeToDjango(context: ActionContext<AccountState, any>, email: string): Promise<Account> {
+    async requestRoleTypeToDjango(context: ActionContext<AccountState, any>, userToken: string): Promise<Account> {
         try{
             const userToken = localStorage.getItem("userToken");
             const res: AxiosResponse<Account> = await axiosInst.djangoAxiosInst.post('/account/roleType', { userToken: userToken });
