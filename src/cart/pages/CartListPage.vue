@@ -111,7 +111,7 @@ export default {
         },
         async removeItem(item) {
             try {
-                await this.requestDeleteCartItemToDjango({DeletedCartItemId: [item.cartItemId] });
+                await this.requestDeleteCartItemToDjango({CartItemId: [item.cartItemId] });
                 this.cartItems = this.cartItems.filter(
                     cartItem => cartItem.cartItemId !== item.cartItemId
                 );
@@ -138,7 +138,7 @@ export default {
                 const response = await this.requestCartToAddOrderToDjango({ items: orderItems });
                 const orderId = response.orderId;
                 console.log(orderId);
-                await this.requestDeleteCartItemToDjango({ orderedCartItemIdList: orderedCartItemIdList });
+                await this.requestDeleteCartItemToDjango({ CartItemIdList: orderedCartItemIdList });
                 console.log('주문한 상품 장바구니에서 제거 성공');
 
                 window.location.reload(true);
