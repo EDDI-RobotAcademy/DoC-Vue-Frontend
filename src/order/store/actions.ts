@@ -75,8 +75,8 @@ const actions: OrderActions = {
     },
     async requestMyOrderListToDjango(context: ActionContext<OrderState, any>, userToken: string): Promise<void> {
         try {
-            const userToken = localStorage.getItem("userToken")
-            const res: AxiosResponse<any, any> = await axiosInst.djangoAxiosInst.post('/order/list/', { userToken: userToken });
+            const token = localStorage.getItem("userToken")
+            const res: AxiosResponse<any, any> = await axiosInst.djangoAxiosInst.post('/orders/list/', { userToken: token });
             console.log('data:', res)
             const data: Order[] = res.data;
             console.log('data:', data)

@@ -9,7 +9,7 @@
                     :items="pagedItems"
                     v-model:pagination="pagination"
                     class="elevation-1"
-                    item-value="orderId"/>
+                    item-value="id"/>
                 <v-row justify="end">
                     <v-col cols="auto">
                     </v-col>
@@ -70,10 +70,10 @@ export default {
                     title: 'No',
                     align: 'start',
                     sortable: true,
-                    key: 'orderId',
+                    key: 'id',
                 },
-                { title: '총 결제액', align: 'start', key: 'totalPrice', width: '60%' },
-                { title: '구매 일자', align: 'start', key: 'orderData', width: '20%' },
+                // { title: '총 결제액', align: 'start', key: 'totalPrice', width: '60%' },
+                { title: '구매 일자', align: 'start', key: 'createdDate', width: '20%' },
             ],
             perPage: 5,
             pagination: {
