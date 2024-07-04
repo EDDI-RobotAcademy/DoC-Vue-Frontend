@@ -138,7 +138,7 @@ export default {
                 const response = await this.requestCartToAddOrderToDjango({ items: orderItems });
                 const orderId = response.orderId;
                 console.log(orderId);
-                await this.requestDeleteCartItemToDjango({ CartItemIdList: orderedCartItemIdList });
+                await this.requestDeleteCartItemToDjango({ CartItemId: orderedCartItemIdList });
                 console.log('주문한 상품 장바구니에서 제거 성공');
 
                 window.location.reload(true);
