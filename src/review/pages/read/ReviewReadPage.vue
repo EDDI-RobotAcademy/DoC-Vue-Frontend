@@ -75,9 +75,13 @@ const accountModule = 'accountModule'
 
 export default {
     props: {
+        productId: {
+            type: String,
+            required: true
+        },
         reviewId: {
             type: String,
-            required: true,
+            required: true
         }
     },
     data () {
@@ -115,6 +119,7 @@ export default {
         },
     },
     async mounted () {
+        console.log('reviewId:', this.reviewId)
         await this.requestReviewToDjango(this.reviewId)
         this.checkNickname()
     },

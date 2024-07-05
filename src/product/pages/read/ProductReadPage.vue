@@ -1,7 +1,6 @@
 <template>
     <v-container>
         <v-col cols="2" class="d-flex align-center justify-center">
-            <!-- v-img 컴포넌트를 사용하여 이미지를 삽입 -->
             <v-img src="@/assets/images/fixed/kakao.png" height="100%" contain></v-img>
         </v-col>
 
@@ -10,7 +9,6 @@
             <v-card-text>
                 <v-container>
                     <v-row>
-                        <!-- 상품 이미지 왼쪽 열 -->
                         <v-col cols="12" md="4" class="d-flex align-center justify-center">
                             <v-img :src="getProductImageUrl(product.productTitleImage)"
                                 class="custom-img grey lighten-2" aspect-ratio="1"
@@ -22,7 +20,6 @@
                                 </template>
                             </v-img>
                         </v-col>
-                        <!-- 상품 정보 오른쪽 열 -->
                         <v-col cols="12" md="8" class="d-flex flex-column justify-center">
                             <v-row>
                                 <v-col cols="12">
@@ -51,6 +48,9 @@
                                     </v-btn>
                                     <v-btn color="success" @click="onAddToCartAndAsk" class="action-button">
                                         <v-icon left>mdi-cart-plus</v-icon>장바구니에 추가
+                                    </v-btn>
+                                    <v-btn color="primary" @click="goToThisProductReviewList" class="action-button">
+                                        <v-icon left>mdi-message-draw</v-icon>리뷰 보기
                                     </v-btn>
                                 </v-col>
                             </v-row>
@@ -188,7 +188,13 @@ export default {
         },
         goToCartList() {
             router.push('/cart/list')
-        }
+        },
+        goToThisProductReviewList() {
+        this.$router.push({
+            name: 'ReviewProductListPage',
+            params: { productId: this.product.productId.toString() }
+        });
+    }
     },
     created() {
         this.requestProductToDjango(this.productId)
