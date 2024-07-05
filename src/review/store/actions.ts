@@ -6,7 +6,7 @@ import axiosInst from "@/utility/axiosInstance"
 export type ReviewActions = {
     requestReviewListToDjango(context: ActionContext<ReviewState, any>): Promise<void>
     requestCreateReviewToDjango(context: ActionContext<ReviewState, unknown>, 
-        imageFormData: FormData): Promise<AxiosResponse>
+        payload: { productId: string, imageFormData: FormData }): Promise<AxiosResponse>
     requestReviewToDjango(context: ActionContext<ReviewState, any>, reviewId: number): Promise<void>
     requestModifyReviewToDjango(context: ActionContext<ReviewState, any>, payload: {
         reviewTitle: string, reviewContent: string, reviewId: number,reviewRating:number
@@ -28,12 +28,13 @@ const actions: ReviewActions = {
         }
     },
     async requestCreateReviewToDjango(context: ActionContext<ReviewState, unknown>, 
-                                        imageFormData: FormData): Promise<AxiosResponse> {
+        payload: { productId: string, imageFormData: FormData }): Promise<AxiosResponse> {
         try {
+            const { productId, imageFormData } = payload
             console.log('requestCreateReviewToDjango()')
 
             const res: AxiosResponse = await axiosInst.djangoAxiosInst.post(
-                '/review/register', imageFormData, {
+                `/review/register/${productId}`, imageFormData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -60,7 +61,7 @@ const actions: ReviewActions = {
         reviewTitle: string, reviewContent: string, reviewId: number,reviewRating:number
     }): Promise<void> {
         
-        const { reviewTitle, reviewContent, reviewId,reviewRating } = payload
+        const { reviewTitle, reviewContent, reviewId, reviewRating } = payload
 
         try {
             await axiosInst.djangoAxiosInst.put(`/review/modify/${reviewId}`, { reviewTitle, reviewContent,reviewRating })

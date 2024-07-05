@@ -11,6 +11,7 @@ export interface Review {
     reviewRating: number
     reviewRegDate: string
     reviewUpdDate: string
+    productId: string
 }
 
 const state: ReviewState = {

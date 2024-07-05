@@ -6,11 +6,9 @@ export interface OrderState {
 }
 
 export interface OrderItem {
-    orderItemId: number
     productId: number
-    cartItemId: number
-    quantity: number
-    price: number
+    productName: string
+    productPrice: number
 }
 
 export interface Order {

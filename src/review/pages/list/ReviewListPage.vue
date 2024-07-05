@@ -26,13 +26,6 @@
                         </v-card>
                     </v-col>
                 </v-row>
-                <v-row justify="end">
-                    <v-col cols="auto">
-                        <v-btn :to="{ name: 'ReviewRegisterPage' }" class="mb-review" height="40">
-                            리뷰 작성
-                        </v-btn>
-                    </v-col>
-                </v-row>
                 <v-pagination
                     v-model="pagination.page"
                     :length="Math.ceil(reviewList.length / perPage)"
@@ -61,9 +54,7 @@ export default {
         }
     },
     mounted() {
-        this.requestReviewListToDjango().then(() => {
-            // 데이터 로드 후 작업 추가 가능
-        })
+        this.requestReviewListToDjango()
     },
     methods: {
         ...mapActions(reviewModule, ['requestReviewListToDjango']),

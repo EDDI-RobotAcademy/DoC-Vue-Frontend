@@ -9,6 +9,7 @@
                     :items="pagedItems"
                     v-model:pagination="pagination"
                     class="elevation-1"
+                    @click:row="readRow"
                     item-value="ordersId"/>
                 <v-row justify="end">
                     <v-col cols="auto">
@@ -23,7 +24,7 @@
         </v-row>
         <v-row>
             <v-col>
-                <v-btn color="blue" @click="goLastPage">이전 페이지</v-btn>
+                <v-btn color="blue" @click="goToLastPage">이전 페이지</v-btn>
             </v-col>
         </v-row>
     </v-container>
@@ -52,6 +53,12 @@ export default {
     },
     methods: {
         ...mapActions(orderModule, ['requestMyOrderListToDjango']),
+        readRow(event, { item }) {
+            this.$router.push({
+                name: 'OrderReadPage',
+                params: { ordersId: item['ordersId'].toString() }
+            })
+        },
         formatDate(dateString) {
             const options = { year: 'numeric', month: '2-digit', day: '2-digit' }
             const date = new Date(dateString)
@@ -59,6 +66,9 @@ export default {
         },
         formatPrice(price) {
             return Math.round(price).toLocaleString();  // 반올림하고 천 단위로 콤마 추가
+        },
+        goToLastPage() {
+            this.$router.go(-1)
         }
     },
     data() {
