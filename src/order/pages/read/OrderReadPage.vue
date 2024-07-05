@@ -3,35 +3,37 @@
         <v-row>
             <v-col cols="12">
                 <v-card>
-                    <v-card-title>주문 상세 내역 보기</v-card-title>
+                    <v-card-title>
+                        구매한 상품<v-icon left>mdi-cash-100</v-icon>
+                    </v-card-title>
                     <v-card-text>
-                        <v-table v-if="order">
+                        <v-table>
                             <thead>
-                            <tr>
-                                <th>이모티콘</th>
-                                <th>이름</th>
-                                <th>결제 금액</th>
-                            </tr>
+                                <tr class="table-header">
+                                    <th>이모티콘</th>
+                                    <th>이름</th>
+                                    <th>가격</th>
+                                    <th></th>
+                                </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="item in order.order_items" :key="item.productId">
-                                    <td>{{ item.productTitleImage}}</td>
-                                    <td>{{ item.product_name }}</td>
-                                    <td>{{ item.price }}</td>
+                                <tr v-for="item in orderItemList" :key="item.orderItemId">
+                                    <td>
+                                        <v-img :src="getImageUrl(item.productTitleImage)" aspect-ratio="1" class="product-image">
+                                            <template v-slot:placeholder>
+                                                <v-row class="fill-height ma-0" align="center" justify="center"></v-row>
+                                            </template>
+                                        </v-img>
+                                    </td>
+                                    <td>{{ item.productName }}</td>
+                                    <td>{{ item.productPrice }}</td>
+                                    <td>
+                                        <v-btn color="red" @click="goToReviewRegisterPage(item.productId)">리뷰 작성</v-btn>
+                                    </td>
                                 </tr>
                             </tbody>
                         </v-table>
                         <v-divider></v-divider>
-                        <v-row>
-                            <v-col class="text-right">
-                                <strong>Total: {{ orderTotal }}</strong>
-                            </v-col>
-                        </v-row>
-                        <v-row>
-                            <v-col class="text-right">
-                                <v-btn color="green" @click="goToBack">돌아가기</v-btn>
-                            </v-col>
-                        </v-row>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -40,77 +42,58 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-const orderModule = 'orderModule'
+import { mapActions, mapState } from "vuex";
+
+const orderModule = 'orderModule';
 
 export default {
     props: {
-        orderId: {
+        ordersId: {
+            type: String,
+            required: true,
+        },
+        productId: {
             type: String,
             required: true,
         }
     },
     data() {
         return {
-            order: null,
+            orderItem: [],
         };
     },
     computed: {
-        orderTotal() {
-            if (!this.order || 
-                    !Array.isArray(this.order.order_items) || 
-                    this.order.order_items.length === 0) {
-                return 0;
-            }
-            return this.order.order_items.reduce(
-                (total, item) => { 
-                    console.log('item.price:', item.price)
-                    console.log('item.quantity:', item.quantity)
-                    const newTotal = total + item.price * item.quantity
-                    console.log('total:', total)
-                    return newTotal
-                },
-                0
-            );
-        }
+        ...mapState(orderModule, ['orderItemList'])
     },
     methods: {
-        ...mapActions("orderModule", ["requestReadOrderToDjango"]),
-        async fetchOrderData() {
-            const orderId = this.orderId
-            console.log('OrderReadPage orderId:', orderId)
-
-            try {
-                const response = await this.requestReadOrderToDjango({ orderId })
-                this.order = response
-                console.log('ordersItemInfo:', this.order)
-            } catch (error) {
-                console.error('주문 내역 확인 중 에러:', error)
-            }
-
-            // const orderId = this.$route.params.orderId;
-            // 여기에서 API 호출 또는 Vuex 액션을 통해 주문 데이터를 가져옵니다.
-            // 예시: const response = await this.$store.dispatch('fetchOrder', orderId);
-            // this.order = response;
-            // 여기서는 더미 데이터를 사용합니다.
-            // this.order = {
-            //     orderId: orderId,
-            //     items: [
-            //         { productId: 1, productName: "Product 1", productPrice: 100, quantity: 2 },
-            //         { productId: 2, productName: "Product 2", productPrice: 200, quantity: 1 },
-            //     ]
-            // };
+        ...mapActions(orderModule, ["requestMyOrderItemListToDjango"]),
+        getImageUrl(imageName) {
+            return require(`@/assets/images/uploadImages/${imageName}`);
         },
-        goToBack () {
-            this.$router.push({ name: 'HomeView' })
+        goToReviewRegisterPage(productId) {
+            this.$router.push({
+                name: 'ReviewRegisterPage',
+                params: { productId: productId.toString() }
+            })
         }
     },
-    created() {
-        this.fetchOrderData();
-    }
+    async mounted() {
+        const response = await this.requestMyOrderItemListToDjango(this.ordersId)
+        this.orderItem = response
+    },
+
 };
 </script>
 
 <style>
-/* 필요한 스타일을 여기에 추가합니다. */
+.table-header th {
+    font-size: 1.3em; /* Increase the font size */
+    font-weight: 900; /* Make the font bold */
+}
+
+.product-image {
+    max-width: 50px; /* 이미지의 최대 너비 */
+    max-height: 50px; /* 이미지의 최대 높이 */
+    object-fit: contain; /* 이미지의 비율을 유지하면서 컨테이너에 맞춤 */
+}
 </style>

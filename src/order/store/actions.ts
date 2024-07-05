@@ -1,5 +1,5 @@
 import { ActionContext } from "vuex"
-import { Order, OrderState } from "./states"
+import { Order, OrderItem, OrderState } from "./states"
 import { AxiosResponse } from "axios"
 import axiosInst from "@/utility/axiosInstance"
 
@@ -27,6 +27,7 @@ export type OrderActions = {
         context: ActionContext<OrderState, any>,
         userToken: string
     ): Promise<void>
+    requestMyOrderItemListToDjango(context: ActionContext<OrderState, any>, ordersId: number): Promise<void>
 }
 
 const actions: OrderActions = {
@@ -83,6 +84,16 @@ const actions: OrderActions = {
             context.commit('REQUEST_MY_ORDER_LIST_TO_DJANGO', data);
         } catch (error) {
             console.error('나의 주문 내역 출력 과정 중 에러 발생:', error);
+            throw error
+        }
+    },
+    async requestMyOrderItemListToDjango(context: ActionContext<OrderState, any>, ordersId: number): Promise<void> {
+        try {
+            const res: AxiosResponse<OrderItem> = await axiosInst.djangoAxiosInst.post(`/orders/read/${ordersId}`);
+            console.log('order item list data:', res.data)
+            context.commit('REQUEST_MY_ORDER_ITEM_LIST_TO_DJANGO', res.data);
+        } catch (error) {
+            console.error('requestMyOrderItemListToDjango() 문제 발생:', error);
             throw error
         }
     },
