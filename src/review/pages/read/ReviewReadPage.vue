@@ -78,6 +78,10 @@ export default {
         productId: {
             type: String,
             required: true
+        },
+        reviewId: {
+            type: String,
+            required: true
         }
     },
     data () {
@@ -115,6 +119,7 @@ export default {
         },
     },
     async mounted () {
+        console.log('reviewId:', this.reviewId)
         await this.requestReviewToDjango(this.reviewId)
         this.checkNickname()
     },

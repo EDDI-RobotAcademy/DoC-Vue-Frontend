@@ -2,7 +2,10 @@
     <v-container>
         <v-row justify="center">
             <v-col cols="12" md="12" lg="11">
-                <h2 class="title">Emoticon review</h2>
+                <h2 class="title">리뷰</h2>
+                <v-row v-if="reviewList.length === 0" type="info">
+                    <strong>해당 상품에 등록된 리뷰가 없습니다.</strong>
+                </v-row>
                 <v-row class="item-container">
                     <v-col v-for="item in pagedItems" :key="item.reviewId" cols="12" sm="6" md="4" lg="3" @click="readRow(item)" class="text-center mb-3">
                         <v-card class="pa-3 review-card">
@@ -46,7 +49,7 @@ export default {
         productId: {
             type: String,
             required: true
-        }
+        },
     },
     computed: {
         ...mapState(reviewModule, ['reviewList']),
@@ -60,7 +63,7 @@ export default {
         }
     },
     mounted() {
-        this.requestReviewProductListToDjango(this.prouctId)
+        this.requestReviewProductListToDjango(this.productId)
     },
     methods: {
         ...mapActions(reviewModule, ['requestReviewProductListToDjango']),

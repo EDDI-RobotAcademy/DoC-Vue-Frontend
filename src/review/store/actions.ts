@@ -83,7 +83,8 @@ const actions: ReviewActions = {
     },
     async requestReviewProductListToDjango(context: ActionContext<ReviewState, any>, productId: number): Promise<void> {
         try {
-            const res: AxiosResponse<any, any> = await axiosInst.djangoAxiosInst.get(`/review/list/${productId}`);
+            console.log('productId:', productId)
+            const res: AxiosResponse<any, any> = await axiosInst.djangoAxiosInst.get(`/review/product/list/${productId}`);
             console.log('data:', res)
             const data: Review[] = res.data;
             console.log('data:', data)
