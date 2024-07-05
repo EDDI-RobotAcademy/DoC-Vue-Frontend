@@ -9,7 +9,7 @@
                     :items="pagedItems"
                     v-model:pagination="pagination"
                     class="elevation-1"
-                    item-value="id"/>
+                    item-value="ordersId"/>
                 <v-row justify="end">
                     <v-col cols="auto">
                     </v-col>
@@ -42,7 +42,8 @@ export default {
             const endIdx = startIdx + this.perPage
             return this.orderList.slice(startIdx, endIdx).map(item => ({
                 ...item,
-                orderDate: this.formatDate(item.orderDate)
+                totalPrice: this.formatPrice(item.totalPrice),  // totalPrice 포맷팅
+                createdDate: this.formatDate(item.createdDate)  // createdDate 포맷팅
             }))
         }
     },
@@ -51,16 +52,13 @@ export default {
     },
     methods: {
         ...mapActions(orderModule, ['requestMyOrderListToDjango']),
-        // readRow(event, { item }) {
-        //     this.$router.push({
-        //         name: 'OrderReadPage',
-        //         params: { orderId: item['orderId'].toString() }
-        //     })
-        // },
         formatDate(dateString) {
             const options = { year: 'numeric', month: '2-digit', day: '2-digit' }
             const date = new Date(dateString)
             return date.toLocaleDateString('ko-KR', options)
+        },
+        formatPrice(price) {
+            return Math.round(price).toLocaleString();  // 반올림하고 천 단위로 콤마 추가
         }
     },
     data() {
@@ -70,10 +68,11 @@ export default {
                     title: 'No',
                     align: 'start',
                     sortable: true,
-                    key: 'id',
+                    key: 'ordersId',
                 },
-                // { title: '총 결제액', align: 'start', key: 'totalPrice', width: '60%' },
-                { title: '구매 일자', align: 'start', key: 'createdDate', width: '20%' },
+                { title: '수량', align: 'start', key: 'totalQuantity', width: '20%' },
+                { title: '금액', align: 'start', key: 'totalPrice', width: '40%' },
+                { title: '구매 일자', align: 'start', key: 'createdDate', width: '40%' },
             ],
             perPage: 5,
             pagination: {

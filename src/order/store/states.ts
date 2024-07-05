@@ -15,7 +15,9 @@ export interface OrderItem {
 
 export interface Order {
     orderId: number
-    orderData: string
+    orderData: string,
+    totalPrice: number,
+    totalQuantity: number,
 }
 
 const state: OrderState = {
