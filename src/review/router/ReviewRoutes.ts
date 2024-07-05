@@ -10,9 +10,14 @@ const ReviewRoutes = [
         component: ReviewListPage,
     },
     {
-        path: '/review/register',
+        path: '/review/register/:productId',
         name: 'ReviewRegisterPage',
-        component: ReviewRegisterPage,
+        components: {
+            default: ReviewRegisterPage,
+        },
+        props: {
+            default: true
+        }
     },
     {
         path: '/review/read/:reviewId',

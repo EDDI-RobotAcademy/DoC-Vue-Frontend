@@ -110,8 +110,8 @@ export default {
         getImageUrl (imageName) {
             if (imageName) {
                 return require('@/assets/images/uploadImages/' + imageName)
-            }  // 기본 이미지 경로
-            
+            }
+  
         },
     },
     async mounted () {

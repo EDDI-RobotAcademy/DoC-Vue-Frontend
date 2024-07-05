@@ -49,9 +49,14 @@ import { mapActions } from 'vuex'
 
 const reviewModule = 'reviewModule'
 const accountModule = 'accountModule'
-const authenticationModule = 'authenticationModule'
 
 export default {
+    props: {
+        productId: {
+            type: String,
+            required: true
+        }
+    },
     data () {
         return {
             reviewTitle: '',
@@ -80,7 +85,10 @@ export default {
                         imageFormData.append('reviewImage', this.reviewImage)
                     }
                     
-                    const response = await this.requestCreateReviewToDjango(imageFormData)
+                    const response = await this.requestCreateReviewToDjango({
+                    productId: this.productId,
+                    imageFormData
+                    })
                     
                     if (this.reviewImage) {
                         this.uploadedFileName = response.data.imageName
