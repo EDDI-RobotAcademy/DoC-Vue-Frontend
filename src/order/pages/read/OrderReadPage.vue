@@ -38,6 +38,11 @@
                 </v-card>
             </v-col>
         </v-row>
+        <v-row>
+            <v-col>
+                <v-btn color="blue" @click="goToLastPage">돌아가기</v-btn>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 
@@ -75,6 +80,9 @@ export default {
                 name: 'ReviewRegisterPage',
                 params: { productId: productId.toString() }
             })
+        },
+        goToLastPage() {
+            this.$router.go(-1)
         }
     },
     async mounted() {
