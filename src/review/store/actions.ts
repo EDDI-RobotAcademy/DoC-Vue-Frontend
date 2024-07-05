@@ -12,6 +12,7 @@ export type ReviewActions = {
         reviewTitle: string, reviewContent: string, reviewId: number,reviewRating:number
     }): Promise<void>
     requestDeleteReviewToDjango(context: ActionContext<ReviewState, unknown>, reviewId: number): Promise<void>
+    requestReviewProductListToDjango(context: ActionContext<ReviewState, any>, productId: number): Promise<void>
 }
 
 const actions: ReviewActions = {
@@ -77,6 +78,18 @@ const actions: ReviewActions = {
             await axiosInst.djangoAxiosInst.delete(`/review/delete/${reviewId}`)
         } catch (error) {
             console.log('requestDeleteReviewToDjango() 과정에서 문제 발생')
+            throw error
+        }
+    },
+    async requestReviewProductListToDjango(context: ActionContext<ReviewState, any>, productId: number): Promise<void> {
+        try {
+            const res: AxiosResponse<any, any> = await axiosInst.djangoAxiosInst.get(`/review/list/${productId}`);
+            console.log('data:', res)
+            const data: Review[] = res.data;
+            console.log('data:', data)
+            context.commit('REQUEST_REVIEW_PRODUCT_LIST_TO_DJANGO', data);
+        } catch (error) {
+            console.error('해당 상품에 대한 리뷰 리스트 출력 과정 중 에러 발생:', error);
             throw error
         }
     },

@@ -75,9 +75,9 @@ const accountModule = 'accountModule'
 
 export default {
     props: {
-        reviewId: {
+        productId: {
             type: String,
-            required: true,
+            required: true
         }
     },
     data () {

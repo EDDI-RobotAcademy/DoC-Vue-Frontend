@@ -52,6 +52,9 @@
                                     <v-btn color="success" @click="onAddToCartAndAsk" class="action-button">
                                         <v-icon left>mdi-cart-plus</v-icon>장바구니에 추가
                                     </v-btn>
+                                    <v-btn color="primary" @click="goToThisProductReviewList" class="action-button">
+                                        <v-icon left>mdi-message-draw</v-icon>리뷰 보기
+                                    </v-btn>
                                 </v-col>
                             </v-row>
                         </v-col>
@@ -172,7 +175,7 @@ export default {
                     productId: this.product.productId,
                     productName: this.product.productName,
                     productPrice: this.product.productPrice,
-                    quantity: 1,
+
                 }
                 await this.requestAddCartToDjango(cartData)
             } catch (error) {
@@ -188,6 +191,12 @@ export default {
         },
         goToCartList() {
             router.push('/cart/list')
+        },
+        goToThisProductReviewList() {
+            this.$router.push({
+                name: 'ReviewProductListPage',
+                params: { productId: this.product.productId }
+            });
         }
     },
     created() {
