@@ -20,6 +20,11 @@
         <v-row justify='center' v-else class="no-expected-customers">
             <p class="no-customers-text">이탈이 예상되는 고객이 없습니다.</p>
         </v-row>
+        <v-row>
+            <v-col>
+                <v-btn color="primary" @click="goToLastPage">이전 페이지</v-btn>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 
@@ -49,6 +54,9 @@ export default {
             const options = { year: 'numeric', month: '2-digit', day: '2-digit' }
             const date = new Date(dateString)
             return date.toLocaleDateString('ko-KR', options)
+        },
+        goToLastPage() {
+            this.$router.go(-1)
         }
     },
     data() {

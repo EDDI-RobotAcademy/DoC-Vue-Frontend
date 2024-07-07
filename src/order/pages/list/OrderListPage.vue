@@ -1,6 +1,6 @@
 <template lang="">
     <v-container>
-        <v-row justify='center'>
+        <v-row justify='center' v-if="orderList.length > 0">
             <v-col cols="12" md="10" lg="8">
                 <h2 class="title">내 주문 목록</h2>
                 <v-data-table
@@ -22,9 +22,12 @@
                     @input="updateItems"/>
             </v-col>
         </v-row>
+        <v-row justify='center' v-else class="no-orders">
+            <p class="no-orders-text">주문 기록이 없습니다.</p>
+        </v-row>
         <v-row>
             <v-col>
-                <v-btn color="blue" @click="goToLastPage">이전 페이지</v-btn>
+                <v-btn color="primary" @click="goToLastPage">이전 페이지</v-btn>
             </v-col>
         </v-row>
     </v-container>
@@ -103,5 +106,13 @@ export default {
     max-width: 50px; /* 이미지의 최대 너비 */
     max-height: 50px; /* 이미지의 최대 높이 */
     object-fit: contain; /* 이미지의 비율을 유지하면서 컨테이너에 맞춤 */
+}
+.no-orders {
+    text-align: center; /* 텍스트를 가운데 정렬 */
+    margin-top: 20px; /* 원하는 공백 크기로 조정 */
+    font-size: 1.2em; /* 글자 크기를 키움 */
+}
+.no-orders-text {
+    margin-top: 10px; /* 텍스트 위쪽 마진 조정 */
 }
 </style>
