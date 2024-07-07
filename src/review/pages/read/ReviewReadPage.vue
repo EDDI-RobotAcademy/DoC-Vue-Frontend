@@ -46,7 +46,7 @@
                                 </router-link>
                             </v-btn>
                         </v-col>
-                        <v-col cols="auto" v-if="isWriter">
+                        <v-col cols="auto" v-if="isWriterOrAdmin">
                             <v-btn color="error" @click="onDelete">
                                 <v-icon>mdi-eraser</v-icon>
                                 <span>삭제</span>
@@ -87,14 +87,18 @@ export default {
     data () {
         return {
             isWriter: false,
+            isAdmin: false,
         }
     },
     computed: {
-        ...mapState(reviewModule, ['review'])
+        ...mapState(reviewModule, ['review']),
+        isWriterOrAdmin() {
+            return this.isWriter || this.isAdmin;
+        }
     },
     methods: {
         ...mapActions(reviewModule, ['requestReviewToDjango', 'requestDeleteReviewToDjango']),
-        ...mapActions(accountModule, ['requestNicknameToDjango']),
+        ...mapActions(accountModule, ['requestNicknameToDjango', 'requestRoleTypeToDjango']),
         async checkNickname() { 
             try {
                 const nickname = await this.requestNicknameToDjango()
@@ -105,6 +109,10 @@ export default {
             } catch (error) {
                 console.log('작성자 확인 중 에러 발생')
             }
+        },
+        async checkAdmin() {
+            const roleType = await this.requestRoleTypeToDjango()
+            this.isAdmin = (roleType === 'ADMIN')
         },
         async onDelete () {
             console.log('삭제를 누르셨습니다!')
@@ -122,6 +130,7 @@ export default {
         console.log('reviewId:', this.reviewId)
         await this.requestReviewToDjango(this.reviewId)
         this.checkNickname()
+        this.checkAdmin()
     },
 }
 </script>

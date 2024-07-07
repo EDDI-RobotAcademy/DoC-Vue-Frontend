@@ -86,7 +86,7 @@ export default {
       signOut () {
           this.requestLogoutToDjango()
           router.push('/')
-        },
+      },
   },
   async mounted () {
         console.log('navigation bar mounted()')
