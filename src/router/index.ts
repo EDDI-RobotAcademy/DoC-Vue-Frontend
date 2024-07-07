@@ -9,6 +9,7 @@ import ReviewRoutes from '@/review/router/ReviewRoutes'
 import CartRoutes from '@/cart/router/CartRoutes'
 import KmeansRoutes from '@/analysis/router/KmeansRoutes'
 import OrderRoutes from '@/order/router/OrderRoutes'
+import NotificationRoutes from '@/notification/router/NotificationRoutes'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -26,6 +27,7 @@ const routes: Array<RouteRecordRaw> = [
   ...CartRoutes,
   ...KmeansRoutes,
   ...OrderRoutes,
+  ...NotificationRoutes,
 ]
 
 const router = createRouter({

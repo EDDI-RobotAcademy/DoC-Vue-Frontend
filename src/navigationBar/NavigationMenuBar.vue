@@ -10,24 +10,22 @@
       </v-btn>
       <v-spacer></v-spacer>
       <v-btn text @click="goToProductList" class="btn-text">
-        <!-- <v-icon left>mdi-store</v-icon> -->
         <span>Emoticon</span>
       </v-btn>
       <v-btn text @click="goToBoardList" class="btn-text">
-        <!-- <v-icon left>mdi-forum</v-icon> -->
         <span>Communication</span>
       </v-btn>
       <v-btn text @click="goToReviewList" class="btn-text">
-        <!-- <v-icon left>mdi-forum</v-icon> -->
         <span>Review</span>
       </v-btn>
       <v-btn text @click="goToCartList" class="btn-text">
-        <!-- <v-icon left>mdi-forum</v-icon> -->
         <span>Cart</span>
       </v-btn>
       <v-btn text @click="goToOrderList" class="btn-text">
-        <!-- <v-icon left>mdi-forum</v-icon> -->
-        <span>order</span>
+        <span>Order</span>
+      </v-btn>
+      <v-btn v-if="isAdmin" text @click="goToNotificationList" class="btn-text">
+        <span>Notification</span>
       </v-btn>
       <v-btn v-if="!isAuthenticated" text @click="signIn" class="btn-text">
         <v-icon right>mdi-login</v-icon>
@@ -47,11 +45,12 @@ import router from '@/router'
 import { mapActions,mapState } from 'vuex'
 
 const authenticationModule = 'authenticationModule'
+const accountModule = 'accountModule'
 
 export default {
   data () {
       return {
-          isLogin: !!localStorage.getItem("userToken"),
+          isAdmin: false,
       }
   },
   computed: {
@@ -59,6 +58,7 @@ export default {
   },
   methods: {
       ...mapActions(authenticationModule, ['requestLogoutToDjango']),
+      ...mapActions(accountModule, ['requestRoleTypeToDjango']),
       goToHome () {
           router.push('/')
       },
@@ -77,15 +77,18 @@ export default {
       goToOrderList () {
         router.push('/order/list')
       },
+      goToNotificationList () {
+        router.push('/notification/list')
+      },
       signIn () {
           router.push('/account/login')
       },
       signOut () {
           this.requestLogoutToDjango()
           router.push('/')
-        },
+      },
   },
-  mounted () {
+  async mounted () {
         console.log('navigation bar mounted()')
 
         const userToken = localStorage.getItem("userToken")
@@ -94,11 +97,12 @@ export default {
             console.log('You already have a userToken!!!')
             this.$store.state.authenticationModule.isAuthenticated = true
         }
+
+        const response = await this.requestRoleTypeToDjango()
+        if (response === 'ADMIN') {
+          this.isAdmin = true
+        }
     },
-    beforeUnmount() {
-        // WebSocket 연결 해제
-        // this.socket.close();
-    }
 }
 </script>
 <style scoped>
