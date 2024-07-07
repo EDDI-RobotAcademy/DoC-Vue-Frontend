@@ -24,7 +24,9 @@ export type AccountActions = {
         context: ActionContext<AccountState, any>,
         userToken: string
     ): Promise<Account>
- 
+    requestCorrectAdminPasswordToDjango(
+        context: ActionContext<AccountState, any>,
+    ): Promise<Account> 
 }
 
 const actions: AccountActions = {
@@ -91,6 +93,17 @@ const actions: AccountActions = {
             return res.data
         } catch (error) {
             console.log('requestRoleTypeToDjango() 문제 발생:', error)
+            throw error
+        }
+    },
+    async requestCorrectAdminPasswordToDjango(context: ActionContext<AccountState, any>): Promise<Account> {
+        try{
+            const res: AxiosResponse<Account> = await axiosInst.djangoAxiosInst.post('/account/admin/password');
+            console.log('data:', res.data)
+            context.commit('REQUEST_CORRECT_ADMIN_PASSWORD_TO_DJANGO', res.data)
+            return res.data
+        } catch (error) {
+            console.log('requestCorrectAdminPasswordToDjango() 문제 발생:', error)
             throw error
         }
     },

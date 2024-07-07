@@ -33,15 +33,19 @@
                                 </v-col>
                             </v-row>
                             <v-row align="center">
-                                <v-col align-self="center">
-                                    <v-text>사업자이시면 버튼을 눌러주세요</v-text>
-                                </v-col>
-                                <v-col>
+                                <v-col cols=6>
                                     <v-checkbox 
                                     v-model="isBusiness"
                                     label="사업자"
                                     class="check"
-                                    @click="checkBusiness"/>
+                                    @click="showBusinessDialog"/>
+                                </v-col>
+                                <v-col cols=6 class="mt-3">
+                                    <v-checkbox 
+                                    v-model="isAdmin"
+                                    label="관리자"
+                                    class="check"
+                                    @click="showAdminPasswordDialog"/>
                                 </v-col>
                             </v-row>
                         </v-form>
@@ -57,6 +61,43 @@
                 </v-card>
             </v-col>
         </v-row>
+
+        <!-- Business Dialog -->
+        <v-dialog v-model="businessDialog" max-width="500">
+            <v-card>
+                <v-card-title class="headline">사업자 확인</v-card-title>
+                <v-card-text>
+                    사업자로 신청하시겠습니까?
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="cancelBusiness">취소</v-btn>
+                    <v-btn color="blue darken-1" text @click="confirmBusiness">확인</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+        <!-- Admin Dialog -->
+        <v-dialog v-model="adminDialog" max-width="500">
+            <v-card>
+                <v-card-title class="headline">관리자 비밀번호 입력</v-card-title>
+                <v-card-text>
+                    관리자로 신청하려면 비밀번호를 입력하세요.
+                    <v-text-field
+                        v-model="adminPassword"
+                        label="비밀번호"
+                        type="password"
+                        :rules="passwordRules"
+                        required
+                    />
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="cancelAdmin">취소</v-btn>
+                    <v-btn color="blue darken-1" text @click="checkAdminPassword">확인</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
 
@@ -73,6 +114,8 @@ export default {
             email: '',
             nickname: '',
             isBusiness: false,
+            isAdmin: false,
+            adminPassword: '',
             emailRules: [
                 v => !!v || 'Email 은 필수입니다!',
                 v => /.+@.+\..+/.test(v) || '유효한 Email 주소를 입력하세요!'
@@ -80,6 +123,10 @@ export default {
             nicknameRules: [v => !!v || 'Nickname은 필수입니다!'],
             nicknameErrorMessage: [],
             isNicknameValid: false,
+            adminDialog: false,
+            businessDialog: false,
+            passwordRules: [v => !!v || '비밀번호는 필수입니다!'],
+            correctAdminPassword: '', 
         }
     },
     async created () {
@@ -98,6 +145,7 @@ export default {
         ...mapActions(accountModule, [
             'requestNicknameDuplicationCheckToDjango',
             'requestCreateNewAccountToDjango',
+            'requestCorrectAdminPasswordToDjango'
         ]),
         async requestUserInfo () {
             try {
@@ -128,13 +176,40 @@ export default {
                 this.isNicknameValid = false
             }
         },
-        async checkBusiness () {
+        showBusinessDialog() {
+            this.businessDialog = true
+        },
+        cancelBusiness() {
+            this.businessDialog = false
+            this.isBusiness = false
+        },
+        confirmBusiness() {
+            this.isBusiness = true
+            this.businessDialog = false
+            alert('사업자로 신청합니다.')
+        },
+        showAdminPasswordDialog() {
+            this.adminDialog = true
+        },
+        cancelAdmin() {
+            this.adminDialog = false
+            this.isAdmin = false
+        },
+        async checkAdminPassword() {
             try {
-                console.log('사업자로 등록')
-                this.isBusiness = true
+                this.correctAdminPassword = await this.requestCorrectAdminPasswordToDjango()
+                if (this.adminPassword === this.correctAdminPassword) {
+                    this.isAdmin = true
+                    this.adminDialog = false
+                    alert('관리자로 신청합니다.')
+                } else {
+                    alert('비밀번호가 올바르지 않습니다.')
+                    this.isAdmin = false
+                }
             } catch (error) {
-                console.error('사업자 등록 중 에러 발생', error)
+                console.log('관리자 비밀번호 확인 중 에러 발생')
             }
+            
         },
         async submitForm () {
             console.log('신청하기 누름')
@@ -150,7 +225,8 @@ export default {
                 const accountInfo = {
                     email: this.email,
                     nickname: this.nickname,
-                    isBusiness: this.isBusiness
+                    isBusiness: this.isBusiness,
+                    isAdmin: this.isAdmin
                 }
 
                 await this.requestCreateNewAccountToDjango(accountInfo)
@@ -171,7 +247,9 @@ export default {
 <style scoped>
 .check {
   transform: scale(1.1); /* 체크박스 크기 증가 */
-  position: absolute;
-  left: 30px;
+  margin-right: 20px; /* 체크박스 사이 간격 */
+}
+.mt-3 {
+  margin-top: 20px; /* 필요한 만큼 간격 조정 */
 }
 </style>
