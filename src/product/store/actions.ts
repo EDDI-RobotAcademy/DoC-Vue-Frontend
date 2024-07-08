@@ -18,6 +18,10 @@ export type ProductActions = {
         context: ActionContext<ProductState, unknown>, 
         imageFormData: FormData
     ): Promise<AxiosResponse>
+    requestRandomFourProductListToDjango(
+        context: ActionContext<ProductState, any>,
+        productCategory: string
+    ): Promise<void>
 }
 
 const actions: ProductActions = {
@@ -43,7 +47,7 @@ const actions: ProductActions = {
             // console.log('data:', data)
             context.commit('REQUEST_PRODUCT_LIST_TO_DJANGO', data);
         } catch (error) {
-            console.error('Error fetching board list:', error);
+            console.error('Error fetching product list:', error);
             throw error
         }
     },
@@ -62,6 +66,18 @@ const actions: ProductActions = {
                 console.log('requestCreateProductToDjango(): ', error)
                 throw error
             }
+    },
+    async requestRandomFourProductListToDjango(context: ActionContext<ProductState, any>, productCategory: string): Promise<void> {
+        try {
+            const res: AxiosResponse<any, any> = await axiosInst.djangoAxiosInst
+            .get('/product/random/list/', { params: { productCategory } });
+            const data: Product[] = res.data;
+            // console.log('data:', data)
+            context.commit('REQUEST_RANDOM_FOUR_PRODUCT_LIST_TO_DJANGO', data);
+        } catch (error) {
+            console.error('Error fetching random product list:', error);
+            throw error
+        }
     },
 };
 

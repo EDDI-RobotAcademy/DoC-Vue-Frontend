@@ -64,7 +64,7 @@
                     </v-row>
                     <v-row>
                         <v-col cols="12" md="4">
-                            <v-textarea class="custom-text-field" v-model="product.content" label="내용" readonly
+                            <v-textarea class="custom-text-field" v-model="product.content" label="내용" readonly rows="1"
                                 auto-grow />
                         </v-col>
                     </v-row>
@@ -78,6 +78,37 @@
             </v-card-text>
         </v-card>
         <v-alert v-else type="info">현재 등록된 상품이 없습니다!</v-alert>
+        <!-- <v-row justify="center" class="mt-4">
+            <v-col cols="12">
+                <h3>추천 상품</h3>
+                <v-row>
+                    <v-col
+                        v-for="product in products"
+                        :key="product.id"
+                        cols="12" md="3">
+                        <v-card>
+                            <v-img :src="getProductImageUrl(product.productTitleImage)" height="200px"></v-img>
+                            <v-card-title>{{ product.productName }}</v-card-title>
+                        </v-card>
+                    </v-col>
+                </v-row>
+            </v-col>
+        </v-row> -->
+        <v-row v-if="products.length > 0">
+            <v-col v-for="(product, index) in products" :key="index" cols="12" sm="6" md="4" lg="3">
+                <v-card @click="goToProductReadPage(product.productId)">
+                    <v-img :src="getProductImageUrl(product.productTitleImage)" aspect-ratio="1.5">
+                        <template v-slot:placeholder>
+                            <v-row class="fill-height ma-0" align="center" justify="center">
+                                <v-progress-circular indeterminate color="grey lighten-5" />
+                            </v-row>
+                        </template>
+                    </v-img>
+                    <v-card-title>{{ product.productName }}</v-card-title>
+                    <v-card-subtitle>{{ product.productPrice }}</v-card-subtitle>
+                </v-card>
+            </v-col>
+        </v-row>
         <v-row justify="center" class="mt-4">
             <v-col cols="auto">
                 <router-link :to="{ name: 'ProductListPage' }" class="router-link no-underline">
@@ -129,6 +160,10 @@ export default {
         productId: {
             type: String,
             required: true,
+        },
+        productCategory: {
+            type: String,
+            required: true,
         }
     },
     data() {
@@ -138,10 +173,10 @@ export default {
         }
     },
     computed: {
-        ...mapState(productModule, ['product'])
+        ...mapState(productModule, ['product', 'products'])
     },
     methods: {
-        ...mapActions(productModule, ['requestProductToDjango']),
+        ...mapActions(productModule, ['requestProductToDjango', 'requestRandomFourProductListToDjango']),
         ...mapActions(cartModule, ['requestAddCartToDjango', 'requestDeleteCartItemToDjango']),
         ...mapActions(orderModule, ['requestProductReadToAddOrderToDjango']),
         async onPurchase() {
@@ -194,11 +229,24 @@ export default {
                 name: 'ReviewProductListPage',
                 params: { productId: this.product.productId.toString() }
             });
+        },
+        goToProductReadPage(productId) {
+            this.$router.push({
+                name: 'ProductReadPage',
+                params: { productId: productId }
+            });
         }
     },
-    created() {
-        this.requestProductToDjango(this.productId)
+    async created() {
+        console.log(this.productId);
+        await this.requestProductToDjango(this.productId);
+        console.log(this.product.productCategory);
+        await this.requestRandomFourProductListToDjango(this.product.productCategory);
     },
+    // async mounted() {
+    //     console.log(this.productCategory);
+    //     await this.requestRandomFourProductListToDjango(this.productCategory);
+    // }
 }
 </script>
 
