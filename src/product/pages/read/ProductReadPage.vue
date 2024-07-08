@@ -63,21 +63,21 @@
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col cols="12" md="12">
-                            <v-text-field class="custom-text-field" v-model="product.content" label="내용" readonly />
+                        <v-col cols="12" md="4">
+                            <v-textarea class="custom-text-field" v-model="product.content" label="내용" readonly
+                                auto-grow />
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col cols="12">
                             <v-img :src="getProductImageUrl(product.productContentImage)" aspect-ratio="2"
-                                style="width: 100%; max-height: 400px;"></v-img>
+                                style="width: 100%; max-height: none;"></v-img>
                         </v-col>
                     </v-row>
                 </v-container>
             </v-card-text>
         </v-card>
         <v-alert v-else type="info">현재 등록된 상품이 없습니다!</v-alert>
-        
         <v-row justify="center" class="mt-4">
             <v-col cols="auto">
                 <router-link :to="{ name: 'ProductListPage' }" class="router-link no-underline">
@@ -131,7 +131,7 @@ export default {
             required: true,
         }
     },
-    data () {
+    data() {
         return {
             isCheckoutDialogVisible: false,
             isGoToCartListDialogVisible: false,
@@ -156,7 +156,7 @@ export default {
                 }
                 console.log('orderItem:', payload)
                 const response = await this.requestProductReadToAddOrderToDjango(payload);
-                await this.requestDeleteCartItemToDjango( {productId: [this.product.productId] })
+                await this.requestDeleteCartItemToDjango({ productId: [this.product.productId] })
                 console.log('장바구니에 있었으면 삭제 성공')
 
             } catch (error) {
@@ -190,11 +190,11 @@ export default {
             router.push('/cart/list')
         },
         goToThisProductReviewList() {
-        this.$router.push({
-            name: 'ReviewProductListPage',
-            params: { productId: this.product.productId.toString() }
-        });
-    }
+            this.$router.push({
+                name: 'ReviewProductListPage',
+                params: { productId: this.product.productId.toString() }
+            });
+        }
     },
     created() {
         this.requestProductToDjango(this.productId)
