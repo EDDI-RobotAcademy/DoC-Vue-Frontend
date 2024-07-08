@@ -39,39 +39,78 @@
                 <v-alert type="info">등록된 상품이 없습니다!</v-alert>
             </v-col>
         </v-row>
-        <v-spacer class="my-10  "></v-spacer>
-
-        <!-- 전체 이모티콘 섹션 -->
         <v-spacer class="my-10"></v-spacer>
-        <h1>전체 이모티콘<span class="small-icon">></span></h1>
-        <v-row v-if="filteredProducts.length > 0">
-            <v-col v-for="(product, index) in filteredProducts" :key="index" cols="12" sm="6" md="6" lg="4">
-                <v-card @click="goToProductReadPage(product.productId)" class="product-card">
-                    <v-row no-gutters>
-                        <!-- Left Column (Product Name and Author) -->
-                        <v-col cols="8">
-                            <v-card-title>{{ product.productName }}</v-card-title>
-                            <v-card-subtitle>{{ product.productPrice }}</v-card-subtitle>
-                        </v-col>
-                        <!-- Right Column (Product Image) -->
-                        <v-col cols="4">
-                            <v-img :src="getImageUrl(product.productTitleImage)" aspect-ratio="1.5">
-                                <template v-slot:placeholder>
-                                    <v-row class="fill-height ma-0" align="center" justify="center">
-                                        <v-progress-circular indeterminate color="grey lighten-5" />
-                                    </v-row>
-                                </template>
-                            </v-img>
-                        </v-col>
-                    </v-row>
+        <h1>귀여운 이모티콘<span class="small-icon">></span></h1>
+        <v-row v-if="filteredCuteProducts.length > 0">
+            <v-col v-for="(product, index) in filteredCuteProducts" :key="index" cols="12" sm="6" md="4" lg="3">
+                <v-card @click="goToProductReadPage(product.productId)">
+                    <v-img :src="getImageUrl(product.productTitleImage)" aspect-ratio="1.5">
+                        <template v-slot:placeholder>
+                            <v-row class="fill-height ma-0" align="center" justify="center">
+                                <v-progress-circular indeterminate color="grey lighten-5" />
+                            </v-row>
+                        </template>
+                    </v-img>
+                    <v-card-title>{{ product.productName }}</v-card-title>
+                    <v-card-subtitle>{{ product.productPrice }}</v-card-subtitle>
                 </v-card>
             </v-col>
         </v-row>
+        <v-row v-else>
+            <v-col cols="12" class="text-center">
+                <v-alert type="info">등록된 상품이 없습니다!</v-alert>
+            </v-col>
+        </v-row>
+        <v-spacer class="my-10"></v-spacer>
+        <h1>재밌는 이모티콘<span class="small-icon">></span></h1>
+        <v-row v-if="filteredFunnyProducts.length > 0">
+            <v-col v-for="(product, index) in filteredFunnyProducts" :key="index" cols="12" sm="6" md="4" lg="3">
+                <v-card @click="goToProductReadPage(product.productId)">
+                    <v-img :src="getImageUrl(product.productTitleImage)" aspect-ratio="1.5">
+                        <template v-slot:placeholder>
+                            <v-row class="fill-height ma-0" align="center" justify="center">
+                                <v-progress-circular indeterminate color="grey lighten-5" />
+                            </v-row>
+                        </template>
+                    </v-img>
+                    <v-card-title>{{ product.productName }}</v-card-title>
+                    <v-card-subtitle>{{ product.productPrice }}</v-card-subtitle>
+                </v-card>
+            </v-col>
+        </v-row>
+        <v-row v-else>
+            <v-col cols="12" class="text-center">
+                <v-alert type="info">등록된 상품이 없습니다!</v-alert>
+            </v-col>
+        </v-row>
+        <v-spacer class="my-10"></v-spacer>
+        <h1>메시지 이모티콘<span class="small-icon">></span></h1>
+        <v-row v-if="filteredMessageProducts.length > 0">
+            <v-col v-for="(product, index) in filteredMessageProducts" :key="index" cols="12" sm="6" md="4" lg="3">
+                <v-card @click="goToProductReadPage(product.productId)">
+                    <v-img :src="getImageUrl(product.productTitleImage)" aspect-ratio="1.5">
+                        <template v-slot:placeholder>
+                            <v-row class="fill-height ma-0" align="center" justify="center">
+                                <v-progress-circular indeterminate color="grey lighten-5" />
+                            </v-row>
+                        </template>
+                    </v-img>
+                    <v-card-title>{{ product.productName }}</v-card-title>
+                    <v-card-subtitle>{{ product.productPrice }}</v-card-subtitle>
+                </v-card>
+            </v-col>
+        </v-row>
+        <v-row v-else>
+            <v-col cols="12" class="text-center">
+                <v-alert type="info">등록된 상품이 없습니다!</v-alert>
+            </v-col>
+        </v-row>
+        <v-spacer class="my-10"></v-spacer>
+
+        <footer style="text-align: center;">
+            <h5> 이용약관 | 유료이용안내 | 개인정보처리방침 | 기업고객 | 문의하기 | 공정위사업자정보 | (주)춘식 </h5>
+        </footer>
     </v-container>
-    <v-spacer style="height: 50px;"></v-spacer>
-    <footer style="text-align: center;">
-        <h5> 이용약관 | 유료이용안내 | 개인정보처리방침 |  기업고객  | 문의하기 | 공정위사업자정보 | (주)춘식 </h5>
-    </footer>
 </template>
 
 <script>
@@ -96,6 +135,15 @@ export default {
             }
 
             return products;
+        },
+        filteredCuteProducts() {
+            return this.products.filter(product => product.productCategory === '귀여운');
+        },
+        filteredFunnyProducts() {
+            return this.products.filter(product => product.productCategory === '재밌는');
+        },
+        filteredMessageProducts() {
+            return this.products.filter(product => product.productCategory === '메시지');
         }
     },
     mounted() {
@@ -129,20 +177,6 @@ export default {
             categories: ['전체', '귀여운', '재밌는', '메시지'],
             selectedCategory: '전체',
             searchQuery: '', // 검색어를 저장하는 변수
-            headerTitle: [
-                {
-                    title: 'No',
-                    align: 'start',
-                    sortable: true,
-                    key: 'productId',
-                },
-                { title: '이모티콘 이름', align: 'end', key: 'productName' },
-                { title: '이모티콘 가격(원)', align: 'end', key: 'productPrice' },
-            ],
-            perPage: 5,
-            pagination: {
-                page: 1,
-            },
             isSeller: false // 판매자 여부를 저장하는 상태 변수
         }
     }
@@ -178,7 +212,7 @@ export default {
 }
 
 .mb-5 {
-    background-color: #deed933a
+    background-color: #deed933a;
 }
 
 .small-icon {
