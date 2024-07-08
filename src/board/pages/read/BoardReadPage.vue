@@ -44,7 +44,7 @@
                                 </router-link>
                             </v-btn>
                         </v-col>
-                        <v-col cols="auto" v-if="isWriter">
+                        <v-col cols="auto" v-if="isWriterOrAdmin">
                             <v-btn color="error" @click="onDelete">
                                 <v-icon>mdi-eraser</v-icon>
                                 <span>삭제</span>
@@ -81,14 +81,18 @@ export default {
     data () {
         return {
             isWriter: false,
+            isAdmin: false,
         }
     },
     computed: {
-        ...mapState(boardModule, ['board'])
+        ...mapState(boardModule, ['board']),
+        isWriterOrAdmin() {
+            return this.isWriter || this.isAdmin;
+        }
     },
     methods: {
         ...mapActions(boardModule, ['requestBoardToDjango', 'requestDeleteBoardToDjango']),
-        ...mapActions(accountModule, ['requestNicknameToDjango']),
+        ...mapActions(accountModule, ['requestNicknameToDjango', 'requestRoleTypeToDjango']),
         async checkNickname() { 
             try {
                 const nickname = await this.requestNicknameToDjango()
@@ -99,6 +103,10 @@ export default {
             } catch (error) {
                 console.log('작성자 확인 중 에러 발생')
             }
+        },
+        async checkAdmin() {
+            const roleType = await this.requestRoleTypeToDjango()
+            this.isAdmin = (roleType === 'ADMIN')
         },
         async onDelete () {
             console.log('삭제를 누르셨습니다!')
@@ -112,6 +120,7 @@ export default {
     async mounted () {
         await this.requestBoardToDjango(this.boardId)
         this.checkNickname()
+        this.checkAdmin()
     },
     
 }
