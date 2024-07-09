@@ -8,7 +8,7 @@
                 </v-select>
             </v-col>
             <v-col cols="auto">
-                <v-text-field v-model="searchQuery" label="검색" clearable class="search-input custom-select" 
+                <v-text-field v-model="searchQuery" label="검색" clearable class="search-input custom-select"
                     style="margin-bottom: 0; max-width: 300px;">
                 </v-text-field>
             </v-col>
@@ -18,8 +18,8 @@
                 </v-btn>
             </v-col>
         </v-row>
-        <h1>추천 이모티콘<span class="small-icon">></span></h1>
-        <v-row v-if="filteredProducts.length > 0">
+        <h1 @click="toggleVisibility('recommendationVisible')">추천 이모티콘<span class="small-icon">></span></h1>
+        <v-row v-if="recommendationVisible && filteredProducts.length > 0">
             <v-col v-for="(product, index) in filteredProducts" :key="index" cols="12" sm="6" md="4" lg="3">
                 <v-card @click="goToProductReadPage(product.productId)">
                     <v-img :src="getImageUrl(product.productTitleImage)" aspect-ratio="1.5">
@@ -34,14 +34,14 @@
                 </v-card>
             </v-col>
         </v-row>
-        <v-row v-else>
+        <v-row v-else-if="recommendationVisible">
             <v-col cols="12" class="text-center">
                 <v-alert type="info">등록된 상품이 없습니다!</v-alert>
             </v-col>
         </v-row>
         <v-spacer class="my-10"></v-spacer>
-        <h1>귀여운 이모티콘<span class="small-icon">></span></h1>
-        <v-row v-if="filteredCuteProducts.length > 0">
+        <h1 @click="toggleVisibility('cuteVisible')">귀여운 이모티콘<span class="small-icon">></span></h1>
+        <v-row v-if="cuteVisible && filteredCuteProducts.length > 0">
             <v-col v-for="(product, index) in filteredCuteProducts" :key="index" cols="12" sm="6" md="4" lg="3">
                 <v-card @click="goToProductReadPage(product.productId)">
                     <v-img :src="getImageUrl(product.productTitleImage)" aspect-ratio="1.5">
@@ -56,14 +56,14 @@
                 </v-card>
             </v-col>
         </v-row>
-        <v-row v-else>
+        <v-row v-else-if="cuteVisible">
             <v-col cols="12" class="text-center">
                 <v-alert type="info">등록된 상품이 없습니다!</v-alert>
             </v-col>
         </v-row>
         <v-spacer class="my-10"></v-spacer>
-        <h1>재밌는 이모티콘<span class="small-icon">></span></h1>
-        <v-row v-if="filteredFunnyProducts.length > 0">
+        <h1 @click="toggleVisibility('funnyVisible')">재밌는 이모티콘<span class="small-icon">></span></h1>
+        <v-row v-if="funnyVisible && filteredFunnyProducts.length > 0">
             <v-col v-for="(product, index) in filteredFunnyProducts" :key="index" cols="12" sm="6" md="4" lg="3">
                 <v-card @click="goToProductReadPage(product.productId)">
                     <v-img :src="getImageUrl(product.productTitleImage)" aspect-ratio="1.5">
@@ -78,14 +78,15 @@
                 </v-card>
             </v-col>
         </v-row>
-        <v-row v-else>
+        <v-row v-else-if="funnyVisible">
             <v-col cols="12" class="text-center">
                 <v-alert type="info">등록된 상품이 없습니다!</v-alert>
             </v-col>
         </v-row>
+
         <v-spacer class="my-10"></v-spacer>
-        <h1>메시지 이모티콘<span class="small-icon">></span></h1>
-        <v-row v-if="filteredMessageProducts.length > 0">
+        <h1 @click="toggleVisibility('messageVisible')">메시지 이모티콘<span class="small-icon">></span></h1>
+        <v-row v-if="messageVisible && filteredMessageProducts.length > 0">
             <v-col v-for="(product, index) in filteredMessageProducts" :key="index" cols="12" sm="6" md="4" lg="3">
                 <v-card @click="goToProductReadPage(product.productId)">
                     <v-img :src="getImageUrl(product.productTitleImage)" aspect-ratio="1.5">
@@ -100,11 +101,12 @@
                 </v-card>
             </v-col>
         </v-row>
-        <v-row v-else>
+        <v-row v-else-if="messageVisible">
             <v-col cols="12" class="text-center">
                 <v-alert type="info">등록된 상품이 없습니다!</v-alert>
             </v-col>
         </v-row>
+
         <v-spacer class="my-10"></v-spacer>
 
         <footer style="text-align: center;">
@@ -170,6 +172,9 @@ export default {
                 name: 'ProductReadPage',
                 params: { productId: productId }
             });
+        },
+        toggleVisibility(section) {
+            this[section] = !this[section];
         }
     },
     data() {
@@ -177,7 +182,11 @@ export default {
             categories: ['전체', '귀여운', '재밌는', '메시지'],
             selectedCategory: '전체',
             searchQuery: '', // 검색어를 저장하는 변수
-            isSeller: false // 판매자 여부를 저장하는 상태 변수
+            isSeller: false, // 판매자 여부를 저장하는 상태 변수
+            recommendationVisible: true,
+            cuteVisible: true,
+            funnyVisible: true,
+            messageVisible: true
         }
     }
 }
@@ -186,29 +195,23 @@ export default {
 <style>
 .category-select {
     width: 300px;
-    /* 원하는 너비로 조정 */
 }
 
 .search-input {
     width: 300px;
-    /* 원하는 너비로 조정 */
 }
 
 .custom-select .v-input__control {
     background-color: #f4f6eb3a;
-    /* 원하는 배경색으로 변경 */
     color: #a71616;
-    /* 원하는 글자색으로 변경 */
 }
 
 .custom-select .v-select__selections {
     color: #333;
-    /* 선택된 항목의 글자색 변경 */
 }
 
 .custom-select .v-label {
     color: #a71616;
-    /* 레이블 색상 변경 */
 }
 
 .mb-5 {
@@ -217,19 +220,12 @@ export default {
 
 .small-icon {
     font-size: 40px;
-    /* 원하는 크기로 설정 */
     margin-left: 8px;
-    /* 텍스트와 기호 사이에 여백 추가 */
     color: #3f4144;
-    /* 원하는 색상으로 변경 */
     vertical-align: middle;
-    /* 텍스트와 수평으로 맞춤 */
     position: relative;
-    /* 상대적 위치 조정 */
     top: -10px;
-    /* 위로 올림 */
     font-weight: 300;
-    /* 글자를 얇게 */
     opacity: 0.6;
 }
 </style>

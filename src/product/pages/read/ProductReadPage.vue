@@ -78,22 +78,9 @@
             </v-card-text>
         </v-card>
         <v-alert v-else type="info">현재 등록된 상품이 없습니다!</v-alert>
-        <!-- <v-row justify="center" class="mt-4">
-            <v-col cols="12">
-                <h3>추천 상품</h3>
-                <v-row>
-                    <v-col
-                        v-for="product in products"
-                        :key="product.id"
-                        cols="12" md="3">
-                        <v-card>
-                            <v-img :src="getProductImageUrl(product.productTitleImage)" height="200px"></v-img>
-                            <v-card-title>{{ product.productName }}</v-card-title>
-                        </v-card>
-                    </v-col>
-                </v-row>
-            </v-col>
-        </v-row> -->
+        <v-spacer></v-spacer>
+        <h2>같은 카테고리 연관 상품</h2>
+        <v-spacer></v-spacer>
         <v-row v-if="products.length > 0">
             <v-col v-for="(product, index) in products" :key="index" cols="12" sm="6" md="4" lg="3">
                 <v-card @click="goToProductReadPage(product.productId)">
@@ -235,20 +222,28 @@ export default {
                 name: 'ProductReadPage',
                 params: { productId: productId }
             });
+        },
+        async fetchProductData(productId) {
+            console.log(productId);
+            await this.requestProductToDjango(productId);
+            console.log(this.product.productCategory);
+            await this.requestRandomFourProductListToDjango(this.product.productCategory);
         }
     },
     async created() {
-        console.log(this.productId);
-        await this.requestProductToDjango(this.productId);
-        console.log(this.product.productCategory);
-        await this.requestRandomFourProductListToDjango(this.product.productCategory);
+        await this.fetchProductData(this.productId);
     },
-    // async mounted() {
-    //     console.log(this.productCategory);
-    //     await this.requestRandomFourProductListToDjango(this.productCategory);
-    // }
+    watch: {
+        '$route.params.productId': {
+            handler(newProductId) {
+                this.fetchProductData(newProductId);
+            },
+            immediate: true,
+        }
+    }
 }
 </script>
+
 
 <style scoped>
 .custom-img {
