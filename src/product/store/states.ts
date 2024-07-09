@@ -1,6 +1,6 @@
 export interface ProductState {
-
     products: Product[]
+    recommendProductList: Product[]
     product: Product | null
 }
 
@@ -19,6 +19,7 @@ export interface Product {
 
 const state: ProductState = {
     products: [],
+    recommendProductList: [],
     product: null,
 }
 
