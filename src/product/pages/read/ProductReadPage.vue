@@ -9,7 +9,7 @@
             <v-card-text>
                 <v-container>
                     <v-row>
-                        <v-col cols="12" md="4" class="d-flex align-center justify-center">
+                        <v-col cols="12" md="5" class="d-flex align-center justify-center">
                             <v-img :src="getProductImageUrl(product.productTitleImage)"
                                 class="custom-img grey lighten-2" aspect-ratio="1"
                                 style="width: 100%; height: auto; max-height: 200px;">
@@ -20,7 +20,7 @@
                                 </template>
                             </v-img>
                         </v-col>
-                        <v-col cols="12" md="8" class="d-flex flex-column justify-center">
+                        <v-col cols="12" md="6" class="d-flex flex-column justify-center">
                             <v-row>
                                 <v-col cols="12">
                                     <h1 class="product-name">{{ product.productName }}</h1>
@@ -57,13 +57,13 @@
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col cols="12" md="4">
+                        <v-col cols="12" md="5">
                             <span>이 이모티콘의 태그</span>
                             <v-text-field class="custom-text-field" v-model="product.productCategory" readonly />
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col cols="12" md="4">
+                        <v-col cols="12" md="5">
                             <v-textarea class="custom-text-field" v-model="product.content" label="내용" readonly rows="1"
                                 auto-grow />
                         </v-col>
@@ -79,7 +79,10 @@
         </v-card>
         <v-alert v-else type="info">현재 등록된 상품이 없습니다!</v-alert>
         <v-spacer></v-spacer>
-        <h2>같은 카테고리 연관 상품</h2>
+        <br>
+        <h2 v-if="product && product.productCategory">
+            #<span class="category-text">{{ product.productCategory }}</span> 카테고리 연관 상품
+        </h2> <br>
         <v-spacer></v-spacer>
         <v-row v-if="products.length > 0">
             <v-col v-for="(product, index) in products" :key="index" cols="12" sm="6" md="4" lg="3">
@@ -226,8 +229,10 @@ export default {
         async fetchProductData(productId) {
             console.log(productId);
             await this.requestProductToDjango(productId);
-            console.log(this.product.productCategory);
-            await this.requestRandomFourProductListToDjango(this.product.productCategory);
+            if (this.product && this.product.productCategory) {
+                console.log(this.product.productCategory);
+                await this.requestRandomFourProductListToDjango(this.product.productCategory);
+            }
         }
     },
     async created() {
@@ -243,7 +248,6 @@ export default {
     }
 }
 </script>
-
 
 <style scoped>
 .custom-img {
@@ -288,5 +292,9 @@ export default {
     font-size: 14px;
     vertical-align: baseline;
     margin-left: 3px;
+}
+.category-text {
+    color: rgb(183, 100, 93);
+    font-size: 18px; /* 원하는 크기로 조정 */
 }
 </style>
