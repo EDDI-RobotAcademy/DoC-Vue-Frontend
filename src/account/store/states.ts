@@ -1,17 +1,23 @@
 export interface AccountState {
     isLoggedIn: boolean
-    account: Account | null
-}
-
-export interface Account {
-    nickname: string,
-    roleType: string,
+    isAdmin: boolean
+    nickname: string
+    roleType: string
     correctAdminPassword: string,
 }
 
+// export interface Account {
+//     nickname: string,
+//     roleType: string,
+//     correctAdminPassword: string,
+// }
+
 const state: AccountState = {
     isLoggedIn: false,
-    account: null
+    isAdmin: false,
+    nickname: '',
+    roleType: '',
+    correctAdminPassword: '',
 }
 
 export default state

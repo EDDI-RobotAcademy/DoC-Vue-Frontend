@@ -1,5 +1,5 @@
 import { ActionContext, Commit } from "vuex"
-import { Account, AccountState } from "./states"
+import { AccountState } from "./states"
 import { AxiosResponse } from "axios"
 import axiosInst from "@/utility/axiosInstance"
 
@@ -19,14 +19,14 @@ export type AccountActions = {
     requestNicknameToDjango(
         context: ActionContext<AccountState, any>,
         userToken: string
-    ): Promise<Account>
+    ): Promise<string>
     requestRoleTypeToDjango(
         context: ActionContext<AccountState, any>,
         userToken: string
-    ): Promise<Account>
+    ): Promise<string>
     requestCorrectAdminPasswordToDjango(
         context: ActionContext<AccountState, any>,
-    ): Promise<Account> 
+    ): Promise<string> 
 }
 
 const actions: AccountActions = {
@@ -71,10 +71,10 @@ const actions: AccountActions = {
             throw error
         }
     },
-    async requestNicknameToDjango(context: ActionContext<AccountState, any>, userToken: string): Promise<Account> {
+    async requestNicknameToDjango(context: ActionContext<AccountState, any>, userToken: string): Promise<string> {
         try {
             const userToken = localStorage.getItem("userToken");
-            const res: AxiosResponse<Account> = 
+            const res: AxiosResponse<string> = 
             await axiosInst.djangoAxiosInst.post('/account/nickname',  { userToken: userToken } );
             console.log('data:', res.data)
             context.commit('REQUEST_NICKNAME_TO_DJANGO', res.data);
@@ -84,10 +84,10 @@ const actions: AccountActions = {
             throw error
         }
     },
-    async requestRoleTypeToDjango(context: ActionContext<AccountState, any>, userToken: string): Promise<Account> {
+    async requestRoleTypeToDjango(context: ActionContext<AccountState, any>, userToken: string): Promise<string> {
         try{
             const userToken = localStorage.getItem("userToken");
-            const res: AxiosResponse<Account> = await axiosInst.djangoAxiosInst.post('/account/roleType', { userToken: userToken });
+            const res: AxiosResponse<string> = await axiosInst.djangoAxiosInst.post('/account/roleType', { userToken: userToken });
             console.log('data:', res.data)
             context.commit('REQUEST_ROLETYPE_TO_DJANGO', res.data)
             return res.data
@@ -96,9 +96,9 @@ const actions: AccountActions = {
             throw error
         }
     },
-    async requestCorrectAdminPasswordToDjango(context: ActionContext<AccountState, any>): Promise<Account> {
+    async requestCorrectAdminPasswordToDjango(context: ActionContext<AccountState, any>): Promise<string> {
         try{
-            const res: AxiosResponse<Account> = await axiosInst.djangoAxiosInst.post('/account/admin/password');
+            const res: AxiosResponse<string> = await axiosInst.djangoAxiosInst.post('/account/admin/password');
             console.log('data:', res.data)
             context.commit('REQUEST_CORRECT_ADMIN_PASSWORD_TO_DJANGO', res.data)
             return res.data
