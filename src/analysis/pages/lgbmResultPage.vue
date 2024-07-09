@@ -37,7 +37,7 @@ export default {
   methods: {
     async predict() {
       try {
-        const response = await axios.post('http://192.168.0.24:33333/my-predict', {
+        const response = await axios.post('http://192.168.0.24:33333/lgbm-predict', {
           age: this.age,
           gender: this.gender,
         });
