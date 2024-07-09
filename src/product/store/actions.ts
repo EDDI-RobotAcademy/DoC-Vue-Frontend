@@ -22,6 +22,10 @@ export type ProductActions = {
         context: ActionContext<ProductState, any>,
         productCategory: string
     ): Promise<void>
+    requestRecommendProductListToDjango(
+        context: ActionContext<ProductState, any>,
+        recommendProductIdList: number[]
+    ): Promise<void>
 }
 
 const actions: ProductActions = {
@@ -76,6 +80,19 @@ const actions: ProductActions = {
             context.commit('REQUEST_RANDOM_FOUR_PRODUCT_LIST_TO_DJANGO', data);
         } catch (error) {
             console.error('Error fetching random product list:', error);
+            throw error
+        }
+    },
+    async requestRecommendProductListToDjango(context: ActionContext<ProductState, any>,
+        recommendProductIdList: number[]): Promise<void> {
+        try {
+            const res: AxiosResponse<any, any> = await axiosInst.djangoAxiosInst
+            .post('/product/recommend/list/', { recommendProductIdList });
+            const data: Product[] = res.data;
+            // console.log('data:', data)
+            context.commit('REQUEST_RECOMMEND_PRODUCT_LIST_TO_DJANGO', data);
+        } catch (error) {
+            console.error('Error fetching recommend product list:', error);
             throw error
         }
     },

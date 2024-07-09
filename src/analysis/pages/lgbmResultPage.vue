@@ -18,7 +18,7 @@
     <div v-if="prediction" class="result">
       <h2>Prediction Result</h2>
       <p>Predicted Category: {{ prediction.prediction }}</p>
-      <p>Recommended IDs: {{ prediction['recommended IDs'].join(', ') }}</p>
+      <p>Recommended IDs: {{ prediction['recommendProductIdList'].join(', ') }}</p>
     </div>
   </div>
 </template>
@@ -37,11 +37,12 @@ export default {
   methods: {
     async predict() {
       try {
-        const response = await axios.post('http://192.168.0.24:33333/lgbm-predict', {
+        const response = await axios.post('http://192.168.0.49:33333/lgbm-predict', {
           age: this.age,
           gender: this.gender,
         });
         this.prediction = response.data;
+        localStorage.setItem('recommendProductIdList', this.prediction.recommendProductIdList)
       } catch (error) {
         console.error("Prediction failed:", error);
       }

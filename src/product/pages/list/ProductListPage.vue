@@ -1,12 +1,7 @@
 <template>
     <v-container>
         <h2>판매 상품 리스트</h2>
-        <v-row class="justify-center mb-4 align-center">
-            <v-col cols="auto">
-                <v-select v-model="selectedCategory" :items="categories" label="카테고리 선택"
-                    class="category-select custom-select" style="margin-bottom: 0;">
-                </v-select>
-            </v-col>
+        <v-row class="justify-end mb-4 align-center">
             <v-col cols="auto">
                 <v-text-field v-model="searchQuery" label="검색" clearable class="search-input custom-select"
                     style="margin-bottom: 0; max-width: 300px;">
@@ -19,8 +14,8 @@
             </v-col>
         </v-row>
         <h1 @click="toggleVisibility('recommendationVisible')">추천 이모티콘<span class="small-icon">></span></h1>
-        <v-row v-if="recommendationVisible && filteredProducts.length > 0">
-            <v-col v-for="(product, index) in filteredProducts" :key="index" cols="12" sm="6" md="4" lg="3">
+        <v-row v-if="recommendProductList.length > 0">
+            <v-col v-for="(product, index) in recommendProductList" :key="index" cols="12" sm="6" md="4" lg="3">
                 <v-card @click="goToProductReadPage(product.productId)">
                     <v-img :src="getImageUrl(product.productTitleImage)" aspect-ratio="1.5">
                         <template v-slot:placeholder>
@@ -123,7 +118,7 @@ const accountModule = 'accountModule'
 
 export default {
     computed: {
-        ...mapState(productModule, ['products']),
+        ...mapState(productModule, ['products', 'recommendProductList']),
         filteredProducts() {
             let products = this.products;
 
@@ -150,10 +145,14 @@ export default {
     },
     mounted() {
         this.requestProductListToDjango();
+        this.defineRecommendProductIdList();
+        this.requestRecommendProductListToDjango(this.recommendProductIdList)
         this.checkRoleType();
     },
     methods: {
-        ...mapActions(productModule, ['requestProductListToDjango']),
+        ...mapActions(productModule, [
+            'requestProductListToDjango',
+            'requestRecommendProductListToDjango']),
         ...mapActions(accountModule, ['requestRoleTypeToDjango']),
         async checkRoleType() {
             try {
@@ -175,6 +174,17 @@ export default {
         },
         toggleVisibility(section) {
             this[section] = !this[section];
+        },
+        defineRecommendProductIdList() {
+            this.recommendProductIdList = localStorage.getItem('recommendProductIdList');
+
+            if (this.recommendProductIdList) {
+                this.recommendProductIdList = this.recommendProductIdList.split(',');
+                this.recommendProductIdList = this.recommendProductIdList.map(item => parseInt(item, 10));
+                console.log('recommendProductIdList:', this.recommendProductIdList);
+            } else {
+                console.error('No data found in localStorage');
+            }
         }
     },
     data() {
@@ -186,17 +196,14 @@ export default {
             recommendationVisible: true,
             cuteVisible: true,
             funnyVisible: true,
-            messageVisible: true
+            messageVisible: true,
+            recommendProductIdList: [],
         }
     }
 }
 </script>
 
 <style>
-.category-select {
-    width: 300px;
-}
-
 .search-input {
     width: 300px;
 }
@@ -228,4 +235,17 @@ export default {
     font-weight: 300;
     opacity: 0.6;
 }
+.title {
+    color: #0b0b0b; 
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold; 
+}
+.v-card-subtitle {
+    color: #a01f1f; 
+    font-weight: bold;
+}
 </style>
+
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
