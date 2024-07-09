@@ -3,19 +3,25 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 const authenticationModule = 'authenticationModule'
 const accountModule = 'accountModule'
 
 export default {
+    computed: {
+        ...mapState(accountModule, ['isAdmin'])
+    },
     methods: {
         ...mapActions(authenticationModule, [
             'requestAccessTokenToDjangoRedirection',
             'requestUserInfoToDjango',
             'requestAddRedisAccessTokenToDjango',
         ]),
-        ...mapActions(accountModule, ['requestEmailDuplicationCheckToDjango']),
+        ...mapActions(accountModule, [
+            'requestEmailDuplicationCheckToDjango',
+            'requestRoleTypeToDjango'
+        ]),
         async setRedirectData () {
             const code = this.$route.query.code
 
@@ -40,6 +46,13 @@ export default {
                 }
 
                 this.$router.push('/')
+
+                const response = await this.requestRoleTypeToDjango()
+                if (response === 'ADMIN') {
+                    console.log('response:', response)
+                    this.$store.state.accountModule.isAdmin = true
+                }
+                
             } else {
                 console.log('신규 가입 고객입니다!')
                 alert('신규 가입 고객입니다!')
