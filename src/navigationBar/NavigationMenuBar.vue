@@ -94,12 +94,6 @@ export default {
           console.log('You already have a userToken!!!')
           this.$store.state.authenticationModule.isAuthenticated = true
       }
-
-      const response = await this.requestRoleTypeToDjango()
-      if (response === 'ADMIN') {
-        console.log('response:', response)
-        this.$store.state.accountModule.isAdmin = true
-      }
   },
 }
 </script>

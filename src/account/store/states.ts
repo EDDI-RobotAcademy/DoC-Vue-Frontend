@@ -6,12 +6,6 @@ export interface AccountState {
     correctAdminPassword: string,
 }
 
-// export interface Account {
-//     nickname: string,
-//     roleType: string,
-//     correctAdminPassword: string,
-// }
-
 const state: AccountState = {
     isLoggedIn: false,
     isAdmin: false,
