@@ -7,7 +7,7 @@ import AuthenticationRoutes from '@/authentication/router/AuthenticationRoutes'
 import ReportRoutes from '@/report/router/ReportRoutes'
 import ReviewRoutes from '@/review/router/ReviewRoutes'
 import CartRoutes from '@/cart/router/CartRoutes'
-import KmeansRoutes from '@/analysis/router/KmeansRoutes'
+import lgbmRoutes from '@/analysis/router/lgbmRoutes'
 import OrderRoutes from '@/order/router/OrderRoutes'
 import NotificationRoutes from '@/notification/router/NotificationRoutes'
 
@@ -25,7 +25,7 @@ const routes: Array<RouteRecordRaw> = [
   ...ReportRoutes,
   ...ReviewRoutes,
   ...CartRoutes,
-  ...KmeansRoutes,
+  ...lgbmRoutes,
   ...OrderRoutes,
   ...NotificationRoutes,
 ]
