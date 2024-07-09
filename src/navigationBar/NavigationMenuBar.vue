@@ -48,13 +48,9 @@ const authenticationModule = 'authenticationModule'
 const accountModule = 'accountModule'
 
 export default {
-  data () {
-      return {
-          isAdmin: false,
-      }
-  },
   computed: {
-      ...mapState(authenticationModule, ['isAuthenticated'])
+      ...mapState(authenticationModule, ['isAuthenticated']),
+      ...mapState(accountModule, ['isAdmin'])
   },
   methods: {
       ...mapActions(authenticationModule, ['requestLogoutToDjango']),
@@ -81,28 +77,30 @@ export default {
         router.push('/notification/list')
       },
       signIn () {
-          router.push('/account/login')
+        router.push('/account/login')
       },
       signOut () {
-          this.requestLogoutToDjango()
-          router.push('/')
+        this.$store.state.accountModule.isAdmin = false 
+        this.requestLogoutToDjango()
+        router.push('/')
       },
   },
   async mounted () {
-        console.log('navigation bar mounted()')
+      console.log('navigation bar mounted()')
 
-        const userToken = localStorage.getItem("userToken")
+      const userToken = localStorage.getItem("userToken")
 
-        if (userToken) {
-            console.log('You already have a userToken!!!')
-            this.$store.state.authenticationModule.isAuthenticated = true
-        }
+      if (userToken) {
+          console.log('You already have a userToken!!!')
+          this.$store.state.authenticationModule.isAuthenticated = true
+      }
 
-        const response = await this.requestRoleTypeToDjango()
-        if (response === 'ADMIN') {
-          this.isAdmin = true
-        }
-    },
+      const response = await this.requestRoleTypeToDjango()
+      if (response === 'ADMIN') {
+        console.log('response:', response)
+        this.$store.state.accountModule.isAdmin = true
+      }
+  },
 }
 </script>
 <style scoped>
