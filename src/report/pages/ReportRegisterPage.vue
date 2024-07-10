@@ -54,8 +54,10 @@
   
   <script>
   import { mapActions } from 'vuex'
+  import axios from 'axios';
   
   const reportModule = 'reportModule'
+  const accountModule = 'accountModule'
   
   export default {
     data() {
@@ -72,11 +74,28 @@
     },
     methods: {
       ...mapActions(reportModule, ['requestCreateReportToDjango']),
+      ...mapActions(accountModule, ['requestCreateRecommendProductIdListToDjango']),
       async onSubmit() {
         if (this.$refs.form.validate()) {
           const payload = {
             age: this.age,
             gender: this.gender
+          }
+          try {
+            const response = await axios.post('http://192.168.0.49:33333/lgbm-predict', {
+              age: this.age,
+              gender: this.gender,
+            });
+            this.prediction = response.data;
+            const userToken = localStorage.getItem('userToken')
+            const payload = {
+              userToken: userToken,
+              recommendProductIdList:  this.prediction.recommendProductIdList
+            }
+            this.requestCreateRecommendProductIdListToDjango(payload)
+
+          } catch (error) {
+            console.error("Prediction failed:", error);
           }
   
           try {

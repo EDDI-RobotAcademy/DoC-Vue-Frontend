@@ -4,6 +4,7 @@ export interface AccountState {
     nickname: string
     roleType: string
     correctAdminPassword: string,
+    recommendProductIdList: [],
 }
 
 const state: AccountState = {
@@ -12,6 +13,7 @@ const state: AccountState = {
     nickname: '',
     roleType: '',
     correctAdminPassword: '',
+    recommendProductIdList: []
 }
 
 export default state

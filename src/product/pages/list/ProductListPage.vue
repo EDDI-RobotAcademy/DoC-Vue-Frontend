@@ -102,10 +102,10 @@ export default {
             return products;
         }
     },
-    mounted() {
-        this.requestProductListToDjango();
-        this.defineRecommendProductIdList();
-        this.requestRecommendProductListToDjango(this.recommendProductIdList);
+    async mounted() {
+        await this.requestProductListToDjango();
+        this.recommendProductIdList = await this.getRecommendProductIdList();
+        await this.requestRecommendProductListToDjango(this.recommendProductIdList)
         this.checkRoleType();
     },
     methods: {
@@ -113,7 +113,10 @@ export default {
             'requestProductListToDjango',
             'requestRecommendProductListToDjango'
         ]),
-        ...mapActions(accountModule, ['requestRoleTypeToDjango']),
+        ...mapActions(accountModule, [
+            'requestRoleTypeToDjango',
+            'requestRecommendProductIdListToDjango'
+        ]),
         async checkRoleType() {
             try {
                 const roleType = await this.requestRoleTypeToDjango();
@@ -135,20 +138,12 @@ export default {
         toggleVisibility(section) {
             this[section] = !this[section];
         },
-        defineRecommendProductIdList() {
-            this.recommendProductIdList = localStorage.getItem('recommendProductIdList');
-
-            if (this.recommendProductIdList) {
-                this.recommendProductIdList = this.recommendProductIdList.split(',');
-                this.recommendProductIdList = this.recommendProductIdList.map(item => parseInt(item, 10));
-                console.log('recommendProductIdList:', this.recommendProductIdList);
-            } else {
-                console.error('LocalStorage에서 데이터를 찾을 수 없습니다.');
-            }
-        },
         changePage(page) {
             this.currentPage = page;
-        }
+        },
+        async getRecommendProductIdList() {
+            return await this.requestRecommendProductIdListToDjango()
+        },
     },
     data() {
         return {
@@ -213,4 +208,4 @@ export default {
 
 <head>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-</head>
+</head> 
