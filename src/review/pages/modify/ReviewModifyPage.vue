@@ -33,7 +33,7 @@
                         </v-col>
                         <v-col cols="auto">
                             <router-link :to="{ name: 'ReviewReadPage', params: { reviewId } }">
-                                <v-btn color="secondary">
+                                <v-btn color="#E3EF76">
                                     <v-icon>mdi-arrow-left</v-icon>
                                     <span>돌아가기</span>
                                 </v-btn>

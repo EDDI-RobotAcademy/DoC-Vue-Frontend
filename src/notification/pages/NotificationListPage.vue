@@ -2,7 +2,10 @@
     <v-container>
         <v-row justify='center' v-if="expectedSecedeList.length > 0">
             <v-col cols="12" md="10" lg="8">
-                <h2 class="title">이탈이 예상되는 고객</h2>
+                <h2 class="title">
+                    <span>이탈이 예상되는 고객</span>
+                    <v-icon class="ml-auto">mdi-emoticon-cry-outline</v-icon>
+                </h2>
                 <v-data-table
                     v-model:items-per-page="perPage"
                     :headers="headerTitle"
@@ -19,11 +22,6 @@
         </v-row>
         <v-row justify='center' v-else class="no-expected-customers">
             <p class="no-customers-text">이탈이 예상되는 고객이 없습니다.</p>
-        </v-row>
-        <v-row>
-            <v-col>
-                <v-btn color="primary" @click="goToLastPage">이전 페이지</v-btn>
-            </v-col>
         </v-row>
     </v-container>
 </template>

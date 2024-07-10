@@ -39,9 +39,9 @@
                         </v-table>
                         <v-divider></v-divider>
                         <v-row>
-                            <v-col>
-                                <v-btn color="blue" @click="confirmCheckout" :disabled="isCheckoutDisabled">구매하기</v-btn>
-                            </v-col>
+                            <!-- <v-col>
+                                <v-btn color="primary" @click="confirmCheckout" :disabled="isCheckoutDisabled">구매하기</v-btn>
+                            </v-col> -->
                             <v-col class="text-right">
                                 <strong>Total: {{ selectedItemsTotal }}</strong>
                             </v-col>
@@ -63,6 +63,21 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-row justify="end">
+            <!-- class="d-flex justify-end" -->
+            <v-col cols="auto">
+                <v-btn color="primary" @click="confirmCheckout" :disabled="isCheckoutDisabled">
+                    <v-icon>mdi-cart</v-icon>
+                    <span>구매하기</span>
+                </v-btn>
+            </v-col>
+            <v-col cols="auto">
+                <v-btn color="#E3EF76" @click="goToLastPage">
+                    <v-icon left>mdi-arrow-left</v-icon>
+                    <span>돌아가기</span>
+                </v-btn>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 
@@ -154,6 +169,9 @@ export default {
                 console.error("Error fetching cart list:", error);
             }
         },
+        goToLastPage() {
+            this.$router.go(-1)
+        }
     },
     created() {
         this.fetchCartList();
@@ -161,7 +179,13 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.d-flex {
+  display: flex;
+}
+.justify-end {
+  justify-content: flex-end;
+}
 .table-header th {
     font-size: 1.3em; /* Increase the font size */
     font-weight: 900; /* Make the font bold */

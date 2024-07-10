@@ -2,7 +2,10 @@
     <v-container>
         <v-row justify="center">
             <v-col cols="12" md="12" lg="11">
-                <h2 class="title">리뷰</h2>
+                <h2 class="title">
+                    <span>리뷰</span>
+                    <v-icon class="ml-auto">mdi-star-face</v-icon>
+                </h2>
                 <v-row v-if="reviewList.length === 0" type="info">
                     <strong>해당 상품에 등록된 리뷰가 없습니다.</strong>
                 </v-row>
@@ -29,6 +32,7 @@
                         </v-card>
                     </v-col>
                 </v-row>
+                <br>
                 <v-pagination
                     v-model="pagination.page"
                     :length="Math.ceil(reviewList.length / perPage)"
@@ -36,9 +40,12 @@
                     @input="updateItems"/>
             </v-col>
         </v-row>
-        <v-row>
-            <v-col>
-                <v-btn color="blue" @click="goToLastPage">돌아가기</v-btn>
+        <v-row justify="center">
+            <v-col cols="auto">
+                <v-btn color="#E3EF76" @click="goToLastPage">
+                    <v-icon left>mdi-arrow-left</v-icon>
+                    <span>돌아가기</span>
+                </v-btn>
             </v-col>
         </v-row>
     </v-container>
@@ -94,7 +101,7 @@ export default {
     },
     data() {
         return {
-            perPage: 10, // 고정된 항목 수
+            perPage: 8, // 고정된 항목 수
             pagination: { page: 1 }
         }
     }

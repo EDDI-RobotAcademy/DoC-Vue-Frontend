@@ -48,9 +48,15 @@
         </v-row>
         <v-row>
             <v-col cols="12" class="text-right">
-                <v-btn class="ml-2" color="primary" @click="onSubmit" data-testid="btn-submit">등록</v-btn>
+                <v-btn class="ml-2" color="primary" @click="onSubmit" data-testid="btn-submit">
+                    <v-icon>mdi-check</v-icon>
+                    <span>등록</span>
+                </v-btn>
                 <router-link :to="{ name: 'ProductListPage' }">
-                    <v-btn class="ml-1" color="error" @click="onCancel" data-testid="btn-cancel">취소</v-btn>
+                    <v-btn class="ml-1" color="error" @click="onCancel" data-testid="btn-cancel">
+                        <v-icon>mdi-cancel</v-icon>
+                        <span>취소</span>
+                    </v-btn>
                 </router-link>
             </v-col>
         </v-row>

@@ -102,8 +102,9 @@
         <v-row justify="center" class="mt-4">
             <v-col cols="auto">
                 <router-link :to="{ name: 'ProductListPage' }" class="router-link no-underline">
-                    <v-btn color="secondary" class="action-button">
-                        <v-icon left>mdi-arrow-left</v-icon>목록으로 돌아가기
+                    <v-btn color="#E3EF76" class="action-button">
+                        <v-icon left>mdi-arrow-left</v-icon>
+                        <span>돌아가기</span>
                     </v-btn>
                 </router-link>
             </v-col>
@@ -183,6 +184,8 @@ export default {
                 const response = await this.requestProductReadToAddOrderToDjango(payload);
                 await this.requestDeleteCartItemToDjango({ productId: [this.product.productId] })
                 console.log('장바구니에 있었으면 삭제 성공')
+
+                alert('구매가 완료되었습니다.')
 
             } catch (error) {
                 console.log('상품 구매 중 에러 발생:', error)

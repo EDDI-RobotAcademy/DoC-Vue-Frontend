@@ -41,7 +41,7 @@
                             <v-btn color="primary">
                                 <router-link :to="{ name: 'ReviewModifyPage', params: { reviewId } }"
                                              class="router-link-no-underline">
-                                    <v-icon>mdi-draw</v-icon>
+                                    <v-icon>mdi-pencil</v-icon>
                                     <span>수정</span>
                                 </router-link>
                             </v-btn>
@@ -54,7 +54,7 @@
                         </v-col>
                         <v-col cols="auto">
                             <router-link :to="{ name: 'ReviewListPage' }">
-                                <v-btn color="secondary">
+                                <v-btn color="#E3EF76">
                                     <v-icon>mdi-arrow-left</v-icon>
                                     <span>돌아가기</span>
                                 </v-btn>
