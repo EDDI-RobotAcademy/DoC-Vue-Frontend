@@ -4,7 +4,7 @@
         <v-row class="mb-4 align-center">
             <h1 @click="toggleVisibility('recommendationVisible')" class="text-left">추천 이모티콘<span
                     class="small-icon">></span></h1>
-            <v-spacer></v-spacer> <!-- 우측 정렬을 위한 빈 공간 -->
+            <v-spacer></v-spacer>
             <v-col cols="2">
                 <div class="search-container text-right">
                     <v-icon @click="toggleCategorySelect" class="search-icon">mdi-menu</v-icon>
@@ -96,7 +96,6 @@ export default {
     computed: {
         ...mapState(productModule, ['products', 'recommendProductList']),
         paginatedProducts() {
-            // 현재 페이지의 상품 목록 계산
             const startIndex = (this.currentPage - 1) * this.itemsPerPage;
             return this.filteredProducts.slice(startIndex, startIndex + this.itemsPerPage);
         },
@@ -169,15 +168,15 @@ export default {
         return {
             categories: ['전체', '귀여운', '재밌는', '메시지'],
             selectedCategory: '전체',
-            searchQuery: '', // 검색어를 저장하는 변수
-            isSeller: false, // 판매자 여부를 저장하는 상태 변수
+            searchQuery: '',
+            isSeller: false, 
             recommendationVisible: true,
             allProductsVisible: true,
             recommendProductIdList: [],
             currentPage: 1,
-            showSearchInput: false, // 검색창 표시 여부를 제어하는 변수
-            showCategorySelect: false, // 카테고리 선택창 표시 여부를 제어하는 변수
-            itemsPerPage: 8 // 한 페이지에 보여질 상품 개수
+            showSearchInput: false, 
+            showCategorySelect: false, 
+            itemsPerPage: 8 
         };
     },
 };
@@ -200,11 +199,6 @@ export default {
 .custom-select .v-label {
     color: #a71616;
 }
-.v-text-field{
-    margin-bottom: 0;
-    max-width: 300px;
-    margin-right: 10px;
-}
 .mb-5 {
     background-color: #deed933a;
 }
@@ -222,7 +216,7 @@ export default {
 
 .title {
     color: #0b0b0b;
-    font-family: 'Roboto', sans-serif;
+    font-family: sans-serif;
     font-weight: bold;
 }
 
@@ -242,7 +236,3 @@ export default {
     font-weight: bold;
 }
 </style>
-
-<head>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-</head>
