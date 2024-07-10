@@ -102,6 +102,7 @@ const actions: AuthenticationActions = {
             throw error
         }
         localStorage.removeItem("userToken")
+        localStorage.removeItem("isAdmin")
     }
 };
 
