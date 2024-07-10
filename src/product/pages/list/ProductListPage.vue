@@ -113,7 +113,10 @@ export default {
             'requestProductListToDjango',
             'requestRecommendProductListToDjango'
         ]),
-        ...mapActions(accountModule, ['requestRoleTypeToDjango']),
+        ...mapActions(accountModule, [
+            'requestRoleTypeToDjango',
+            'requestRecommendProductIdListToDjango'
+        ]),
         async checkRoleType() {
             try {
                 const roleType = await this.requestRoleTypeToDjango();
