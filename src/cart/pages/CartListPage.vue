@@ -52,7 +52,7 @@
         </v-row>
         <v-dialog v-model="isCheckoutDialogVisible" max-width="500">
             <v-card>
-                <v-card-title>Confirm Checkout</v-card-title>
+                <v-card-title>Message</v-card-title>
                 <v-card-text>
                     정말 구매하시겠습니까?
                 </v-card-text>

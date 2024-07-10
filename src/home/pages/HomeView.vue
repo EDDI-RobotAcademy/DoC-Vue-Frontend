@@ -44,11 +44,26 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import router from '@/router';
+import { mapActions,mapState } from 'vuex'
+
+const accountModule = 'accountModule'
 
 export default defineComponent({
+  computed: {
+        ...mapState(accountModule, ['isAdmin'])
+  },
   methods: {
+    ...mapActions(accountModule, ['requestRoleTypeToDjango']),
     goToProductList () {
       router.push('/product/list')
+    },
+    async checkRoleType () {
+      const response = await this.requestRoleTypeToDjango()
+                if (response === 'ADMIN') {
+                    console.log('response:', response)
+                    // this.$store.state.accountModule.isAdmin = true
+                    localStorage.setItem('isAdmin', 'true')
+                }
     }
   },
   mounted() {
@@ -68,6 +83,7 @@ export default defineComponent({
     lines.forEach((line) => {
       observer.observe(line);
     });
+    this.checkRoleType()
   }
 });
 </script>
