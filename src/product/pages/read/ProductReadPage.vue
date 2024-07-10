@@ -167,48 +167,104 @@ export default {
         ...mapState(productModule, ['product', 'products'])
     },
     methods: {
-        ...mapActions(productModule, ['requestProductToDjango', 'requestRandomFourProductListToDjango']),
-        ...mapActions(cartModule, ['requestAddCartToDjango', 'requestDeleteCartItemToDjango']),
-        ...mapActions(orderModule, ['requestProductReadToAddOrderToDjango']),
+        ...mapActions(productModule, [
+            'requestProductToDjango', 
+            'requestRandomFourProductListToDjango'
+        ]),
+        ...mapActions(cartModule, [
+            'requestAddCartToDjango',
+             'requestDeleteCartItemToDjango'
+            ]),
+        ...mapActions(orderModule, [
+            'requestProductReadToAddOrderToDjango',
+            'requestOrderItemDuplicationCheckToDjango'
+        ]),
         async onPurchase() {
             this.isCheckoutDialogVisible = false
             console.log('이모티콘 구매')
             try {
                 const userToken = localStorage.getItem('userToken')
                 const payload = {
-                    userToken,
-                    productId: this.product.productId,
-                    productPrice: this.product.productPrice,
+                    userToken: userToken,
+                    productId: this.product.productId
                 }
-                console.log('orderItem:', payload)
-                const response = await this.requestProductReadToAddOrderToDjango(payload);
-                await this.requestDeleteCartItemToDjango({ productId: [this.product.productId] })
-                console.log('장바구니에 있었으면 삭제 성공')
+                console.log('payload:', payload)
+                const isDuplicate = await this.requestOrderItemDuplicationCheckToDjango(payload)
+                console.log('isDuplicate:', isDuplicate)
+                if (isDuplicate) {
+                    alert('이미 구매하신 상품입니다.')
+                } else {
+                    try {
+                        const userToken = localStorage.getItem('userToken')
+                        const payload = {
+                            userToken,
+                            productId: this.product.productId,
+                            productPrice: this.product.productPrice,
+                        }
+                        console.log('orderItem:', payload)
+                        const response = await this.requestProductReadToAddOrderToDjango(payload);
+                        await this.requestDeleteCartItemToDjango({ productId: [this.product.productId] })
+                        console.log('장바구니에 있었으면 삭제 성공')
 
-                alert('구매가 완료되었습니다.')
-
+                        alert('구매가 완료되었습니다.')
+                    } catch (error) {
+                        console.log('상품 구매 중 에러 발생:', error)
+                    }
+                }
             } catch (error) {
-                console.log('상품 구매 중 에러 발생:', error)
+                console.log('이미 구매한 상품인지 확인 중 에러 발생:', error)
             }
-
         },
         async onAddToCartAndAsk() {
-            this.isGoToCartListDialogVisible = true
             console.log('장바구니에 추가 버튼 눌렀음')
             try {
-                const cartData = {
-                    productId: this.product.productId,
-                    productName: this.product.productName,
-                    productPrice: this.product.productPrice,
-                    quantity: 1,
+                const userToken = localStorage.getItem('userToken')
+                const payload = {
+                    userToken: userToken,
+                    productId: this.product.productId
                 }
-                await this.requestAddCartToDjango(cartData)
+                console.log('payload:', payload)
+                const isDuplicate = await this.requestOrderItemDuplicationCheckToDjango(payload)
+                console.log('isDuplicate:', isDuplicate)
+                if (isDuplicate) {
+                    alert('이미 구매하신 상품입니다.')
+                } else {
+                    try {
+                        this.isGoToCartListDialogVisible = true
+                        const cartData = {
+                        productId: this.product.productId,
+                        productName: this.product.productName,
+                        productPrice: this.product.productPrice,
+                        }
+                        await this.requestAddCartToDjango(cartData)
+                        } catch (error) {
+                            console.log('장바구니 추가 과정에서 에러 발생:', error)
+                         }
+                }
             } catch (error) {
-                console.log('장바구니 추가 과정에서 에러 발생:', error)
+                console.log('이미 구매한 상품인지 확인 중 에러 발생:', error)
+            }
+        },
+        async checkOrdersItemDuplication () {
+            console.log('닉네임 중복 검사')
+
+            try {
+                const isDuplicate = await this.requestOrdersItemDuplicationCheckToDjango({
+                    productId: this.product.productId})
+
+                if (isDuplicate) {
+                    this.ordersItemErrorMessages = ['이 nickname은 이미 사용중입니다!']
+                    this.isNicknameValid = false
+                } else {
+                    this.nicknameErrorMessages = []
+                    this.isNicknameValid = true
+                }
+            } catch (error) {
+                alert('닉네임 중복 확인에 실패했습니다!')
+                this.isNicknameValid = false
             }
         },
         getProductImageUrl(imageName) {
-            console.log('imageName:', imageName)
             return require(`@/assets/images/uploadImages/${imageName}`)
         },
         confirmCheckout() {
@@ -230,7 +286,6 @@ export default {
             });
         },
         async fetchProductData(productId) {
-            console.log(productId);
             await this.requestProductToDjango(productId);
             if (this.product && this.product.productCategory) {
                 console.log(this.product.productCategory);
