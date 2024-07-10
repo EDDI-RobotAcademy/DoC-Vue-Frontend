@@ -42,7 +42,6 @@ export default {
           gender: this.gender,
         });
         this.prediction = response.data;
-        localStorage.setItem('recommendProductIdList', this.prediction.recommendProductIdList)
       } catch (error) {
         console.error("Prediction failed:", error);
       }

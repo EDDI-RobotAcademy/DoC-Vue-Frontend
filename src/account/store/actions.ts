@@ -14,7 +14,7 @@ export type AccountActions = {
     ): Promise<boolean>
     requestCreateNewAccountToDjango(
         context: ActionContext<any, any>,
-        accountInfo: { email: string, nickname: string ,business: boolean}
+        accountInfo: { email: string, nickname: string, business: boolean}
     ): Promise<void>
     requestNicknameToDjango(
         context: ActionContext<AccountState, any>,
@@ -26,7 +26,15 @@ export type AccountActions = {
     ): Promise<string>
     requestCorrectAdminPasswordToDjango(
         context: ActionContext<AccountState, any>,
-    ): Promise<string> 
+    ): Promise<string>
+    requestCreateRecommendProductIdListToDjango(
+        context: ActionContext<any, any>,
+        payload: { userToken: string, RecommendProductIdList: number[] }
+    ): Promise<void>
+    requestRecommendProductIdListToDjango(
+        context: ActionContext<AccountState, any>,
+        userToken: string
+    ): Promise<string>
 }
 
 const actions: AccountActions = {
@@ -107,6 +115,29 @@ const actions: AccountActions = {
             throw error
         }
     },
+    async requestCreateRecommendProductIdListToDjango(
+        context: ActionContext<any, any>,
+        payload: { userToken: string, RecommendProductIdList: number[] }
+    ): Promise<void> {
+        try {
+            await axiosInst.djangoAxiosInst.post('/account/recommend/register', payload)
+        } catch (error) {
+            console.error('추천 상품 ID 리스트 생성 실패:', error)
+            throw error
+        }
+    },
+    async requestRecommendProductIdListToDjango(context: ActionContext<AccountState, any>, userToken: string): Promise<string> {
+        try{
+            const userToken = localStorage.getItem("userToken");
+            const res: AxiosResponse<string> = await axiosInst.djangoAxiosInst.post('/account/recommend/list', { userToken: userToken });
+            console.log('data:', res.data)
+            context.commit('REQUEST_RECOMMNED_PRODUCT_ID_LIST_TO_DJANGO', res.data)
+            return res.data
+        } catch (error) {
+            console.log('requestRecommendProductIdListToDjango() 문제 발생:', error)
+            throw error
+        }
+    }
 };
 
 export default actions;

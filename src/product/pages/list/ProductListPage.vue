@@ -143,17 +143,20 @@ export default {
             return this.products.filter(product => product.productCategory === '메시지');
         }
     },
-    mounted() {
-        this.requestProductListToDjango();
-        this.defineRecommendProductIdList();
-        this.requestRecommendProductListToDjango(this.recommendProductIdList)
+    async mounted() {
+        await this.requestProductListToDjango();
+        this.recommendProductIdList = await this.getRecommendProductIdList();
+        await this.requestRecommendProductListToDjango(this.recommendProductIdList)
         this.checkRoleType();
     },
     methods: {
         ...mapActions(productModule, [
             'requestProductListToDjango',
             'requestRecommendProductListToDjango']),
-        ...mapActions(accountModule, ['requestRoleTypeToDjango']),
+        ...mapActions(accountModule, [
+            'requestRoleTypeToDjango',
+            'requestRecommendProductIdListToDjango',
+        ]),
         async checkRoleType() {
             try {
                 const roleType = await this.requestRoleTypeToDjango();
@@ -175,16 +178,8 @@ export default {
         toggleVisibility(section) {
             this[section] = !this[section];
         },
-        defineRecommendProductIdList() {
-            this.recommendProductIdList = localStorage.getItem('recommendProductIdList');
-
-            if (this.recommendProductIdList) {
-                this.recommendProductIdList = this.recommendProductIdList.split(',');
-                this.recommendProductIdList = this.recommendProductIdList.map(item => parseInt(item, 10));
-                console.log('recommendProductIdList:', this.recommendProductIdList);
-            } else {
-                console.error('No data found in localStorage');
-            }
+        async getRecommendProductIdList() {
+            return await this.requestRecommendProductIdListToDjango()
         }
     },
     data() {
