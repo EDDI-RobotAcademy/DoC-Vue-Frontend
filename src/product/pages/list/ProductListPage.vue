@@ -1,23 +1,34 @@
 <template>
     <v-container>
-        <v-row class="justify-end mb-4 align-center">
-            <v-col cols="3">
-                <v-select v-model="selectedCategory" :items="categories" label="카테고리 선택"
-                    class="category-select custom-select" style="margin-bottom: 0;">
-                </v-select>
+        <br><br>
+        <v-row class="mb-4 align-center">
+            <h1 @click="toggleVisibility('recommendationVisible')" class="text-left">추천 이모티콘<span
+                    class="small-icon">></span></h1>
+            <v-spacer></v-spacer> <!-- 우측 정렬을 위한 빈 공간 -->
+            <v-col cols="2">
+                <div class="search-container text-right">
+                    <v-icon @click="toggleCategorySelect" class="search-icon">mdi-menu</v-icon>
+                    <v-select v-model="selectedCategory" :items="categories" label="카테고리 선택"
+                        class="category-select custom-select" style="margin-bottom: 0;" v-show="showCategorySelect">
+                    </v-select>
+                </div>
             </v-col>
             <v-col cols="auto">
-                <v-text-field v-model="searchQuery" label="검색" clearable class="search-input custom-select"
-                    style="margin-bottom: 0; max-width: 300px;">
-                </v-text-field>
+                <div class="search-container text-right" style="margin-right: 10px;">
+                    <v-icon @click="toggleSearch" class="search-icon">mdi-magnify</v-icon>
+                    <v-text-field v-if="showSearchInput" v-model="searchQuery" label="검색" clearable
+                        class="search-input custom-select"></v-text-field>
+                </div>
             </v-col>
-            <v-col v-if="isSeller" cols="auto">
+            <v-col v-if="isSeller" cols="auto" class="text-right">
                 <v-btn :to="{ name: 'ProductRegisterPage' }" class="mb-5" height="40">
                     상품 등록
                 </v-btn>
             </v-col>
         </v-row>
-        <h1 @click="toggleVisibility('recommendationVisible')">추천 이모티콘<span class="small-icon">></span></h1>
+
+
+        <br><br>
         <v-row v-if="recommendationVisible && recommendProductList.length > 0">
             <v-col v-for="(product, index) in recommendProductList" :key="index" cols="12" sm="6" md="4" lg="3">
                 <v-card @click="goToProductReadPage(product.productId)">
@@ -38,7 +49,8 @@
                 <v-alert type="info">추천 상품이 없습니다!</v-alert>
             </v-col>
         </v-row>
-        <h1 @click="toggleVisibility('allProductsVisible')">전체 이모티콘<span class="small-icon">></span></h1>
+        <br><br>
+        <h1 @click="toggleVisibility('allProductsVisible')">전체 이모티콘<span class="small-icon">></span></h1><br><br>
         <v-row v-if="allProductsVisible && paginatedProducts.length > 0">
             <v-col v-for="(product, index) in paginatedProducts" :key="index" cols="12" sm="6" md="4" lg="3">
                 <v-card @click="goToProductReadPage(product.productId)">
@@ -52,6 +64,7 @@
                     <v-card-title>{{ product.productName }}</v-card-title>
                     <v-card-subtitle>{{ product.productPrice }}</v-card-subtitle>
                 </v-card>
+                <br>
             </v-col>
         </v-row>
         <v-row v-else-if="allProductsVisible">
@@ -99,6 +112,7 @@ export default {
                 products = products.filter(product => product.productName.toLowerCase().includes(query));
             }
 
+
             return products;
         }
     },
@@ -141,6 +155,12 @@ export default {
         changePage(page) {
             this.currentPage = page;
         },
+        toggleSearch() {
+            this.showSearchInput = !this.showSearchInput;
+        },
+        toggleCategorySelect() {
+            this.showCategorySelect = !this.showCategorySelect;
+        },
         async getRecommendProductIdList() {
             return await this.requestRecommendProductIdListToDjango()
         },
@@ -155,9 +175,11 @@ export default {
             allProductsVisible: true,
             recommendProductIdList: [],
             currentPage: 1,
+            showSearchInput: false, // 검색창 표시 여부를 제어하는 변수
+            showCategorySelect: false, // 카테고리 선택창 표시 여부를 제어하는 변수
             itemsPerPage: 8 // 한 페이지에 보여질 상품 개수
         };
-    }
+    },
 };
 </script>
 
@@ -167,8 +189,8 @@ export default {
 }
 
 .custom-select .v-input__control {
-    background-color: #f4f6eb3a;
-    color: #a71616;
+    background-color: #ffffff;
+    color: #1d1a1aec;
 }
 
 .custom-select .v-select__selections {
@@ -178,7 +200,11 @@ export default {
 .custom-select .v-label {
     color: #a71616;
 }
-
+.v-text-field{
+    margin-bottom: 0;
+    max-width: 300px;
+    margin-right: 10px;
+}
 .mb-5 {
     background-color: #deed933a;
 }
@@ -200,6 +226,17 @@ export default {
     font-weight: bold;
 }
 
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    cursor: pointer;
+    font-size: 24px;
+    margin-right: 8px;
+}
+
 .v-card-subtitle {
     color: #a01f1f;
     font-weight: bold;
@@ -208,4 +245,4 @@ export default {
 
 <head>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-</head> 
+</head>
