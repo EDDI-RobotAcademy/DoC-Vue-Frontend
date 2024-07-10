@@ -44,15 +44,16 @@ export default {
                 } else {
                     console.error('AccessToken is missing');
                 }
-
-                this.$router.push('/')
-
+                
                 const response = await this.requestRoleTypeToDjango()
                 if (response === 'ADMIN') {
                     console.log('response:', response)
                     this.$store.state.accountModule.isAdmin = true
+                    localStorage.setItem('isAdmin', true)
                 }
-                
+
+                this.$router.push('/')
+
             } else {
                 console.log('신규 가입 고객입니다!')
                 alert('신규 가입 고객입니다!')

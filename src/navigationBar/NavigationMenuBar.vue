@@ -24,7 +24,7 @@
       <v-btn text @click="goToOrderList" class="btn-text">
         <span>Order</span>
       </v-btn>
-      <v-btn v-if="isAdmin" text @click="goToNotificationList" class="btn-text">
+      <v-btn v-if="isAdmin || admin" text @click="goToNotificationList" class="btn-text">
         <span>Notification</span>
       </v-btn>
       <v-btn v-if="!isAuthenticated" text @click="signIn" class="btn-text">
@@ -48,6 +48,11 @@ const authenticationModule = 'authenticationModule'
 const accountModule = 'accountModule'
 
 export default {
+  data () { 
+    return {
+      admin: ''
+    }
+  },
   computed: {
       ...mapState(authenticationModule, ['isAuthenticated']),
       ...mapState(accountModule, ['isAdmin'])
@@ -81,6 +86,7 @@ export default {
       },
       signOut () {
         this.$store.state.accountModule.isAdmin = false 
+        this.admin = false
         this.requestLogoutToDjango()
         router.push('/')
       },
@@ -89,6 +95,8 @@ export default {
       console.log('navigation bar mounted()')
 
       const userToken = localStorage.getItem("userToken")
+      this.admin = localStorage.getItem('isAdmin') === 'true'
+      console.log('admin:', this.admin)
 
       if (userToken) {
           console.log('You already have a userToken!!!')
