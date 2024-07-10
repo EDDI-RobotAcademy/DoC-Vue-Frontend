@@ -54,11 +54,14 @@ class ProductUploader:
             parent_element = self.driver.find_element(By.CSS_SELECTOR, '[data-testid="input-product-name"]')
             input_element = parent_element.find_element(By.CSS_SELECTOR, '.v-input__control input')
             input_element.send_keys(emoji_name)
-            
+            print(emoji_name)
+
             # 이모티콘 가격 입력
             parent_element = self.driver.find_element(By.CSS_SELECTOR, '[data-testid="input-product-price"]')
             input_element = parent_element.find_element(By.CSS_SELECTOR, '.v-input__control input')
             input_element.send_keys('2000')
+            print(emoji_name)
+
             
             # 카테고리 선택
             parent_element = self.driver.find_element(By.CSS_SELECTOR, '[data-testid="input-product-category"]')
@@ -66,6 +69,8 @@ class ProductUploader:
             time.sleep(1)
             dropdown_item = self.driver.find_element(By.XPATH, f'//div[contains(text(), "{self.get_category_text(category)}")]')
             dropdown_item.click()
+            print("성공")
+
             
             # 이모티콘 상세 설명 입력
             parent_element = self.driver.find_element(By.CSS_SELECTOR, '[data-testid="input-product-description"]')
@@ -125,7 +130,7 @@ if __name__ == "__main__":
     # remove_exclamation_marks(img_directory)
 
     # 이미지 업로드 시작
-    url = "http://192.168.0.49:8080/product/register"
+    url = "http://localhost:8080/product/register"
     img_path = "product_img"
     product_uploader = ProductUploader(url, img_path)
     product_uploader.upload()

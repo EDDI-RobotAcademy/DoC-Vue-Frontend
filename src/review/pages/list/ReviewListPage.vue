@@ -26,6 +26,7 @@
                         </v-card>
                     </v-col>
                 </v-row>
+                <br>
                 <v-pagination
                     v-model="pagination.page"
                     :length="Math.ceil(reviewList.length / perPage)"
@@ -80,7 +81,7 @@ export default {
     },
     data() {
         return {
-            perPage: 10, // 고정된 항목 수
+            perPage: 8, // 고정된 항목 수
             pagination: { page: 1 }
         }
     }
