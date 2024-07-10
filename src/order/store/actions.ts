@@ -27,7 +27,17 @@ export type OrderActions = {
         context: ActionContext<OrderState, any>,
         userToken: string
     ): Promise<void>
-    requestMyOrderItemListToDjango(context: ActionContext<OrderState, any>, ordersId: number): Promise<void>
+    requestMyOrderItemListToDjango(
+        context: ActionContext<OrderState, any>, 
+        ordersId: number
+    ): Promise<void>
+    requestOrderItemDuplicationCheckToDjango(
+        context: ActionContext<OrderState, any>,
+        payload: { 
+            userToken: string,
+            productId: number,
+        }
+    ): Promise<void>
 }
 
 const actions: OrderActions = {
@@ -96,6 +106,16 @@ const actions: OrderActions = {
             console.error('requestMyOrderItemListToDjango() 문제 발생:', error);
             throw error
         }
+    },
+    async requestOrderItemDuplicationCheckToDjango(
+        context: ActionContext<OrderState, any>,
+        payload: {
+            userToken: string, productId: number
+        }): Promise<void> {
+        const { userToken, productId } = payload
+        const res = await axiosInst.djangoAxiosInst
+        .post('/orders/order-item-duplication-check', { payload })
+        return res.data
     },
 }
 
