@@ -9,6 +9,19 @@
         </span>
       </v-btn>
       <v-spacer></v-spacer>
+      <v-menu v-if="isAdmin || admin" close-on-content-click>
+        <template v-slot:activator="{ props }">
+            <v-btn v-bind="props">
+                <b>Admin</b>
+            </v-btn>
+        </template>
+        <v-list>
+            <v-list-item v-for="(item, index) in items"
+                          :key="index" @click="item.action">
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+        </v-list>
+      </v-menu>
       <v-btn text @click="goToProductList" class="btn-text">
         <span>Emoticon</span>
       </v-btn>
@@ -23,9 +36,6 @@
       </v-btn>
       <v-btn text @click="goToOrderList" class="btn-text">
         <span>Order</span>
-      </v-btn>
-      <v-btn v-if="isAdmin || admin" text @click="goToNotificationList" class="btn-text">
-        <span>Notification</span>
       </v-btn>
       <v-btn v-if="!isAuthenticated" text @click="signIn" class="btn-text">
         <v-icon right>mdi-login</v-icon>
@@ -50,7 +60,11 @@ const accountModule = 'accountModule'
 export default {
   data () { 
     return {
-      admin: ''
+      admin: '',
+      items: [
+        { title: 'Notification', action: () => { router.push('/notification/list') } },
+        { title: 'Analysis', action: () => { router.push('/lgbm-result') } },
+      ],
     }
   },
   computed: {
