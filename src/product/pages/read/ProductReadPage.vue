@@ -173,7 +173,8 @@ export default {
         ]),
         ...mapActions(cartModule, [
             'requestAddCartToDjango',
-             'requestDeleteCartItemToDjango'
+             'requestDeleteCartItemToDjango',
+             'requestCartItemDuplicationCheckToDjango'
             ]),
         ...mapActions(orderModule, [
             'requestProductReadToAddOrderToDjango',
@@ -189,9 +190,9 @@ export default {
                     productId: this.product.productId
                 }
                 console.log('payload:', payload)
-                const isDuplicate = await this.requestOrderItemDuplicationCheckToDjango(payload)
-                console.log('isDuplicate:', isDuplicate)
-                if (isDuplicate) {
+                const isDuplicatedOrderItem = await this.requestOrderItemDuplicationCheckToDjango(payload)
+                console.log('isDuplicate:', isDuplicatedOrderItem)
+                if (isDuplicatedOrderItem) {
                     alert('이미 구매하신 상품입니다.')
                 } else {
                     try {
@@ -224,10 +225,13 @@ export default {
                     productId: this.product.productId
                 }
                 console.log('payload:', payload)
-                const isDuplicate = await this.requestOrderItemDuplicationCheckToDjango(payload)
-                console.log('isDuplicate:', isDuplicate)
-                if (isDuplicate) {
+                const isDuplicatedOrderItem = await this.requestOrderItemDuplicationCheckToDjango(payload)
+                const isDuplicatedCartItem = await this.requestCartItemDuplicationCheckToDjango(payload)
+                console.log('isDuplicate:', isDuplicatedOrderItem)
+                if (isDuplicatedOrderItem) {
                     alert('이미 구매하신 상품입니다.')
+                } else if (isDuplicatedCartItem) {
+                    alert('장바구니에 있는 상품입니다.')
                 } else {
                     try {
                         this.isGoToCartListDialogVisible = true
