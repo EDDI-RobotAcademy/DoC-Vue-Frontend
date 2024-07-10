@@ -2,7 +2,10 @@
     <v-container>
         <v-row justify='center'>
             <v-col cols="12" md="10" lg="8">
-                <h2 class="title">게시글</h2>
+                <h2 class="title">
+                    <span>자유 게시판</span>
+                    <v-icon class="ml-auto">mdi-draw</v-icon>
+                </h2>
                 <v-data-table
                     v-model:items-per-page="perPage"
                     :headers="headerTitle"
@@ -14,7 +17,8 @@
                 <v-row justify="end">
                     <v-col cols="auto">
                         <v-btn :to="{ name: 'BoardRegisterPage' }" class="mb-board" height="40">
-                            게시글 작성
+                            <v-icon>mdi-pencil</v-icon>
+                            <span>게시글 작성</span>
                         </v-btn>
                     </v-col>
                 </v-row>

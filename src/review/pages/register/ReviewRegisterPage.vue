@@ -36,7 +36,7 @@
                     <span>작성 완료</span>
                 </v-btn>
                 <v-btn class="ml-1" color="error" @click="onCancel">
-                    <v-icon>mdi-marker-cancel</v-icon>
+                    <v-icon>mdi-cancel</v-icon>
                     <span>취소</span>
                 </v-btn>
             </v-col>

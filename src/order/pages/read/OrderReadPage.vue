@@ -4,9 +4,10 @@
             <v-col cols="12">
                 <v-card>
                     <v-card-title>
-                        구매한 상품<v-icon left>mdi-cash-100</v-icon>
+                        <span>구매한 이모티콘</span>
+                        <v-icon class="ml-auto">mdi-emoticon-happy-outline</v-icon>
                     </v-card-title>
-                    <v-card-text>
+                    <v-card-text>   
                         <v-table>
                             <thead>
                                 <tr class="table-header">
@@ -28,7 +29,10 @@
                                     <td>{{ item.productName }}</td>
                                     <td>{{ item.productPrice }}</td>
                                     <td>
-                                        <v-btn color="red" @click="goToReviewRegisterPage(item.productId)">리뷰 작성</v-btn>
+                                        <v-btn color="#EB9B1E" @click="goToReviewRegisterPage(item.productId)">
+                                            <v-icon>mdi-pencil</v-icon>
+                                            <span>리뷰 작성</span>
+                                        </v-btn>
                                     </td>
                                 </tr>
                             </tbody>
@@ -38,9 +42,12 @@
                 </v-card>
             </v-col>
         </v-row>
-        <v-row>
-            <v-col>
-                <v-btn color="blue" @click="goToLastPage">돌아가기</v-btn>
+        <v-row justify="center">
+            <v-col cols="auto">
+                <v-btn color="#E3EF76" @click="goToLastPage">
+                    <v-icon left>mdi-arrow-left</v-icon>
+                    <span>돌아가기</span>
+                </v-btn>
             </v-col>
         </v-row>
     </v-container>

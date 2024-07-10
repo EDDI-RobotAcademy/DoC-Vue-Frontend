@@ -2,7 +2,10 @@
     <v-container>
         <v-row justify="center">
             <v-col cols="12" md="12" lg="11">
-                <h2 class="title">Emoticon review</h2>
+                <h2 class="title">
+                    <span>전체 리뷰</span>
+                    <v-icon class="ml-auto">mdi-star-face</v-icon>
+                </h2>
                 <v-row class="item-container">
                     <v-col v-for="item in pagedItems" :key="item.reviewId" cols="12" sm="6" md="4" lg="3" @click="readRow(item)" class="text-center mb-3">
                         <v-card class="pa-3 review-card">
