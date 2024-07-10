@@ -126,6 +126,7 @@
             <v-card>
                 <v-card-title>Message</v-card-title>
                 <v-card-text>
+                    장바구니에 추가 되었습니다.
                     장바구니로 이동하시겠습니까?
                 </v-card-text>
                 <v-card-actions>
