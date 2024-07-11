@@ -1,5 +1,6 @@
 <template lang="">
-    <v-container>
+    <div class="background-image">
+        <v-container>
         <v-row justify='center'>
             <v-col cols="12" md="10" lg="8">
                 <h2 class="title">
@@ -30,6 +31,7 @@
             </v-col>
         </v-row>
     </v-container>
+</div>
 </template>
 
 <script>
@@ -90,11 +92,25 @@ export default {
 
 <style>
 .mb-board {
-    margin-top: 2rem; /* 원하는 공백 크기로 조정 */
+    margin-top: 2rem;
+    /* 원하는 공백 크기로 조정 */
     background-color: #FEFEFE;
 }
+
 .title {
     text-align: center;
     margin-bottom: 3rem;
+}
+.background-image {
+    background-image: url('@/assets/images/fixed/배경.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 100vh;
+    /* 화면 전체 높이 */
+    width: 100vw;
+    /* 화면 전체 너비 */
+    overflow: auto;
+    /* 콘텐츠가 넘칠 경우 스크롤 */
 }
 </style>
